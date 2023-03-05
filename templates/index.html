@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sticky Footer Navbar Template · Bootstrap v5.3</title>
+
+    <link
+      href="../static/css/bootstrap.css"
+      rel="stylesheet"
+      crossorigin="anonymous"
+    />
+
+    <!-- Custom styles for this template -->
+    <link href="../static/css/style.css" rel="stylesheet" />
+  </head>
+  <body class="d-flex flex-column h-100">
+    <header>
+      <!-- Fixed navbar -->
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Fixed navbar</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarCollapse"
+            aria-controls="navbarCollapse"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled">Disabled</a>
+              </li>
+            </ul>
+            <form class="d-flex" role="search">
+              <input
+                class="form-control me-2"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+              />
+              <button class="btn btn-outline-success" type="submit">
+                Search
+              </button>
+            </form>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Begin page content -->
+    <main class="flex-shrink-0">
+      <div class="container">
+        <h1>New questions</h1>
+        <div class="row">
+          <div class="col-8">
+            <!-- Quextion 1 -->
+            <div class="question">
+              <div class="row">
+                <div class="col-2">
+                  <div class="avatar">
+                    <img src="../static/img/avatar-1.jpg" alt="Avatar" />
+                  </div>
+                </div>
+                <div class="col-10">
+                  <h2 class="question-title">Question 1</h2>
+                  <div class="question-text">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Libero expedita earum error repudiandae quas nulla quod
+                    eaque vero itaque commodi nemo minima, necessitatibus unde
+                    maiores reiciendis sint quisquam mollitia quasi.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quextion 2 -->
+            <div class="question">
+              <div class="row">
+                <div class="col-2">
+                  <div class="avatar">
+                    <img src="../static/img/avatar-2.jpg" alt="Avatar" />
+                  </div>
+                </div>
+                <div class="col-10">
+                  <h2 class="question-title">Question 2</h2>
+                  <div class="question-text">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Libero expedita earum error repudiandae quas nulla quod
+                    eaque vero itaque commodi nemo minima, necessitatibus unde
+                    maiores reiciendis sint quisquam mollitia quasi.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quextion 3 -->
+            <div class="question">
+              <div class="row">
+                <div class="col-2">
+                  <div class="avatar">
+                    <img src="../static/img/avatar-3.jpg" alt="Avatar" />
+                  </div>
+                </div>
+                <div class="col-10">
+                  <h2 class="question-title">Question 3</h2>
+                  <div class="question-text">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Libero expedita earum error repudiandae quas nulla quod
+                    eaque vero itaque commodi nemo minima, necessitatibus unde
+                    maiores reiciendis sint quisquam mollitia quasi.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pagination -->
+            <ul class="pagination">
+              <li class="page-item">
+                <a class="page-link" href="#">Previous</a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+          </div>
+          <div class="col-4">sidebar</div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer mt-auto py-3 bg-light">
+      <div class="container">
+        <span class="text-muted">Place sticky footer content here.</span>
+      </div>
+    </footer>
+
+    <script
+      src="../static/js/bootstrap.bundle.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
