@@ -3,15 +3,15 @@
 }
 
 .avatar {
-  width: 80px;
-  height: 80px;
+  width: auto;
+  height: auto;
   border-radius: 20%;
   overflow: hidden;
 }
 
 img {
-  max-width: 100%;
-  height: auto;
+  max-width: auto;
+  max-height: auto;
   height: 100%;
   width: 100%;
   object-fit: cover;
@@ -22,4 +22,61 @@ img {
   border: 2px solid grey;
   padding: 20px;
   border-radius: 5px;
+}
+
+.question-text {
+  padding-bottom: 10px;
+}
+
+.icon {
+  width: auto;
+  text-align: center;
+  align-content: center;
+}
+
+.img-icon {
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.username {
+  text-align: left;
+  margin-top: 8px;
+  margin-bottom: 10px;
+}
+
+.tags {
+  margin-top: 10px;
+}
+
+.tag {
+  text-align: center;
+  align-self: center;
+}
+
+.vote-count {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.vote-count-positive {
+  color: green !important;
+}
+
+.vote-count-negative {
+  color: red !important;
+}
+
+.answers-count {
+  margin-left: 5px;
+}
+
+.popular-tags {
+  margin-bottom: 25px;
+}
+
+.best-members a {
+  font-size: large;
+  font-weight: bold;
+  text-decoration: none;
 }

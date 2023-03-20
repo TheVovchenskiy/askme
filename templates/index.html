@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Sticky Footer Navbar Template · Bootstrap v5.3</title>
+    <title>AskMe</title>
 
     <link
       href="../static/css/bootstrap.css"
@@ -62,24 +62,109 @@
     <!-- Begin page content -->
     <main class="flex-shrink-0">
       <div class="container">
-        <h1>New questions</h1>
         <div class="row">
           <div class="col-8">
+            <h1>New questions</h1>
             <!-- Quextion 1 -->
             <div class="question">
               <div class="row">
-                <div class="col-2">
+                <div class="col-2 border-end border-4">
+                  <!-- Avatar -->
                   <div class="avatar">
                     <img src="../static/img/avatar-1.jpg" alt="Avatar" />
                   </div>
+                  <!-- Username -->
+                  <div class="username">
+                    <a href="#" class="text-decoration-none fw-bold">User_1</a>
+                  </div>
                 </div>
                 <div class="col-10">
-                  <h2 class="question-title">Question 1</h2>
+                  <!-- Title -->
+                  <h2 class="question-title">
+                    <a
+                      href="#"
+                      class="text-uppercase text-decoration-none badge bg-secondary bg-opacity-75 text-wrap"
+                      >Question 1</a
+                    >
+                  </h2>
+                  <!-- Question text -->
                   <div class="question-text">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                     Libero expedita earum error repudiandae quas nulla quod
                     eaque vero itaque commodi nemo minima, necessitatibus unde
                     maiores reiciendis sint quisquam mollitia quasi.
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <!-- Tags -->
+                <div class="col-9 tags">
+                  <a
+                    href="#"
+                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
+                  >
+                    python
+                  </a>
+                  <a
+                    href="#"
+                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
+                  >
+                    django
+                  </a>
+                  <a
+                    href="#"
+                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
+                  >
+                    some
+                  </a>
+                  <a
+                    href="#"
+                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
+                  >
+                    other
+                  </a>
+                  <a
+                    href="#"
+                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
+                  >
+                    tags
+                  </a>
+                </div>
+                <!-- Answers -->
+                <div class="col-1">
+                  <div class="icon">
+                    <span
+                      ><a href="#"
+                        ><img
+                          src="../static/img/answer-icon.svg"
+                          alt="answers"
+                          class="img-icon" /></a
+                      ><span
+                        class="answers-count fw-bold text-dark font-monospace fs-5 align-middle"
+                        >0</span
+                      ></span
+                    >
+                  </div>
+                </div>
+                <!-- Votes -->
+                <div class="col-2">
+                  <div class="icon">
+                    <span class="align-middle text-middle"
+                      ><a href="#"
+                        ><img
+                          src="../static/img/angle-circle-down.svg"
+                          alt="down"
+                          class="img-icon" /></a
+                      ><span
+                        class="vote-count fw-bold text-dark font-monospace fs-5 align-middle"
+                        >0</span
+                      ><a href="#"
+                        ><img
+                          src="../static/img/angle-circle-up.svg"
+                          alt="up"
+                          class="img-icon" /></a
+                    ></span>
                   </div>
                 </div>
               </div>
@@ -88,13 +173,26 @@
             <!-- Quextion 2 -->
             <div class="question">
               <div class="row">
-                <div class="col-2">
+                <div class="col-2 border-end border-4">
+                  <!-- Avatar -->
                   <div class="avatar">
                     <img src="../static/img/avatar-2.jpg" alt="Avatar" />
                   </div>
+                  <!-- Username -->
+                  <div class="username">
+                    <a href="#" class="text-decoration-none fw-bold">User_2</a>
+                  </div>
                 </div>
                 <div class="col-10">
-                  <h2 class="question-title">Question 2</h2>
+                  <!-- Title -->
+                  <h2 class="question-title">
+                    <a
+                      href="#"
+                      class="text-uppercase text-decoration-none badge bg-secondary bg-opacity-75 text-wrap"
+                      >Question 2</a
+                    >
+                  </h2>
+                  <!-- Question text -->
                   <div class="question-text">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                     Libero expedita earum error repudiandae quas nulla quod
@@ -103,23 +201,180 @@
                   </div>
                 </div>
               </div>
+
+              <div class="row">
+                <!-- Tags -->
+                <div class="col-9 tags">
+                  <a
+                    href="#"
+                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
+                  >
+                    python
+                  </a>
+                  <a
+                    href="#"
+                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
+                  >
+                    django
+                  </a>
+                  <a
+                    href="#"
+                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
+                  >
+                    some
+                  </a>
+                  <a
+                    href="#"
+                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
+                  >
+                    other
+                  </a>
+                  <a
+                    href="#"
+                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
+                  >
+                    tags
+                  </a>
+                </div>
+                <!-- Answers -->
+                <div class="col-1">
+                  <div class="icon">
+                    <span
+                      ><a href="#"
+                        ><img
+                          src="../static/img/answer-icon.svg"
+                          alt="answers"
+                          class="img-icon" /></a
+                      ><span
+                        class="answers-count fw-bold text-dark font-monospace fs-5 align-middle"
+                        >3</span
+                      ></span
+                    >
+                  </div>
+                </div>
+                <!-- Votes -->
+                <div class="col-2">
+                  <div class="icon">
+                    <span class="align-middle text-middle"
+                      ><a href="#"
+                        ><img
+                          src="../static/img/angle-circle-down.svg"
+                          alt="down"
+                          class="img-icon" /></a
+                      ><span
+                        class="vote-count vote-count-positive fw-bold text-dark font-monospace fs-5 align-middle"
+                        >+2</span
+                      ><a href="#"
+                        ><img
+                          src="../static/img/angle-circle-up.svg"
+                          alt="up"
+                          class="img-icon" /></a
+                    ></span>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <!-- Quextion 3 -->
             <div class="question">
               <div class="row">
-                <div class="col-2">
+                <div class="col-2 border-end border-4">
+                  <!-- Avatar -->
                   <div class="avatar">
                     <img src="../static/img/avatar-3.jpg" alt="Avatar" />
                   </div>
+                  <!-- Username -->
+                  <div class="username">
+                    <a href="#" class="text-decoration-none fw-bold">User_3</a>
+                  </div>
                 </div>
                 <div class="col-10">
-                  <h2 class="question-title">Question 3</h2>
+                  <!-- Title -->
+                  <h2 class="question-title">
+                    <a
+                      href="#"
+                      class="text-uppercase text-decoration-none badge bg-secondary bg-opacity-75 text-wrap"
+                      >Question 3</a
+                    >
+                  </h2>
+                  <!-- Question text -->
                   <div class="question-text">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                     Libero expedita earum error repudiandae quas nulla quod
                     eaque vero itaque commodi nemo minima, necessitatibus unde
                     maiores reiciendis sint quisquam mollitia quasi.
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <!-- Tags -->
+                <div class="col-9 tags">
+                  <a
+                    href="#"
+                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
+                  >
+                    python
+                  </a>
+                  <a
+                    href="#"
+                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
+                  >
+                    django
+                  </a>
+                  <a
+                    href="#"
+                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
+                  >
+                    some
+                  </a>
+                  <a
+                    href="#"
+                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
+                  >
+                    other
+                  </a>
+                  <a
+                    href="#"
+                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
+                  >
+                    tags
+                  </a>
+                </div>
+                <!-- Answers -->
+                <div class="col-1">
+                  <div class="icon">
+                    <span
+                      ><a href="#"
+                        ><img
+                          src="../static/img/answer-icon.svg"
+                          alt="answers"
+                          class="img-icon" /></a
+                      ><span
+                        class="answers-count fw-bold text-dark font-monospace fs-5 align-middle"
+                        >1</span
+                      ></span
+                    >
+                  </div>
+                </div>
+                <!-- Votes -->
+                <div class="col-2">
+                  <div class="icon">
+                    <span class="align-middle text-middle"
+                      ><a href="#"
+                        ><img
+                          src="../static/img/angle-circle-down.svg"
+                          alt="down"
+                          class="img-icon" /></a
+                      ><span
+                        class="vote-count vote-count-negative fw-bold text-dark font-monospace fs-5 align-middle"
+                        >-1</span
+                      ><a href="#"
+                        ><img
+                          src="../static/img/angle-circle-up.svg"
+                          alt="up"
+                          class="img-icon" /></a
+                    ></span>
                   </div>
                 </div>
               </div>
@@ -136,7 +391,68 @@
               <li class="page-item"><a class="page-link" href="#">Next</a></li>
             </ul>
           </div>
-          <div class="col-4">sidebar</div>
+          <div class="col-4 p-4">
+            <!-- Popular tags -->
+            <div class="popular-tags">
+              <h3>Popular Tags</h3>
+              <p class="lh-lg">
+                <a
+                  href="#"
+                  class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap fs-6"
+                >
+                  python
+                </a>
+                <a
+                  href="#"
+                  class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap fs-6"
+                >
+                  perl
+                </a>
+                <a
+                  href="#"
+                  class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap fs-6"
+                >
+                  Technopark
+                </a>
+                <a
+                  href="#"
+                  class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap fs-6"
+                >
+                  MySQL
+                </a>
+                <a
+                  href="#"
+                  class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap fs-6"
+                >
+                  dajango
+                </a>
+                <a
+                  href="#"
+                  class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap fs-6"
+                >
+                  VK
+                </a>
+                <a
+                  href="#"
+                  class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap fs-6"
+                >
+                  C++
+                </a>
+              </p>
+            </div>
+
+            <!-- Best members -->
+            <div class="best-members">
+              <h3>Best members</h3>
+              <ol class="list-unstyled mb-0">
+                <li><a href="#">Mr. Freeman</a></li>
+                <li><a href="#">Dr. House</a></li>
+                <li><a href="#">Bender</a></li>
+                <li><a href="#">Heisenberg</a></li>
+                <li><a href="#">V. Pupkin</a></li>
+              </ol>
+            </div>
+          </div>
         </div>
       </div>
     </main>
