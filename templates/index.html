@@ -11,38 +11,41 @@
       crossorigin="anonymous"
     />
 
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="../static/img/icon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="../static/img/icon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="../static/img/icon/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/site.webmanifest" />
+
     <!-- Custom styles for this template -->
     <link href="../static/css/style.css" rel="stylesheet" />
   </head>
   <body class="d-flex flex-column h-100">
     <header>
-      <!-- Fixed navbar -->
-      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">Fixed navbar</a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarCollapse"
-            aria-controls="navbarCollapse"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav me-auto mb-2 mb-md-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link disabled">Disabled</a>
-              </li>
-            </ul>
+      <nav>
+        <!-- Logo -->
+        <div class="col-2">
+          <div class="logo">
+            <a href="#"><img src="../static/img/svg/logo.svg" alt="logo" /></a>
+          </div>
+        </div>
+
+        <!-- Search -->
+        <div class="col-6">
+          <div class="col-6">
             <form class="d-flex" role="search">
               <input
                 class="form-control me-2"
@@ -56,6 +59,25 @@
             </form>
           </div>
         </div>
+
+        <!-- Account -->
+        <div class="col-4">
+          <div class="row">
+            <div class="col-6">
+              <div class="nav-avatar">
+                <div>
+                  <img src="../static/img/avatars/my-avatar.jpg" alt="Avatar" />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-6">
+              <div class="settings">
+                <a href="#">Settings</a>
+              </div>
+            </div>
+          </div>
+        </div>
       </nav>
     </header>
 
@@ -64,28 +86,27 @@
       <div class="container">
         <div class="row">
           <div class="col-8">
-            <h1>New questions</h1>
+            <h1 class="active-section">New Questions</h1>
             <!-- Quextion 1 -->
             <div class="question">
               <div class="row">
                 <div class="col-2 border-end border-4">
                   <!-- Avatar -->
-                  <div class="avatar">
-                    <img src="../static/img/avatar-1.jpg" alt="Avatar" />
+                  <div class="question-avatar">
+                    <img
+                      src="../static/img/avatars/avatar-1.jpg"
+                      alt="Avatar"
+                    />
                   </div>
                   <!-- Username -->
                   <div class="username">
-                    <a href="#" class="text-decoration-none fw-bold">User_1</a>
+                    <a href="#">User_1</a>
                   </div>
                 </div>
                 <div class="col-10">
                   <!-- Title -->
                   <h2 class="question-title">
-                    <a
-                      href="#"
-                      class="text-uppercase text-decoration-none badge bg-secondary bg-opacity-75 text-wrap"
-                      >Question 1</a
-                    >
+                    <a href="#">Question 1</a>
                   </h2>
                   <!-- Question text -->
                   <div class="question-text">
@@ -100,36 +121,11 @@
               <div class="row">
                 <!-- Tags -->
                 <div class="col-9 tags">
-                  <a
-                    href="#"
-                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
-                  >
-                    python
-                  </a>
-                  <a
-                    href="#"
-                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
-                  >
-                    django
-                  </a>
-                  <a
-                    href="#"
-                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
-                  >
-                    some
-                  </a>
-                  <a
-                    href="#"
-                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
-                  >
-                    other
-                  </a>
-                  <a
-                    href="#"
-                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
-                  >
-                    tags
-                  </a>
+                  <a href="#" class="no-underline"><tag>python</tag></a>
+                  <a href="#" class="no-underline"><tag>django</tag></a>
+                  <a href="#" class="no-underline"><tag>some</tag></a>
+                  <a href="#" class="no-underline"><tag>other</tag></a>
+                  <a href="#" class="no-underline"><tag>tags</tag></a>
                 </div>
                 <!-- Answers -->
                 <div class="col-1">
@@ -137,7 +133,7 @@
                     <span
                       ><a href="#"
                         ><img
-                          src="../static/img/answer-icon.svg"
+                          src="../static/img/svg/answer-icon.svg"
                           alt="answers"
                           class="img-icon" /></a
                       ><span
@@ -153,7 +149,7 @@
                     <span class="align-middle text-middle"
                       ><a href="#"
                         ><img
-                          src="../static/img/angle-circle-down.svg"
+                          src="../static/img/svg/vote-down-icon.svg"
                           alt="down"
                           class="img-icon" /></a
                       ><span
@@ -161,7 +157,7 @@
                         >0</span
                       ><a href="#"
                         ><img
-                          src="../static/img/angle-circle-up.svg"
+                          src="../static/img/svg/vote-up-icon.svg"
                           alt="up"
                           class="img-icon" /></a
                     ></span>
@@ -175,22 +171,21 @@
               <div class="row">
                 <div class="col-2 border-end border-4">
                   <!-- Avatar -->
-                  <div class="avatar">
-                    <img src="../static/img/avatar-2.jpg" alt="Avatar" />
+                  <div class="question-avatar">
+                    <img
+                      src="../static/img/avatars/avatar-2.jpg"
+                      alt="Avatar"
+                    />
                   </div>
                   <!-- Username -->
                   <div class="username">
-                    <a href="#" class="text-decoration-none fw-bold">User_2</a>
+                    <a href="#">User_2</a>
                   </div>
                 </div>
                 <div class="col-10">
                   <!-- Title -->
                   <h2 class="question-title">
-                    <a
-                      href="#"
-                      class="text-uppercase text-decoration-none badge bg-secondary bg-opacity-75 text-wrap"
-                      >Question 2</a
-                    >
+                    <a href="#">Question 2</a>
                   </h2>
                   <!-- Question text -->
                   <div class="question-text">
@@ -205,36 +200,11 @@
               <div class="row">
                 <!-- Tags -->
                 <div class="col-9 tags">
-                  <a
-                    href="#"
-                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
-                  >
-                    python
-                  </a>
-                  <a
-                    href="#"
-                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
-                  >
-                    django
-                  </a>
-                  <a
-                    href="#"
-                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
-                  >
-                    some
-                  </a>
-                  <a
-                    href="#"
-                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
-                  >
-                    other
-                  </a>
-                  <a
-                    href="#"
-                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
-                  >
-                    tags
-                  </a>
+                  <a href="#" class="no-underline"><tag>python</tag></a>
+                  <a href="#" class="no-underline"><tag>django</tag></a>
+                  <a href="#" class="no-underline"><tag>some</tag></a>
+                  <a href="#" class="no-underline"><tag>other</tag></a>
+                  <a href="#" class="no-underline"><tag>tags</tag></a>
                 </div>
                 <!-- Answers -->
                 <div class="col-1">
@@ -242,7 +212,7 @@
                     <span
                       ><a href="#"
                         ><img
-                          src="../static/img/answer-icon.svg"
+                          src="../static/img/svg/answer-icon.svg"
                           alt="answers"
                           class="img-icon" /></a
                       ><span
@@ -258,7 +228,7 @@
                     <span class="align-middle text-middle"
                       ><a href="#"
                         ><img
-                          src="../static/img/angle-circle-down.svg"
+                          src="../static/img/svg/vote-down-icon.svg"
                           alt="down"
                           class="img-icon" /></a
                       ><span
@@ -266,7 +236,7 @@
                         >+2</span
                       ><a href="#"
                         ><img
-                          src="../static/img/angle-circle-up.svg"
+                          src="../static/img/svg/vote-up-icon.svg"
                           alt="up"
                           class="img-icon" /></a
                     ></span>
@@ -280,22 +250,21 @@
               <div class="row">
                 <div class="col-2 border-end border-4">
                   <!-- Avatar -->
-                  <div class="avatar">
-                    <img src="../static/img/avatar-3.jpg" alt="Avatar" />
+                  <div class="question-avatar">
+                    <img
+                      src="../static/img/avatars/avatar-3.jpg"
+                      alt="Avatar"
+                    />
                   </div>
                   <!-- Username -->
                   <div class="username">
-                    <a href="#" class="text-decoration-none fw-bold">User_3</a>
+                    <a href="#">User_3</a>
                   </div>
                 </div>
                 <div class="col-10">
                   <!-- Title -->
                   <h2 class="question-title">
-                    <a
-                      href="#"
-                      class="text-uppercase text-decoration-none badge bg-secondary bg-opacity-75 text-wrap"
-                      >Question 3</a
-                    >
+                    <a href="#">Question 3</a>
                   </h2>
                   <!-- Question text -->
                   <div class="question-text">
@@ -310,36 +279,11 @@
               <div class="row">
                 <!-- Tags -->
                 <div class="col-9 tags">
-                  <a
-                    href="#"
-                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
-                  >
-                    python
-                  </a>
-                  <a
-                    href="#"
-                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
-                  >
-                    django
-                  </a>
-                  <a
-                    href="#"
-                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
-                  >
-                    some
-                  </a>
-                  <a
-                    href="#"
-                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
-                  >
-                    other
-                  </a>
-                  <a
-                    href="#"
-                    class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap"
-                  >
-                    tags
-                  </a>
+                  <a href="#" class="no-underline"><tag>python</tag></a>
+                  <a href="#" class="no-underline"><tag>django</tag></a>
+                  <a href="#" class="no-underline"><tag>some</tag></a>
+                  <a href="#" class="no-underline"><tag>other</tag></a>
+                  <a href="#" class="no-underline"><tag>tags</tag></a>
                 </div>
                 <!-- Answers -->
                 <div class="col-1">
@@ -347,7 +291,7 @@
                     <span
                       ><a href="#"
                         ><img
-                          src="../static/img/answer-icon.svg"
+                          src="../static/img/svg/answer-icon.svg"
                           alt="answers"
                           class="img-icon" /></a
                       ><span
@@ -363,7 +307,7 @@
                     <span class="align-middle text-middle"
                       ><a href="#"
                         ><img
-                          src="../static/img/angle-circle-down.svg"
+                          src="../static/img/svg/vote-down-icon.svg"
                           alt="down"
                           class="img-icon" /></a
                       ><span
@@ -371,7 +315,7 @@
                         >-1</span
                       ><a href="#"
                         ><img
-                          src="../static/img/angle-circle-up.svg"
+                          src="../static/img/svg/vote-up-icon.svg"
                           alt="up"
                           class="img-icon" /></a
                     ></span>
@@ -396,48 +340,13 @@
             <div class="popular-tags">
               <h3>Popular Tags</h3>
               <p class="lh-lg">
-                <a
-                  href="#"
-                  class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap fs-6"
-                >
-                  python
-                </a>
-                <a
-                  href="#"
-                  class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap fs-6"
-                >
-                  perl
-                </a>
-                <a
-                  href="#"
-                  class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap fs-6"
-                >
-                  Technopark
-                </a>
-                <a
-                  href="#"
-                  class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap fs-6"
-                >
-                  MySQL
-                </a>
-                <a
-                  href="#"
-                  class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap fs-6"
-                >
-                  dajango
-                </a>
-                <a
-                  href="#"
-                  class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap fs-6"
-                >
-                  VK
-                </a>
-                <a
-                  href="#"
-                  class="text-decoration-none badge bg-primary bg-opacity-75 text-wrap fs-6"
-                >
-                  C++
-                </a>
+                <a href="#" class="no-underline"><tag>python</tag></a>
+                <a href="#" class="no-underline"><tag>perl</tag></a>
+                <a href="#" class="no-underline"><tag>Technopark</tag></a>
+                <a href="#" class="no-underline"><tag>MySQL</tag></a>
+                <a href="#" class="no-underline"><tag>dajango</tag></a>
+                <a href="#" class="no-underline"><tag>VK</tag></a>
+                <a href="#" class="no-underline"><tag>C++</tag></a>
               </p>
             </div>
 

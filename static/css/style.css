@@ -1,15 +1,80 @@
-.container {
-  padding: 60px 15px 0;
+nav {
+  height: 5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  color: #fff;
+  padding: 10px 5rem;
 }
 
-.avatar {
+.logo img {
+  max-height: 3rem;
+}
+
+.nav-links ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.nav-links li {
+  margin: 0 10px;
+}
+
+.nav-links a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.nav-avatar {
+  width: 50px;
+}
+
+.nav-avatar > div {
+  width: 100%;
+  padding-top: 100%;
+  background-color: black;
+  position: relative;
+  border-radius: 20%;
+  overflow: hidden;
+}
+
+.nav-avatar > div > img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+.settings a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.active-section {
+  margin-bottom: 20px;
+  margin-top: 15px;
+}
+
+.container {
+  padding: 20px 15px 0;
+}
+
+.question-avatar {
   width: auto;
   height: auto;
   border-radius: 20%;
   overflow: hidden;
 }
 
-img {
+.question-avatar img {
   max-width: auto;
   max-height: auto;
   height: 100%;
@@ -22,6 +87,21 @@ img {
   border: 2px solid grey;
   padding: 20px;
   border-radius: 5px;
+}
+
+.question-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.question-title a {
+  color: #333;
+  text-decoration: none;
+}
+
+.question-title a:hover {
+  text-decoration: underline;
 }
 
 .question-text {
@@ -37,6 +117,12 @@ img {
 .img-icon {
   height: 1.5rem;
   width: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.img-icon:hover {
+  transform: scale(1.1);
+  cursor: pointer;
 }
 
 .username {
@@ -45,13 +131,37 @@ img {
   margin-bottom: 10px;
 }
 
-.tags {
-  margin-top: 10px;
+.username a {
+  font-weight: bold;
+  text-decoration: none;
 }
 
-.tag {
-  text-align: center;
-  align-self: center;
+.tags {
+  margin-top: 10px;
+  font-size: small;
+}
+
+tag {
+  display: inline;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: rgba(13, 110, 253, 1);
+  padding-top: 0.2rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-bottom: 0.25rem;
+  margin-right: 0.2rem;
+  border-radius: 0.4rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+tag:hover {
+  background-color: rgba(13, 109, 253, 0.75);
+}
+
+.no-underline {
+  text-decoration: none;
 }
 
 .vote-count {
