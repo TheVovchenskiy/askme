@@ -87,6 +87,12 @@ nav .container {
   padding: 20px 15px 0;
 }
 
+.section-title {
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
 .question-avatar {
   width: auto;
   height: auto;
@@ -202,8 +208,8 @@ tag:hover {
   margin-left: 5px;
 }
 
-.popular-tags {
-  margin-bottom: 25px;
+.popular-tags tag {
+  margin-bottom: 40px;
 }
 
 .best-members a {
