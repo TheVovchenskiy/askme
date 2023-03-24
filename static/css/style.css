@@ -163,6 +163,10 @@ nav .container {
   transition: all 0.1s ease;
 }
 
+.side-bar {
+  padding-top: 0px !important;
+}
+
 .tags {
   margin-top: 10px;
   font-size: small;

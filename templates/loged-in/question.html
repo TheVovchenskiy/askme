@@ -56,7 +56,7 @@
           <div class="collapse navbar-collapse" id="navbarsExample07">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#"
+                <a class="nav-link" href="./index.html"
                   >New Questions</a
                 >
               </li>
@@ -77,11 +77,32 @@
 
             <!-- Account -->
             <div class="account">
+              <!-- ASK butn -->
+              <div class="container">
+                <a class="btn btn-success ask-btn" href="./ask.html">Ask!</a>
+              </div>
+
+              <!-- Avatar -->
+              <div class="container">
+                <a href="#"
+                  ><div class="nav-avatar">
+                    <div>
+                      <img
+                        src="../../static/img/avatars/my-avatar.jpg"
+                        alt="Avatar"
+                      />
+                    </div></div
+                ></a>
+              </div>
+
               <!-- Settings -->
               <div class="container">
+                <div class="row">
+                  <a href="#" class="nav-username">MyUsername</a>
+                </div>
                 <div class="row nav-options">
-                  <a href="#">log in</a>
-                  <a href="#">register</a>
+                  <a href="#">settings</a>
+                  <a href="../loged-out/index.html">log out</a>
                 </div>
               </div>
             </div>
@@ -95,7 +116,9 @@
       <div class="container">
         <div class="row">
           <div class="col-8">
-            <!-- Quextion 1 -->
+
+            <h2 class="section-title">Question title</h2>
+            <!-- Quextion body -->
             <div class="question">
               <div class="row">
                 <div class="col-2 border-end border-4">
@@ -114,7 +137,7 @@
                 <div class="col-10">
                   <!-- Title -->
                   <h2 class="question-title">
-                    <a href="#">Question 1</a>
+                    <a href="./question.html">Question 1</a>
                   </h2>
                   <!-- Question text -->
                   <div class="question-text">
@@ -173,175 +196,7 @@
                 </div>
               </div>
             </div>
-
-            <!-- Quextion 2 -->
-            <div class="question">
-              <div class="row">
-                <div class="col-2 border-end border-4">
-                  <!-- Avatar -->
-                  <div class="question-avatar">
-                    <img
-                      src="../../static/img/avatars/avatar-2.jpg"
-                      alt="Avatar"
-                    />
-                  </div>
-                  <!-- Username -->
-                  <div class="username">
-                    <a href="#">User_2</a>
-                  </div>
-                </div>
-                <div class="col-10">
-                  <!-- Title -->
-                  <h2 class="question-title">
-                    <a href="#">Question 2</a>
-                  </h2>
-                  <!-- Question text -->
-                  <div class="question-text">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Libero expedita earum error repudiandae quas nulla quod
-                    eaque vero itaque commodi nemo minima, necessitatibus unde
-                    maiores reiciendis sint quisquam mollitia quasi.
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <!-- Tags -->
-                <div class="col-9 tags">
-                  <a href="#" class="no-underline"><tag>python</tag></a>
-                  <a href="#" class="no-underline"><tag>django</tag></a>
-                  <a href="#" class="no-underline"><tag>some</tag></a>
-                  <a href="#" class="no-underline"><tag>other</tag></a>
-                  <a href="#" class="no-underline"><tag>tags</tag></a>
-                </div>
-                <!-- Answers -->
-                <div class="col-1">
-                  <div class="icon">
-                    <span
-                      ><a href="#"
-                        ><img
-                          src="../../static/img/svg/answer-icon.svg"
-                          alt="answers"
-                          class="img-icon" /></a
-                      ><span
-                        class="answers-count fw-bold text-dark font-monospace fs-5 align-middle"
-                        >3</span
-                      ></span
-                    >
-                  </div>
-                </div>
-                <!-- Votes -->
-                <div class="col-2">
-                  <div class="icon">
-                    <span class="align-middle text-middle"
-                      ><a href="#"
-                        ><img
-                          src="../../static/img/svg/vote-down-icon.svg"
-                          alt="down"
-                          class="img-icon" /></a
-                      ><span
-                        class="vote-count vote-count-positive fw-bold text-dark font-monospace fs-5 align-middle"
-                        >+2</span
-                      ><a href="#"
-                        ><img
-                          src="../../static/img/svg/vote-up-icon.svg"
-                          alt="up"
-                          class="img-icon" /></a
-                    ></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Quextion 3 -->
-            <div class="question">
-              <div class="row">
-                <div class="col-2 border-end border-4">
-                  <!-- Avatar -->
-                  <div class="question-avatar">
-                    <img
-                      src="../../static/img/avatars/avatar-3.jpg"
-                      alt="Avatar"
-                    />
-                  </div>
-                  <!-- Username -->
-                  <div class="username">
-                    <a href="#">User_3</a>
-                  </div>
-                </div>
-                <div class="col-10">
-                  <!-- Title -->
-                  <h2 class="question-title">
-                    <a href="#">Question 3</a>
-                  </h2>
-                  <!-- Question text -->
-                  <div class="question-text">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Libero expedita earum error repudiandae quas nulla quod
-                    eaque vero itaque commodi nemo minima, necessitatibus unde
-                    maiores reiciendis sint quisquam mollitia quasi.
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <!-- Tags -->
-                <div class="col-9 tags">
-                  <a href="#" class="no-underline"><tag>python</tag></a>
-                  <a href="#" class="no-underline"><tag>django</tag></a>
-                  <a href="#" class="no-underline"><tag>some</tag></a>
-                  <a href="#" class="no-underline"><tag>other</tag></a>
-                  <a href="#" class="no-underline"><tag>tags</tag></a>
-                </div>
-                <!-- Answers -->
-                <div class="col-1">
-                  <div class="icon">
-                    <span
-                      ><a href="#"
-                        ><img
-                          src="../../static/img/svg/answer-icon.svg"
-                          alt="answers"
-                          class="img-icon" /></a
-                      ><span
-                        class="answers-count fw-bold text-dark font-monospace fs-5 align-middle"
-                        >1</span
-                      ></span
-                    >
-                  </div>
-                </div>
-                <!-- Votes -->
-                <div class="col-2">
-                  <div class="icon">
-                    <span class="align-middle text-middle"
-                      ><a href="#"
-                        ><img
-                          src="../../static/img/svg/vote-down-icon.svg"
-                          alt="down"
-                          class="img-icon" /></a
-                      ><span
-                        class="vote-count vote-count-negative fw-bold text-dark font-monospace fs-5 align-middle"
-                        >-1</span
-                      ><a href="#"
-                        ><img
-                          src="../../static/img/svg/vote-up-icon.svg"
-                          alt="up"
-                          class="img-icon" /></a
-                    ></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Pagination -->
-            <ul class="pagination">
-              <li class="page-item">
-                <a class="page-link" href="#">Previous</a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item"><a class="page-link" href="#">Next</a></li>
-            </ul>
+            
           </div>
           <div class="col-4 p-4 side-bar">
             <!-- Popular tags -->
