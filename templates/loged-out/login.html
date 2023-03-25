@@ -56,7 +56,9 @@
           <div class="collapse navbar-collapse" id="navbarsExample07">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link" href="./index.html">New Questions</a>
+                <a class="nav-link" href="./index.html"
+                  >New Questions</a
+                >
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">Hot Questions</a>
@@ -75,32 +77,11 @@
 
             <!-- Account -->
             <div class="account">
-              <!-- ASK butn -->
-              <div class="container">
-                <a class="btn btn-success ask-btn" href="./ask.html">Ask!</a>
-              </div>
-
-              <!-- Avatar -->
-              <div class="container">
-                <a href="#"
-                  ><div class="nav-avatar">
-                    <div>
-                      <img
-                        src="../../static/img/avatars/my-avatar.jpg"
-                        alt="Avatar"
-                      />
-                    </div></div
-                ></a>
-              </div>
-
               <!-- Settings -->
               <div class="container">
-                <div class="row">
-                  <a href="#" class="nav-username">MyUsername</a>
-                </div>
                 <div class="row nav-options">
-                  <a href="#">settings</a>
-                  <a href="../loged-out/index.html">log out</a>
+                  <a href="./login.html">log in</a>
+                  <a href="#">register</a>
                 </div>
               </div>
             </div>
@@ -114,79 +95,48 @@
       <div class="container">
         <div class="row">
           <div class="col-8">
-            <h2 class="section-title">New Question</h2>
+            <h2 class="section-title">Log In</h2>
+            <form>
+              <!-- Alert -->
+              <div class="alert alert-danger" role="alert">
+                Sorry, wrong e-mail or password
+              </div>
 
-            <!-- Alert -->
-            <div class="alert alert-danger" role="alert">
-              Please, enter title of the question
-            </div>
+              <!-- E-mail -->
+              <div class="mb-3">
+                <label for="InputEmail" class="form-label">Email address</label>
+                <input
+                  type="email"
+                  class="form-control form form-login"
+                  id="InputEmail"
+                  aria-describedby="emailHelp"
+                />
+                <div id="emailHelp" class="form-text">
+                  We'll never share your email with anyone else.
+                </div>
+              </div>
 
-            <!-- Question Title -->
-            <div class="mb-3">
-              <label for="exampleFormControlInput1" class="form-label"
-                >Title</label
+              <!-- Password -->
+              <div class="mb-3">
+                <label for="InputPassword" class="form-label">Password</label>
+                <input
+                  type="password"
+                  class="form-control form form-login"
+                  id="InputPassword"
+                />
+              </div>
+
+              <!-- Log in button -->
+              <a
+                href="../loged-in/index.html"
+                class="btn btn-primary log-in-btn"
+                >Log In</a
+              ><a
+                href="../loged-in/index.html"
+                class="btn btn-outline-primary log-in-btn"
+                >Sign In</a
               >
-              <input
-                type="text"
-                class="form-control form"
-                id="exampleFormControlInput1"
-                placeholder="Title"
-              />
-            </div>
-
-            <!-- Alert -->
-            <div class="alert alert-danger" role="alert">
-              Please, enter text of the question
-            </div>
-
-            <!-- Question text -->
-            <div class="mb-3">
-              <label for="exampleFormControlTextarea1" class="form-label"
-                >Text</label
-              >
-              <textarea
-                class="form-control form"
-                id="exampleFormControlTextarea1"
-                rows="3"
-                placeholder="Text"
-                style="height: 300px"
-              ></textarea>
-            </div>
-
-            <!-- Alert -->
-            <div class="alert alert-danger" role="alert">
-              Please, select at least one tag
-            </div>
-
-            <!-- Tags -->
-            <label for="exampleDataList" class="form-label">Tags</label>
-            <input
-              class="form-control form"
-              list="datalistOptions"
-              id="exampleDataList"
-              placeholder="Type to search..."
-              style="margin-bottom: 16px"
-            />
-            <datalist id="datalistOptions">
-              <option value="python"></option>
-              <option value="perl"></option>
-              <option value="Technopark"></option>
-              <option value="MySQL"></option>
-              <option value="django"></option>
-              <option value="VK"></option>
-              <option value="C++"></option>
-            </datalist>
-
-            <div class="tags">
-              <p class="lh-lg">
-                <a href="#" class="no-underline"><tag>python</tag></a>
-                <a href="#" class="no-underline"><tag>dajango</tag></a>
-              </p>
-            </div>
-
-            <button type="button" class="btn btn-success btn-lg ask-btn">
-              Ask!
-            </button>
+            </form>
           </div>
           <div class="col-4 p-4 side-bar">
             <!-- Popular tags -->

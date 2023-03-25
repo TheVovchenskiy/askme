@@ -127,6 +127,7 @@ nav .container {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 10px;
+  color: #333;
 }
 
 .question-title a {
@@ -271,7 +272,30 @@ tag:hover {
   border-radius: 5px;
 }
 
+.form-login {
+  width: 400px;
+}
+
 .answer-btn {
   margin-top: 20px;
   margin-bottom: 20px;
+}
+
+.page-link-border {
+  border-top: 2px solid grey;
+  border-bottom: 2px solid grey;
+  border-left: 1px solid grey;
+  border-right: 1px solid grey;
+}
+
+.page-link-border-previous {
+  border-left: 2px solid grey;
+}
+
+.page-link-border-next {
+  border-right: 2px solid grey;
+}
+
+.log-in-btn {
+  margin-right: 10px;
 }
