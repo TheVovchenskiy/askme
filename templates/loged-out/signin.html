@@ -56,9 +56,7 @@
           <div class="collapse navbar-collapse" id="navbarsExample07">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link" href="./index.html"
-                  >New Questions</a
-                >
+                <a class="nav-link" href="./index.html">New Questions</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">Hot Questions</a>
@@ -95,21 +93,33 @@
       <div class="container">
         <div class="row">
           <div class="col-8">
-            <h2 class="section-title">Log In</h2>
+            <h2 class="section-title">Sign In</h2>
             <form>
               <!-- Alert -->
               <div class="alert alert-danger" role="alert">
-                Sorry, wrong email or password
+                Sorry, this email already exists
               </div>
 
-              <!-- E-mail -->
+              <!-- Email -->
               <div class="mb-3">
                 <label for="InputEmail" class="form-label">Email address</label>
                 <input
                   type="email"
                   class="form-control form form-login"
                   id="InputEmail"
-                  aria-describedby="emailHelp"
+                />
+                <div id="emailHelp" class="form-text">
+                  We'll never share your email with anyone else.
+                </div>
+              </div>
+
+              <!-- Username -->
+              <div class="mb-3">
+                <label for="InputUsername" class="form-label">Username</label>
+                <input
+                  type="email"
+                  class="form-control form form-login"
+                  id="InputUsername"
                 />
               </div>
 
@@ -123,14 +133,32 @@
                 />
               </div>
 
-              <!-- Log in button -->
+              <!-- Repeat password -->
+              <div class="mb-3">
+                <label for="InputRepeatPassword" class="form-label"
+                  >Repeat password</label
+                >
+                <input
+                  type="password"
+                  class="form-control form form-login"
+                  id="InputRepeatPassword"
+                />
+              </div>
+
+              <!-- Upload avatar -->
+              <div class="mb-3">
+                <label for="formAvatar" class="form-label">Choose avatar</label>
+                <input
+                  class="form-control form form-login"
+                  type="file"
+                  id="formAvatar"
+                />
+              </div>
+
+              <!-- Sign in button -->
               <a
                 href="../loged-in/index.html"
                 class="btn btn-primary log-in-btn"
-                >Log In</a
-              ><a
-                href="./signin.html"
-                class="btn btn-outline-primary log-in-btn"
                 >Sign In</a
               >
             </form>
