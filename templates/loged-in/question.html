@@ -38,7 +38,7 @@
       <!-- NavBar -->
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-          <a class="logo" href="#"
+          <a class="logo" href="./index.html"
             ><img src="../../static/img/svg/logo.svg" alt="logo"
           /></a>
           <button
@@ -56,9 +56,7 @@
           <div class="collapse navbar-collapse" id="navbarsExample07">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link" href="./index.html"
-                  >New Questions</a
-                >
+                <a class="nav-link" href="./index.html">New Questions</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">Hot Questions</a>
@@ -116,19 +114,20 @@
       <div class="container">
         <div class="row">
           <div class="col-8">
-
-            <h2 class="section-title">Question title</h2>
             <!-- Quextion body -->
-            <div class="question">
+            <div class="one-question">
               <div class="row">
                 <div class="col-2 border-end border-4">
                   <!-- Avatar -->
-                  <div class="question-avatar">
-                    <img
-                      src="../../static/img/avatars/avatar-1.jpg"
-                      alt="Avatar"
-                    />
-                  </div>
+                  <a href="#"
+                    ><div class="question-avatar">
+                      <div>
+                        <img
+                          src="../../static/img/avatars/avatar-1.jpg"
+                          alt="Avatar"
+                        />
+                      </div></div
+                  ></a>
                   <!-- Username -->
                   <div class="username">
                     <a href="#">User_1</a>
@@ -136,45 +135,186 @@
                 </div>
                 <div class="col-10">
                   <!-- Title -->
-                  <h2 class="question-title">
-                    <a href="./question.html">Question 1</a>
-                  </h2>
+                  <h2 class="question-title">Question 1</h2>
                   <!-- Question text -->
                   <div class="question-text">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Libero expedita earum error repudiandae quas nulla quod
-                    eaque vero itaque commodi nemo minima, necessitatibus unde
-                    maiores reiciendis sint quisquam mollitia quasi.
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                    Error iure non id animi optio reiciendis, illum autem maxime
+                    atque accusamus deleniti, dicta adipisci possimus, unde
+                    omnis eligendi laboriosam dolores aliquam iusto sed dolorem
+                    iste? Necessitatibus, nobis quo? Expedita et enim temporibus
+                    recusandae natus facere, veniam accusantium cupiditate
+                    possimus velit maiores iusto eos rem ratione perferendis
+                    totam unde alias magnam consectetur assumenda dolores!
+                    Aspernatur, sed, corrupti sit odit ipsa ad deserunt, esse
+                    repellendus beatae qui sunt. Ducimus cumque ullam illum
+                    similique vitae fugiat voluptates maiores consequuntur
+                    quidem laboriosam animi labore perspiciatis quam at, aliquid
+                    enim. Provident a illo perspiciatis aut repudiandae.
+                  </div>
+                  <div class="row">
+                    <!-- Tags -->
+                    <div class="col-9 tags">
+                      <a href="#" class="no-underline"><tag>python</tag></a>
+                      <a href="#" class="no-underline"><tag>django</tag></a>
+                      <a href="#" class="no-underline"><tag>some</tag></a>
+                      <a href="#" class="no-underline"><tag>other</tag></a>
+                      <a href="#" class="no-underline"><tag>tags</tag></a>
+                    </div>
+
+                    <!-- Votes -->
+                    <div class="col-3">
+                      <div class="icon">
+                        <span class="align-middle text-middle"
+                          ><a href="#"
+                            ><img
+                              src="../../static/img/svg/vote-down-icon.svg"
+                              alt="down"
+                              class="img-icon" /></a
+                          ><span
+                            class="vote-count fw-bold text-dark font-monospace fs-5 align-middle"
+                            >0</span
+                          ><a href="#"
+                            ><img
+                              src="../../static/img/svg/vote-up-icon.svg"
+                              alt="up"
+                              class="img-icon" /></a
+                        ></span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
+            </div>
 
+            <!-- Answer 1 -->
+            <div class="answer answer-accept">
               <div class="row">
-                <!-- Tags -->
-                <div class="col-9 tags">
-                  <a href="#" class="no-underline"><tag>python</tag></a>
-                  <a href="#" class="no-underline"><tag>django</tag></a>
-                  <a href="#" class="no-underline"><tag>some</tag></a>
-                  <a href="#" class="no-underline"><tag>other</tag></a>
-                  <a href="#" class="no-underline"><tag>tags</tag></a>
-                </div>
-                <!-- Answers -->
-                <div class="col-1">
-                  <div class="icon">
-                    <span
-                      ><a href="#"
-                        ><img
-                          src="../../static/img/svg/answer-icon.svg"
-                          alt="answers"
-                          class="img-icon" /></a
-                      ><span
-                        class="answers-count fw-bold text-dark font-monospace fs-5 align-middle"
-                        >0</span
-                      ></span
-                    >
+                <div class="col-2 border-end border-4">
+                  <!-- Avatar -->
+                  <a href="#"
+                    ><div class="question-avatar">
+                      <div>
+                        <img
+                          src="../../static/img/avatars/avatar-2.jpg"
+                          alt="Avatar"
+                        />
+                      </div></div
+                  ></a>
+
+                  <!-- Username -->
+                  <div class="username">
+                    <a href="#">User_2</a>
+                  </div>
+                  <div class="accept-answer-btn">
+                    <!-- Accept btn -->
+                    <input
+                      type="checkbox"
+                      class="btn-check"
+                      id="btn-check-outlined-User_2"
+                      autocomplete="off"
+                      checked
+                    />
+                    <label
+                      class="btn btn-outline-success"
+                      for="btn-check-outlined-User_2"
+                      >Correct!</label
+                    ><br />
                   </div>
                 </div>
+                <div class="col-10">
+                  <!-- Title -->
+                  <h2 class="question-title">Answer 1</h2>
+                  <!-- Question text -->
+                  <div class="question-text">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit
+                    rem dolorem, expedita dolore saepe architecto tempora
+                    blanditiis vero recusandae distinctio eum natus, hic cum
+                    dolor! Vero eos obcaecati amet facilis odit repellat iure
+                    quibusdam, cum libero modi odio tempora nostrum similique
+                    eius. Quibusdam omnis veniam asperiores vel, dolore
+                    molestiae nulla quod quas ut nesciunt culpa fuga mollitia
+                    reiciendis quis necessitatibus maxime rem deleniti adipisci
+                    hic illum aut natus eos assumenda?
+                  </div>
+                </div>
+              </div>
+              <div class="row">
                 <!-- Votes -->
+                <div class="col-10"></div>
+                <div class="col-2">
+                  <div class="icon">
+                    <span class="align-middle text-middle"
+                      ><a href="#"
+                        ><img
+                          src="../../static/img/svg/vote-down-icon.svg"
+                          alt="down"
+                          class="img-icon" /></a
+                      ><span
+                        class="vote-count vote-count-positive fw-bold text-dark font-monospace fs-5 align-middle"
+                        >+3</span
+                      ><a href="#"
+                        ><img
+                          src="../../static/img/svg/vote-up-icon.svg"
+                          alt="up"
+                          class="img-icon" /></a
+                    ></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Answer 2 -->
+            <div class="answer">
+              <div class="row">
+                <div class="col-2 border-end border-4">
+                  <!-- Avatar -->
+                  <a href="#"
+                    ><div class="question-avatar">
+                      <div>
+                        <img
+                          src="../../static/img/avatars/avatar-3.jpg"
+                          alt="Avatar"
+                        />
+                      </div></div
+                  ></a>
+
+                  <!-- Username -->
+                  <div class="username">
+                    <a href="#">User_3</a>
+                  </div>
+                  <div class="accept-answer-btn">
+                    <!-- Accept btn -->
+                    <input
+                      type="checkbox"
+                      class="btn-check"
+                      id="btn-check-outlined-User_3"
+                      autocomplete="off"
+                    />
+                    <label
+                      class="btn btn-outline-success"
+                      for="btn-check-outlined-User_3"
+                      >Correct!</label
+                    ><br />
+                  </div>
+                </div>
+                <div class="col-10">
+                  <!-- Title -->
+                  <h2 class="question-title">Answer 2</h2>
+                  <!-- Question text -->
+                  <div class="question-text">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Pariatur ad soluta ipsam aliquam, quibusdam, temporibus
+                    molestiae corrupti aspernatur quis architecto nostrum cumque
+                    eum doloremque in mollitia incidunt, similique magnam a?
+                    Earum qui cumque expedita quam nemo dolores eius ex
+                    mollitia!
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <!-- Votes -->
+                <div class="col-10"></div>
                 <div class="col-2">
                   <div class="icon">
                     <span class="align-middle text-middle"
@@ -196,7 +336,25 @@
                 </div>
               </div>
             </div>
-            
+
+            <!-- Answer form -->
+            <div class="answer-form">
+              <div class="form-floating">
+                <textarea
+                  class="form-control form"
+                  placeholder="Enter your answer here"
+                  id="your-answer"
+                  style="height: 100px"
+                ></textarea>
+                <label for="your-answer">Enter your answer here</label>
+                <button
+                  type="button"
+                  class="btn btn-outline-primary answer-btn"
+                >
+                  Answer
+                </button>
+              </div>
+            </div>
           </div>
           <div class="col-4 p-4 side-bar">
             <!-- Popular tags -->
