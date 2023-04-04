@@ -297,3 +297,25 @@ tag:hover {
 .log-in-btn {
   margin-right: 10px;
 }
+
+.settings-avatar {
+  width: 150px !important;
+  margin-bottom: 16px;
+}
+
+.settings-avatar > div {
+  width: 100%;
+  padding-top: 100%;
+  position: relative;
+  border-radius: 20%;
+  overflow: hidden;
+}
+
+.settings-avatar > div > img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
