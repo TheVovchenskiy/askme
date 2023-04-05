@@ -1,0 +1,34 @@
+{% extends "inc/base.html" %}
+
+{% block content %}
+
+<h2 class="section-title">New Questions</h2>
+
+{% for question in questions %}
+  {% include "inc/question-item.html" %}
+{% endfor %}
+
+
+<!-- Pagination -->
+<ul class="pagination">
+  <li class="page-item">
+    <a class="page-link page-link-border page-link-border-previous" href="#"
+      >Previous</a
+    >
+  </li>
+  <li class="page-item">
+    <a class="page-link page-link-border" href="#">1</a>
+  </li>
+  <li class="page-item">
+    <a class="page-link page-link-border" href="#">2</a>
+  </li>
+  <li class="page-item">
+    <a class="page-link page-link-border" href="#">3</a>
+  </li>
+  <li class="page-item">
+    <a class="page-link page-link-border page-link-border-next" href="#"
+      >Next</a
+    >
+  </li>
+</ul>
+{% endblock content %}
