@@ -141,10 +141,6 @@ nav .container {
   padding-bottom: 10px;
 }
 
-.answer-votes {
-  margin-top: 10px;
-}
-
 .vote-count {
   margin-left: 5px;
   margin-right: 5px;
@@ -166,12 +162,21 @@ nav .container {
   width: auto;
   text-align: center;
   align-content: center;
+  align-items: center;
 }
 
 .img-icon {
+  transition: all 0.3s ease;
+}
+
+.img-icon-answer {
   height: 1.5rem;
   width: 1.5rem;
-  transition: all 0.3s ease;
+}
+
+.img-icon-question {
+  height: 1.5rem;
+  width: 1.5rem;
 }
 
 .img-icon:hover {
@@ -198,6 +203,7 @@ nav .container {
 .tags {
   margin-top: 10px;
   font-size: small;
+  align-items: center;
 }
 
 tag {
@@ -217,6 +223,10 @@ tag {
 
 tag:hover {
   background-color: rgba(13, 109, 253, 0.75);
+}
+
+h2 > tag:hover {
+  background-color: rgba(13, 110, 253, 1);
 }
 
 .no-underline {

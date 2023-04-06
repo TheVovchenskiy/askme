@@ -10,10 +10,22 @@ ANSWERS = [
     {
         'id': i,
         'text': f'Text {i}',
-        'correct': True,
+        'correct': i / 5 < 0.5,
     } for i in range(5)
 ]
 
 USER = {
     'status': True,
 }
+
+POPULAR_TAGS = [
+    {
+        'tag_name': f'tag_{i}',
+    } for i in range(15)
+]
+
+QUESTION_TAGS = [
+    {
+        'tag_name': f'tag_{i}',
+    } for i in range(4)
+]

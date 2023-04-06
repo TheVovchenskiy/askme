@@ -15,25 +15,29 @@ def index(request):
     context = {
         'questions': models.QUESTIONS,
         'user': models.USER,
+        'popular_tags': models.POPULAR_TAGS,
+        'question_tags': models.QUESTION_TAGS,
     }
     return render(request, 'index.html', context)
 
 
-def question(request, questionID):
-    if questionID > len(models.QUESTIONS) - 1:
-        questionID = len(models.QUESTIONS) - 1
+def question(request, question_id):
+    question_id = min(len(models.QUESTIONS) - 1, question_id)
     
     context = {
-        "question": models.QUESTIONS[questionID],
+        "question": models.QUESTIONS[question_id],
         "answers": models.ANSWERS,
         "user": models.USER,
+        'popular_tags': models.POPULAR_TAGS,
+        'question_tags': models.QUESTION_TAGS,
     }
-    return render(request, 'question.html', context)
+    return render(request, 'question-page.html', context)
 
 
 def ask(request):
     context = {
         "user": models.USER,
+        'popular_tags': models.POPULAR_TAGS,
     }
     return render(request, 'ask.html', context)
 
@@ -41,6 +45,7 @@ def ask(request):
 def settings(request):
     context = {
         "user": models.USER,
+        'popular_tags': models.POPULAR_TAGS,
     }
     return render(request, 'settings.html', context)
 
@@ -48,6 +53,19 @@ def settings(request):
 def hot(request):
     context = {
         'questions': models.QUESTIONS,
-        "user": models.USER,
+        'user': models.USER,
+        'popular_tags': models.POPULAR_TAGS,
+        'question_tags': models.QUESTION_TAGS,
     }
     return render(request, 'hot-questions.html', context)
+
+
+def tag(request, tag_name):
+    context = {
+        'questions': models.QUESTIONS,
+        'tag_name': tag_name,
+        'user': models.USER,
+        'popular_tags': models.POPULAR_TAGS,
+        'question_tags': models.QUESTION_TAGS,
+    }
+    return render(request, 'tag-questions.html', context)

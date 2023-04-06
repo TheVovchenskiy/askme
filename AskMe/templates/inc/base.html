@@ -3,91 +3,70 @@
 <!DOCTYPE html>
 
 <html lang="en" class="h-100">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AskMe</title>
 
-    <link href="{% static "css/bootstrap.css" %}" rel="stylesheet"
-    crossorigin="anonymous" />
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AskMe</title>
 
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="{% static "img/icon/apple-touch-icon.png" %}"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="{% static "img/icon/favicon-32x32.png" %}"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="{% static "img/icon/favicon-16x16.png" %}"
-    />
-    <link rel="manifest" href="/site.webmanifest" />
+  <link href="{% static "css/bootstrap.css" %}" rel="stylesheet" crossorigin="anonymous" />
 
-    <!-- Custom styles for this template -->
-    <link href="{% static "css/style.css" %}" rel="stylesheet" />
-  </head>
-  <body class="d-flex flex-column h-100">
-    
-    {% include "inc/header-item.html" %}
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static "img/icon/apple-touch-icon.png" %}" />
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static "img/icon/favicon-32x32.png" %}" />
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static "img/icon/favicon-16x16.png" %}" />
+  <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- Begin page content -->
-    <main class="flex-shrink-0">
-      <div class="container">
-        <div class="row">
-          <div class="col-8">
+  <!-- Custom styles for this template -->
+  <link href="{% static "css/style.css" %}" rel="stylesheet" />
+</head>
 
-            {% block content %}{% endblock content %}
+<body class="d-flex flex-column h-100">
 
+  {% include "inc/header-item.html" %}
+
+  <!-- Begin page content -->
+  <main class="flex-shrink-0">
+    <div class="container">
+      <div class="row">
+        <div class="col-8">
+
+          {% block content %}{% endblock content %}
+
+        </div>
+        <div class="col-4 p-4 side-bar">
+          <!-- Popular tags -->
+          <div class="popular-tags">
+            <h3>Popular Tags</h3>
+            <p class="lh-lg">
+              {% for tag in popular_tags %}
+                {% include "inc/tag-item.html" %}
+              {% endfor %}
+            </p>
           </div>
-          <div class="col-4 p-4 side-bar">
-            <!-- Popular tags -->
-            <div class="popular-tags">
-              <h3>Popular Tags</h3>
-              <p class="lh-lg">
-                <a href="tag-questions.html" class="no-underline"
-                  ><tag>python</tag></a
-                >
-                <a href="#" class="no-underline"><tag>perl</tag></a>
-                <a href="#" class="no-underline"><tag>Technopark</tag></a>
-                <a href="#" class="no-underline"><tag>MySQL</tag></a>
-                <a href="#" class="no-underline"><tag>dajango</tag></a>
-                <a href="#" class="no-underline"><tag>VK</tag></a>
-                <a href="#" class="no-underline"><tag>C++</tag></a>
-              </p>
-            </div>
 
-            <!-- Best members -->
-            <div class="best-members">
-              <h3>Best members</h3>
-              <ol class="list-unstyled mb-0">
-                <li><a href="#">Mr. Freeman</a></li>
-                <li><a href="#">Dr. House</a></li>
-                <li><a href="#">Bender</a></li>
-                <li><a href="#">Heisenberg</a></li>
-                <li><a href="#">V. Pupkin</a></li>
-              </ol>
-            </div>
+          <!-- Best members -->
+          <div class="best-members">
+            <h3>Best members</h3>
+            <ol class="list-unstyled mb-0">
+              <li><a href="#">Mr. Freeman</a></li>
+              <li><a href="#">Dr. House</a></li>
+              <li><a href="#">Bender</a></li>
+              <li><a href="#">Heisenberg</a></li>
+              <li><a href="#">V. Pupkin</a></li>
+            </ol>
           </div>
         </div>
       </div>
-    </main>
+    </div>
+  </main>
 
-    <footer class="footer mt-auto py-3 bg-light">
-      <div class="container">
-        <span class="text-muted">Place sticky footer content here.</span>
-      </div>
-    </footer>
+  <footer class="footer mt-auto py-3 bg-light">
+    <div class="container">
+      <span class="text-muted">Place sticky footer content here.</span>
+    </div>
+  </footer>
 
-    <script
-      src="{% static "js/bootstrap.bundle.js" %}"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+  <script src="{% static "js/bootstrap.bundle.js" %}" crossorigin="anonymous"></script>
+</body>
+
 </html>
