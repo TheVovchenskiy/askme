@@ -6,10 +6,12 @@ from . import models
 
 def index(request):
     action = request.GET.get("action", None)
+
     if action == "log_out":
         models.USER["status"] = False
     elif action == "log_in":
         models.USER["status"] = True
+    
     context = {
         'questions': models.QUESTIONS,
         'user': models.USER,
@@ -38,3 +40,11 @@ def settings(request):
         "user": models.USER,
     }
     return render(request, 'settings.html', context)
+
+
+def hot(request):
+    context = {
+        'questions': models.QUESTIONS,
+        "user": models.USER,
+    }
+    return render(request, 'hot-questions.html', context)
