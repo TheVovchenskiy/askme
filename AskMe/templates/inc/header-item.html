@@ -1,0 +1,55 @@
+{% load static %}
+
+<header>
+  <!-- NavBar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="logo" href="{% url 'index' %}"
+        ><img src="{% static "img/svg/logo.svg" %}" alt="logo" /></a
+      >
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarsExample07"
+        aria-controls="navbarsExample07"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExample07">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              aria-current="page"
+              href="{% url 'index' %}"
+              >New Questions</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Hot Questions</a>
+          </li>
+          <li class="nav-item">
+            <form role="search">
+              <input
+                class="form-control"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+              />
+            </form>
+          </li>
+        </ul>
+
+        {% if user.status %}
+          {% include "inc/loged-in-header-item.html" %}
+        {% else %}
+          {% include "inc/loged-out-header-item.html" %}
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+</header>

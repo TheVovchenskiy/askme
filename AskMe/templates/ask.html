@@ -1,233 +1,70 @@
-<!DOCTYPE html>
-<html lang="en" class="h-100">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AskMe</title>
+{% extends "inc/base.html" %} {% block content %}
 
-    <link
-      href="../../static/css/bootstrap.css"
-      rel="stylesheet"
-      crossorigin="anonymous"
-    />
+<h2 class="section-title">New Question</h2>
 
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="../../static/img/icon/apple-touch-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="../../static/img/icon/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="../../static/img/icon/favicon-16x16.png"
-    />
-    <link rel="manifest" href="/site.webmanifest" />
+<!-- Alert -->
+<div class="alert alert-danger" role="alert">
+  Please, enter title of the question
+</div>
 
-    <!-- Custom styles for this template -->
-    <link href="../../static/css/style.css" rel="stylesheet" />
-  </head>
-  <body class="d-flex flex-column h-100">
-    <header>
-      <!-- NavBar -->
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-          <a class="logo" href="./index.html"
-            ><img src="../../static/img/svg/logo.svg" alt="logo"
-          /></a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarsExample07"
-            aria-controls="navbarsExample07"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
+<!-- Question Title -->
+<div class="mb-3">
+  <label for="exampleFormControlInput1" class="form-label">Title</label>
+  <input
+    type="text"
+    class="form-control form"
+    id="exampleFormControlInput1"
+    placeholder="Title"
+  />
+</div>
 
-          <div class="collapse navbar-collapse" id="navbarsExample07">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link" href="./index.html">New Questions</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Hot Questions</a>
-              </li>
-              <li class="nav-item">
-                <form role="search">
-                  <input
-                    class="form-control"
-                    type="search"
-                    placeholder="Search"
-                    aria-label="Search"
-                  />
-                </form>
-              </li>
-            </ul>
+<!-- Alert -->
+<div class="alert alert-danger" role="alert">
+  Please, enter text of the question
+</div>
 
-            <!-- Account -->
-            <div class="account">
-              <!-- ASK butn -->
-              <div class="container">
-                <a class="btn btn-success ask-btn" href="./ask.html">Ask!</a>
-              </div>
+<!-- Question text -->
+<div class="mb-3">
+  <label for="exampleFormControlTextarea1" class="form-label">Text</label>
+  <textarea
+    class="form-control form"
+    id="exampleFormControlTextarea1"
+    rows="3"
+    placeholder="Text"
+    style="height: 300px"
+  ></textarea>
+</div>
 
-              <!-- Avatar -->
-              <div class="container">
-                <a href="#"
-                  ><div class="nav-avatar">
-                    <div>
-                      <img
-                        src="../../static/img/avatars/my-avatar.jpg"
-                        alt="Avatar"
-                      />
-                    </div></div
-                ></a>
-              </div>
+<!-- Alert -->
+<div class="alert alert-danger" role="alert">
+  Please, select at least one tag
+</div>
 
-              <!-- Settings -->
-              <div class="container">
-                <div class="row">
-                  <a href="#" class="nav-username">MyUsername</a>
-                </div>
-                <div class="row nav-options">
-                  <a href="settings.html">settings</a>
-                  <a href="../loged-out/index.html">log out</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </nav>
-    </header>
+<!-- Tags -->
+<label for="exampleDataList" class="form-label">Tags</label>
+<input
+  class="form-control form"
+  list="datalistOptions"
+  id="exampleDataList"
+  placeholder="Type to search..."
+  style="margin-bottom: 16px"
+/>
+<datalist id="datalistOptions">
+  <option value="python"></option>
+  <option value="perl"></option>
+  <option value="Technopark"></option>
+  <option value="MySQL"></option>
+  <option value="django"></option>
+  <option value="VK"></option>
+  <option value="C++"></option>
+</datalist>
 
-    <!-- Begin page content -->
-    <main class="flex-shrink-0">
-      <div class="container">
-        <div class="row">
-          <div class="col-8">
-            <h2 class="section-title">New Question</h2>
+<div class="tags">
+  <p class="lh-lg">
+    <a href="#" class="no-underline"><tag>python</tag></a>
+    <a href="#" class="no-underline"><tag>dajango</tag></a>
+  </p>
+</div>
 
-            <!-- Alert -->
-            <div class="alert alert-danger" role="alert">
-              Please, enter title of the question
-            </div>
-
-            <!-- Question Title -->
-            <div class="mb-3">
-              <label for="exampleFormControlInput1" class="form-label"
-                >Title</label
-              >
-              <input
-                type="text"
-                class="form-control form"
-                id="exampleFormControlInput1"
-                placeholder="Title"
-              />
-            </div>
-
-            <!-- Alert -->
-            <div class="alert alert-danger" role="alert">
-              Please, enter text of the question
-            </div>
-
-            <!-- Question text -->
-            <div class="mb-3">
-              <label for="exampleFormControlTextarea1" class="form-label"
-                >Text</label
-              >
-              <textarea
-                class="form-control form"
-                id="exampleFormControlTextarea1"
-                rows="3"
-                placeholder="Text"
-                style="height: 300px"
-              ></textarea>
-            </div>
-
-            <!-- Alert -->
-            <div class="alert alert-danger" role="alert">
-              Please, select at least one tag
-            </div>
-
-            <!-- Tags -->
-            <label for="exampleDataList" class="form-label">Tags</label>
-            <input
-              class="form-control form"
-              list="datalistOptions"
-              id="exampleDataList"
-              placeholder="Type to search..."
-              style="margin-bottom: 16px"
-            />
-            <datalist id="datalistOptions">
-              <option value="python"></option>
-              <option value="perl"></option>
-              <option value="Technopark"></option>
-              <option value="MySQL"></option>
-              <option value="django"></option>
-              <option value="VK"></option>
-              <option value="C++"></option>
-            </datalist>
-
-            <div class="tags">
-              <p class="lh-lg">
-                <a href="#" class="no-underline"><tag>python</tag></a>
-                <a href="#" class="no-underline"><tag>dajango</tag></a>
-              </p>
-            </div>
-
-            <button type="button" class="btn btn-success btn-lg ask-btn">
-              Ask!
-            </button>
-          </div>
-          <div class="col-4 p-4 side-bar">
-            <!-- Popular tags -->
-            <div class="popular-tags">
-              <h3>Popular Tags</h3>
-              <p class="lh-lg">
-                <a href="#" class="no-underline"><tag>python</tag></a>
-                <a href="#" class="no-underline"><tag>perl</tag></a>
-                <a href="#" class="no-underline"><tag>Technopark</tag></a>
-                <a href="#" class="no-underline"><tag>MySQL</tag></a>
-                <a href="#" class="no-underline"><tag>dajango</tag></a>
-                <a href="#" class="no-underline"><tag>VK</tag></a>
-                <a href="#" class="no-underline"><tag>C++</tag></a>
-              </p>
-            </div>
-
-            <!-- Best members -->
-            <div class="best-members">
-              <h3>Best members</h3>
-              <ol class="list-unstyled mb-0">
-                <li><a href="#">Mr. Freeman</a></li>
-                <li><a href="#">Dr. House</a></li>
-                <li><a href="#">Bender</a></li>
-                <li><a href="#">Heisenberg</a></li>
-                <li><a href="#">V. Pupkin</a></li>
-              </ol>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
-
-    <footer class="footer mt-auto py-3 bg-light">
-      <div class="container">
-        <span class="text-muted">Place sticky footer content here.</span>
-      </div>
-    </footer>
-
-    <script
-      src="../../static/js/bootstrap.bundle.js"
-      crossorigin="anonymous"
-    ></script>
-  </body>
-</html>
+<button type="button" class="btn btn-success btn-lg ask-btn">Ask!</button>
+{% endblock content %}

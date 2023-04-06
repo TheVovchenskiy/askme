@@ -5,3 +5,7 @@ QUESTIONS = [
         'text': f'Test {i}',
     } for i in range(12)
 ]
+
+USER = {
+        'status': True,
+}
