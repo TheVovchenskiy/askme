@@ -6,6 +6,14 @@ QUESTIONS = [
     } for i in range(12)
 ]
 
+ANSWERS = [
+    {
+        'id': i,
+        'text': f'Text {i}',
+        'correct': True,
+    } for i in range(5)
+]
+
 USER = {
-        'status': True,
+    'status': True,
 }

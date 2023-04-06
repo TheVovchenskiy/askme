@@ -1,0 +1,40 @@
+{% load static %}
+<!-- Answer -->
+<div class="answer {% if answer.correct %}answer-accept{% endif %}">
+  <div class="row">
+    <div class="col-2 border-end border-4">
+      <!-- Avatar -->
+      <a href="#">
+        <div class="question-avatar">
+          <div>
+            <img src="{% static "img/avatars/avatar-2.jpg" %}" alt="Avatar" />
+          </div>
+        </div>
+      </a>
+      <!-- Username -->
+      <div class="username">
+        <a href="#">User_2</a>
+      </div>
+      <div class="accept-answer-btn">
+        <!-- Accept btn -->
+        <input type="checkbox" class="btn-check" id="btn-accept" autocomplete="off"
+          {% if answer.correct %}checked{% endif %} {% comment %}fsfsf {% endcomment %}
+          {% if not user.status %}disabled{% endif %} />
+        <label class="btn btn-outline-success btn-sm" for="btn-accept">
+          Correct!
+        </label>
+      </div>
+      <!-- Votes -->
+      <div class="icon-container answer-votes">
+        <span class="align-middle text-middle"><a href="#">
+            <img src="{% static "img/svg/vote-down-icon.svg" %}" alt="down" class="img-icon" /></a><span
+            class="vote-count vote-count-positive fw-bold text-dark font-monospace fs-5 align-middle">+3</span><a
+            href="#"><img src="{% static "img/svg/vote-up-icon.svg" %}" alt="up" class="img-icon" /></a></span>
+      </div>
+    </div>
+    <div class="col-10">
+      <!-- Question text -->
+      <div class="question-text">{{ answer.text }}</div>
+    </div>
+  </div>
+</div>

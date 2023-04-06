@@ -20,9 +20,12 @@ def index(request):
 
 
 def question(request, questionID):
-    # TODO сделать проверку на значение questionID
+    if questionID > len(models.QUESTIONS) - 1:
+        questionID = len(models.QUESTIONS) - 1
+    
     context = {
         "question": models.QUESTIONS[questionID],
+        "answers": models.ANSWERS,
         "user": models.USER,
     }
     return render(request, 'question.html', context)

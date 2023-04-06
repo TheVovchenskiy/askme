@@ -141,7 +141,28 @@ nav .container {
   padding-bottom: 10px;
 }
 
-.icon {
+.answer-votes {
+  margin-top: 10px;
+}
+
+.vote-count {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.vote-count-positive {
+  color: green !important;
+}
+
+.vote-count-negative {
+  color: red !important;
+}
+
+.answers-count {
+  margin-left: 5px;
+}
+
+.icon-container {
   width: auto;
   text-align: center;
   align-content: center;
@@ -200,23 +221,6 @@ tag:hover {
 
 .no-underline {
   text-decoration: none;
-}
-
-.vote-count {
-  margin-left: 5px;
-  margin-right: 5px;
-}
-
-.vote-count-positive {
-  color: green !important;
-}
-
-.vote-count-negative {
-  color: red !important;
-}
-
-.answers-count {
-  margin-left: 5px;
 }
 
 .popular-tags tag {
