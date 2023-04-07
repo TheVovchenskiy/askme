@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.core.paginator import Paginator
 from . import models
 
 # Create your views here.
@@ -11,9 +12,11 @@ def index(request):
         models.USER["status"] = False
     elif action == "log_in":
         models.USER["status"] = True
-    
+
+    page = paginate(models.QUESTIONS, request, per_page=5)
+
     context = {
-        'questions': models.QUESTIONS,
+        'questions': page,
         'user': models.USER,
         'popular_tags': models.POPULAR_TAGS,
         'question_tags': models.QUESTION_TAGS,
@@ -23,10 +26,12 @@ def index(request):
 
 def question(request, question_id):
     question_id = min(len(models.QUESTIONS) - 1, question_id)
-    
+
+    page = paginate(models.ANSWERS, request, per_page=5)
+
     context = {
         "question": models.QUESTIONS[question_id],
-        "answers": models.ANSWERS,
+        "answers": page,    
         "user": models.USER,
         'popular_tags': models.POPULAR_TAGS,
         'question_tags': models.QUESTION_TAGS,
@@ -51,8 +56,10 @@ def settings(request):
 
 
 def hot(request):
+    page = paginate(models.QUESTIONS, request, per_page=5)
+
     context = {
-        'questions': models.QUESTIONS,
+        'questions': page,
         'user': models.USER,
         'popular_tags': models.POPULAR_TAGS,
         'question_tags': models.QUESTION_TAGS,
@@ -61,8 +68,10 @@ def hot(request):
 
 
 def tag(request, tag_name):
+    page = paginate(models.QUESTIONS, request, per_page=5)
+
     context = {
-        'questions': models.QUESTIONS,
+        'questions': page,
         'tag_name': tag_name,
         'user': models.USER,
         'popular_tags': models.POPULAR_TAGS,
@@ -85,3 +94,13 @@ def signin(request):
         'popular_tags': models.POPULAR_TAGS,
     }
     return render(request, 'sign-in.html', context)
+
+
+def paginate(objects_list, request, per_page=10):
+    paginator = Paginator(objects_list, per_page)
+    page_num = request.GET.get('page', 1)
+    page = paginator.get_page(page_num)
+    page.adjusted_elided_pages = paginator.get_elided_page_range(
+        page_num, on_each_side=1, on_ends=1)
+
+    return page

@@ -50,28 +50,13 @@
   </div>
 </div>
 
-{% for answer in answers %}
+{% for answer in answers.object_list %}
 {% include "inc/answer-item.html" %}
 {% endfor %}
 
-<!-- Pagination -->
-<ul class="pagination">
-  <li class="page-item">
-    <a class="page-link page-link-border page-link-border-previous" href="#">Previous</a>
-  </li>
-  <li class="page-item">
-    <a class="page-link page-link-border" href="#">1</a>
-  </li>
-  <li class="page-item">
-    <a class="page-link page-link-border" href="#">2</a>
-  </li>
-  <li class="page-item">
-    <a class="page-link page-link-border" href="#">3</a>
-  </li>
-  <li class="page-item">
-    <a class="page-link page-link-border page-link-border-next" href="#">Next</a>
-  </li>
-</ul>
+{% with answers as page_obj %}
+{% include "inc/pagination-item.html" %}
+{% endwith %}
 
 <!-- Answer form -->
 <div class="answer-form">

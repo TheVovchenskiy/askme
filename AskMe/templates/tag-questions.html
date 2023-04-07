@@ -5,27 +5,12 @@
 <h2 class="section-title">Tag: <tag>{{ tag_name }}</tag>
 </h2>
 
-{% for question in questions %}
+{% for question in questions.object_list %}
   {% include "inc/question-item.html" %}
 {% endfor %}
 
-<!-- Pagination -->
-<ul class="pagination">
-  <li class="page-item">
-    <a class="page-link page-link-border page-link-border-previous" href="#">Previous</a>
-  </li>
-  <li class="page-item">
-    <a class="page-link page-link-border" href="#">1</a>
-  </li>
-  <li class="page-item">
-    <a class="page-link page-link-border" href="#">2</a>
-  </li>
-  <li class="page-item">
-    <a class="page-link page-link-border" href="#">3</a>
-  </li>
-  <li class="page-item">
-    <a class="page-link page-link-border page-link-border-next" href="#">Next</a>
-  </li>
-</ul>
+{% with questions as page_obj %}
+{% include "inc/pagination-item.html" %}
+{% endwith %}
 
 {% endblock content %}
