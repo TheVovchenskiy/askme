@@ -69,3 +69,19 @@ def tag(request, tag_name):
         'question_tags': models.QUESTION_TAGS,
     }
     return render(request, 'tag-questions.html', context)
+
+
+def login(request):
+    context = {
+        'user': models.USER,
+        'popular_tags': models.POPULAR_TAGS,
+    }
+    return render(request, 'log-in.html', context)
+
+
+def signin(request):
+    context = {
+        'user': models.USER,
+        'popular_tags': models.POPULAR_TAGS,
+    }
+    return render(request, 'sign-in.html', context)
