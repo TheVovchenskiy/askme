@@ -27,7 +27,7 @@ def index(request):
 def question(request, question_id):
     question_id = min(len(models.QUESTIONS) - 1, question_id)
 
-    page = paginate(models.ANSWERS, request, per_page=5)
+    page = paginate(models.ANSWERS, request, per_page=3)
 
     context = {
         "question": models.QUESTIONS[question_id],
@@ -97,8 +97,19 @@ def signin(request):
 
 
 def paginate(objects_list, request, per_page=10):
+    DEFAULT_PAGE_NUM = '1'
+
     paginator = Paginator(objects_list, per_page)
-    page_num = request.GET.get('page', 1)
+
+    page_num = request.GET.get('page', DEFAULT_PAGE_NUM)
+    if page_num.isdigit():
+        if int(page_num) < 1:
+            page_num = DEFAULT_PAGE_NUM
+        elif int(page_num) > paginator.num_pages:
+            page_num = str(paginator.num_pages)
+    else:
+        page_num = DEFAULT_PAGE_NUM
+
     page = paginator.get_page(page_num)
     page.adjusted_elided_pages = paginator.get_elided_page_range(
         page_num, on_each_side=1, on_ends=1)
