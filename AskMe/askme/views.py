@@ -1,4 +1,4 @@
-from django.http import HttpResponseBadRequest
+from django.http import Http404, HttpResponseBadRequest
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from . import models
@@ -14,7 +14,11 @@ def index(request):
     elif action == "log_in":
         models.USER["status"] = True
 
-    page = paginate(models.QUESTIONS, request, per_page=5)
+    try:
+        page = paginate(models.QUESTIONS, request, per_page=5)
+    except ValueError:
+        return HttpResponseBadRequest("Bad request")
+    
 
     context = {
         'questions': page,
@@ -107,7 +111,7 @@ def paginate(objects_list, request, per_page=10):
     try:
         page_num = int(page_num)
     except ValueError:
-        return HttpResponseBadRequest()
+        raise ValueError
 
     if page_num < 1:
         page_num = DEFAULT_PAGE_NUM
