@@ -1,3 +1,4 @@
+from django.http import HttpResponseBadRequest
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from . import models
@@ -97,18 +98,22 @@ def signin(request):
 
 
 def paginate(objects_list, request, per_page=10):
-    DEFAULT_PAGE_NUM = '1'
+    DEFAULT_PAGE_NUM = 1
 
     paginator = Paginator(objects_list, per_page)
 
     page_num = request.GET.get('page', DEFAULT_PAGE_NUM)
-    if page_num.isdigit():
-        if int(page_num) < 1:
-            page_num = DEFAULT_PAGE_NUM
-        elif int(page_num) > paginator.num_pages:
-            page_num = str(paginator.num_pages)
-    else:
+
+    try:
+        page_num = int(page_num)
+    except ValueError:
+        return HttpResponseBadRequest()
+
+    if page_num < 1:
         page_num = DEFAULT_PAGE_NUM
+    elif page_num > paginator.num_pages:
+        page_num = paginator.num_pages
+
 
     page = paginator.get_page(page_num)
     page.adjusted_elided_pages = paginator.get_elided_page_range(
