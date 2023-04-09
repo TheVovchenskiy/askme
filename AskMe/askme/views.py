@@ -18,7 +18,6 @@ def index(request):
         page = paginate(models.QUESTIONS, request, per_page=5)
     except ValueError:
         return HttpResponseBadRequest("Bad request")
-    
 
     context = {
         'questions': page,
@@ -32,11 +31,14 @@ def index(request):
 def question(request, question_id):
     question_id = min(len(models.QUESTIONS) - 1, question_id)
 
-    page = paginate(models.ANSWERS, request, per_page=3)
+    try:
+        page = paginate(models.ANSWERS, request, per_page=3)
+    except ValueError:
+        return HttpResponseBadRequest("Bad request")
 
     context = {
         "question": models.QUESTIONS[question_id],
-        "answers": page,    
+        "answers": page,
         "user": models.USER,
         'popular_tags': models.POPULAR_TAGS,
         'question_tags': models.QUESTION_TAGS,
@@ -61,8 +63,10 @@ def settings(request):
 
 
 def hot(request):
-    page = paginate(models.QUESTIONS, request, per_page=5)
-
+    try:
+        page = paginate(models.QUESTIONS, request, per_page=5)
+    except ValueError:
+        return HttpResponseBadRequest("Bad request")
     context = {
         'questions': page,
         'user': models.USER,
@@ -73,7 +77,10 @@ def hot(request):
 
 
 def tag(request, tag_name):
-    page = paginate(models.QUESTIONS, request, per_page=5)
+    try:
+        page = paginate(models.QUESTIONS, request, per_page=5)
+    except ValueError:
+        return HttpResponseBadRequest("Bad request")
 
     context = {
         'questions': page,
@@ -117,7 +124,6 @@ def paginate(objects_list, request, per_page=10):
         page_num = DEFAULT_PAGE_NUM
     elif page_num > paginator.num_pages:
         page_num = paginator.num_pages
-
 
     page = paginator.get_page(page_num)
     page.adjusted_elided_pages = paginator.get_elided_page_range(
