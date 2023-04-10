@@ -1,37 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-QUESTIONS = [
-    {
-        'id': i,
-        'title': f'Question {i}',
-        'text': f'Text {i}',
-    } for i in range(100)
-]
-
-ANSWERS = [
-    {
-        'id': i,
-        'text': f'Text {i}',
-        'correct': i / 5 < 0.5,
-    } for i in range(5)
-]
 
 USER = {
-    'status': True,
+    "status": True
 }
 
-POPULAR_TAGS = [
-    {
-        'tag_name': f'tag_{i}',
-    } for i in range(15)
-]
-
-QUESTION_TAGS = [
-    {
-        'tag_name': f'tag_{i}',
-    } for i in range(4)
-]
+class QuestionManager(models.Manager):
+    def get_newest(self):
+        return self.order_by('-creation_date')
+    
+    def get_hottest(self):
+        return self.order_by('-rating')
 
 
 class Question(models.Model):
@@ -43,7 +23,12 @@ class Question(models.Model):
         'Profile',
         on_delete=models.PROTECT
     )
-    tag = models.ManyToManyField('Tag')
+    tag = models.ManyToManyField('Tag', blank=True)
+
+    objects = QuestionManager()
+
+    def __str__(self) -> str:
+        return f"'{self.author.user.username}': {self.title}"
 
 
 class QuestionLikes(models.Model):
@@ -68,6 +53,9 @@ class Answer(models.Model):
         on_delete=models.PROTECT
     )
 
+    def __str__(self) -> str:
+        return f"Answer by '{self.author.user.username}' to {self.question}"
+
 
 class AnswerLike(models.Model):
     answer = models.ForeignKey(
@@ -79,10 +67,16 @@ class AnswerLike(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # avatar
+    avatar = models.ImageField(upload_to="avatars/%Y/%m/%d", blank=True)
     signup_date = models.DateTimeField(auto_now_add=True)
     rating = models.IntegerField()
 
+    def __str__(self) -> str:
+        return self.user.username
+
 
 class Tag(models.Model):
-    tag_name = models.CharField(max_length=30)
+    tag_name = models.CharField(max_length=30, unique=True)
+
+    def __str__(self) -> str:
+        return self.tag_name

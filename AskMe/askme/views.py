@@ -1,7 +1,7 @@
 from django.http import Http404, HttpResponseBadRequest
 from django.shortcuts import render
 from django.core.paginator import Paginator
-from . import models
+from askme import models
 
 # Create your views here.
 
