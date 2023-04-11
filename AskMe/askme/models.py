@@ -107,7 +107,7 @@ class AnswerLike(models.Model):
         unique_together = ('user', 'answer')
 
     def __str__(self) -> str:
-        return f"'{self.type}' by {self.user} to {self.question}"
+        return f"'{self.type}' by {self.user} to answer/{self.id}"
 
 
 class AnswerQuerySet(models.query.QuerySet):

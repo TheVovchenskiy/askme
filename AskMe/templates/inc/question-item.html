@@ -44,10 +44,12 @@
             class="answers-count fw-bold text-dark font-monospace fs-5 align-middle">{{ question.answers_count }}</span></span>
       </div>
     </div>
+    <!-- Votes -->
+    <div class="col-2">
 
-    {% with vote_obj=question icon_type="question" %}
-    {% include "inc/votes-item.html" %}
-    {% endwith %}
-
+      {% with vote_obj=question icon_type="question" %}
+      {% include "inc/votes-item.html" %}
+      {% endwith %}
+    </div>
   </div>
 </div>
