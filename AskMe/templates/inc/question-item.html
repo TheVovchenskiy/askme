@@ -8,7 +8,7 @@
       <a href="#">
         <div class="question-avatar">
           <div>
-            <img src="{% static "img/avatars/avatar-1.jpg" %}" alt="Avatar" />
+            <img src="{{ question.author.avatar.url }}" alt="Avatar" />
           </div>
         </div>
       </a>

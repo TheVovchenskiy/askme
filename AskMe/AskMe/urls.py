@@ -31,3 +31,5 @@ urlpatterns = [
     path('login', views.login, name='login'),
     path('signin', views.signin, name='signin'),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

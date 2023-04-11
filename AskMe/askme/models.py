@@ -172,6 +172,11 @@ class Profile(models.Model):
     signup_date = models.DateTimeField(auto_now_add=True)
     rating = models.IntegerField()
 
+    @property
+    def avatar_url(self):
+        if self.avatar and hasattr(self.avatar, 'url'):
+            return self.avatar.url
+
     def __str__(self) -> str:
         return self.user.username
 
