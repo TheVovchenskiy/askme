@@ -6,22 +6,76 @@ USER = {
     "status": True
 }
 
-class QuestionManager(models.Manager):
+
+class QuestionLike(models.Model):
+    user = models.ForeignKey(
+        'Profile',
+        on_delete=models.CASCADE
+    )
+    question = models.ForeignKey(
+        'Question',
+        on_delete=models.CASCADE
+    )
+
+    TYPE_CHOICES = [
+        ('l', 'Like'),
+        ('d', 'Dislike')
+    ]
+    type = models.CharField(max_length=1, choices=TYPE_CHOICES)
+    date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('user', 'question')
+
+    def __str__(self) -> str:
+        return f"'{self.type}' by {self.user} to {self.question}"
+
+
+class QuestionQuerySet(models.query.QuerySet):
     def get_newest(self):
         return self.order_by('-creation_date')
-    
+
     def get_hottest(self):
         return self.order_by('-rating')
+
+    def count_answers(self):
+        return self.annotate(answers_count=models.Count('answer'))
+
+    def count_rating(self):
+        return self.annotate(
+            likes=models.Count(models.Case(
+                models.When(questionlike__type='l', then=1))),
+            dislikes=models.Count(models.Case(
+                models.When(questionlike__type='d', then=1))),
+            rating=models.F('likes') - models.F('dislikes')
+        )
+
+class QuestionManager(models.Manager):
+    def get_queryset(self):
+        return QuestionQuerySet(self.model, using=self._db)
+
+    def get_newest(self):
+        return self.get_queryset().get_newest()
+
+    def get_hottest(self):
+        return self.get_queryset().get_hottest()
+
+    def count_answers(self):
+        return self.get_queryset().count_answers()
+
+    def count_rating(self):
+        return self.get_queryset().count_rating
 
 
 class Question(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
     creation_date = models.DateTimeField(auto_now_add=True)
-    rating = models.IntegerField()
+    human_format_rating = models.CharField(
+        max_length=15, null=True, blank=True)
     author = models.ForeignKey(
         'Profile',
-        on_delete=models.PROTECT
+        on_delete=models.CASCADE
     )
     tag = models.ManyToManyField('Tag', blank=True)
 
@@ -31,38 +85,45 @@ class Question(models.Model):
         return f"'{self.author.user.username}': {self.title}"
 
 
-class QuestionLikes(models.Model):
-    question = models.ForeignKey(
-        'Question',
-        on_delete=models.PROTECT
+class AnswerLike(models.Model):
+    user = models.ForeignKey(
+        'Profile',
+        on_delete=models.CASCADE
     )
-    value = models.IntegerField()
+    answer = models.ForeignKey(
+        'Answer',
+        on_delete=models.CASCADE
+    )
+
+    TYPE_CHOICES = [
+        ('l', 'Like'),
+        ('d', 'Dislike')
+    ]
+    type = models.CharField(max_length=1, choices=TYPE_CHOICES)
+    date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('user', 'answer')
+
+    def __str__(self) -> str:
+        return f"'{self.type}' by {self.user} to {self.question}"
 
 
 class Answer(models.Model):
     content = models.TextField()
     creation_date = models.DateTimeField(auto_now_add=True)
     correct_flag = models.BooleanField()
-    rating = models.IntegerField()
     question = models.ForeignKey(
         'Question',
-        on_delete=models.PROTECT
+        on_delete=models.CASCADE
     )
     author = models.ForeignKey(
         'Profile',
-        on_delete=models.PROTECT
+        on_delete=models.CASCADE
     )
 
     def __str__(self) -> str:
-        return f"Answer by '{self.author.user.username}' to {self.question}"
-
-
-class AnswerLike(models.Model):
-    answer = models.ForeignKey(
-        'Answer',
-        on_delete=models.PROTECT
-    )
-    value = models.IntegerField()
+        return f"Answer by '{self.author}' to {self.question}"
 
 
 class Profile(models.Model):

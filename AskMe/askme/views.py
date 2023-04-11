@@ -1,29 +1,45 @@
 from django.http import Http404, HttpResponseBadRequest
 from django.shortcuts import render
 from django.core.paginator import Paginator
+from django.db.models import Count, Case, When, F
 from askme import models
 
 # Create your views here.
 
+# Converts num into human readable format (1000 -> 1K)
+
+
+def human_format(num):
+    num = float('{:.3g}'.format(num))
+    magnitude = 0
+    while abs(num) >= 1000:
+        magnitude += 1
+        num /= 1000.0
+    return '{}{}'.format('{:f}'.format(num).rstrip('0').rstrip('.'),
+                         ['', 'K', 'M', 'B', 'T'][magnitude])
+
 
 def index(request):
     action = request.GET.get("action", None)
-
     if action == "log_out":
         models.USER["status"] = False
     elif action == "log_in":
         models.USER["status"] = True
 
+    questions = models.Question.objects
+    questions = questions.get_newest()
+    questions = questions.count_answers()
+    questions = questions.count_rating()
+
     try:
-        page = paginate(models.QUESTIONS, request, per_page=5)
+        page = paginate(questions, request, per_page=5)
     except ValueError:
         return HttpResponseBadRequest("Bad request")
 
     context = {
         'questions': page,
         'user': models.USER,
-        'popular_tags': models.POPULAR_TAGS,
-        'question_tags': models.QUESTION_TAGS,
+        # 'popular_tags': models.POPULAR_TAGS,
     }
     return render(request, 'index.html', context)
 
@@ -63,15 +79,20 @@ def settings(request):
 
 
 def hot(request):
+    questions = models.Question.objects
+    questions = questions.count_answers()
+    questions = questions.count_rating()
+    questions = questions.get_hottest()
+
     try:
-        page = paginate(models.QUESTIONS, request, per_page=5)
+        page = paginate(questions, request, per_page=5)
     except ValueError:
         return HttpResponseBadRequest("Bad request")
+
     context = {
         'questions': page,
         'user': models.USER,
-        'popular_tags': models.POPULAR_TAGS,
-        'question_tags': models.QUESTION_TAGS,
+        # 'popular_tags': models.POPULAR_TAGS,
     }
     return render(request, 'hot-questions.html', context)
 

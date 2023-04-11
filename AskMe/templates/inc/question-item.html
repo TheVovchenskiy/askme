@@ -14,7 +14,7 @@
       </a>
       <!-- Username -->
       <div class="username">
-        <a href="#">User_1</a>
+        <a href="#">{{ question.author.user.username }}</a>
       </div>
     </div>
     <div class="col-10">
@@ -23,31 +23,52 @@
         <a href="{% url "question" question.id %}">{{ question.title }}</a>
       </h2>
       <!-- Question text -->
-      <div class="question-text">{{ question.text }}</div>
+      <div class="question-text">{{ question.content }}</div>
     </div>
   </div>
   <div class="row">
     <!-- Tags -->
     <div class="col-9 tags">
-      {% for tag in question_tags %}
-        {% include "inc/tag-item.html" %}
+
+      {% for tag in question.tag.all %}
+      {% include "inc/tag-item.html" %}
       {% endfor %}
+
     </div>
     <!-- Answers -->
     <div class="col-1">
       <div class="icon-container">
         <span><a href="#">
-            <img src="{% static "img/svg/answer-icon.svg" %}" alt="answers" class="img-icon img-icon-question" /></a><span
-            class="answers-count fw-bold text-dark font-monospace fs-5 align-middle">0</span></span>
+            <img src="{% static "img/svg/answer-icon.svg" %}" alt="answers"
+              class="img-icon img-icon-question" /></a><span
+            class="answers-count fw-bold text-dark font-monospace fs-5 align-middle">{{ question.answers_count }}</span></span>
       </div>
     </div>
+
     <!-- Votes -->
     <div class="col-2">
       <div class="icon-container">
         <span class="align-middle text-middle"><a href="#">
-            <img src="{% static "img/svg/vote-down-icon.svg" %}" alt="down" class="img-icon img-icon-question" /></a><span
-            class="vote-count fw-bold text-dark font-monospace fs-5 align-middle">0</span><a href="#"><img
-              src="{% static "img/svg/vote-up-icon.svg" %}" alt="up" class="img-icon img-icon-question" /></a></span>
+            <img src="{% static "img/svg/vote-down-icon.svg" %}" alt="down" class="img-icon img-icon-question" /></a>
+
+          {% if question.rating > 0 %}
+          <span
+            class="vote-count vote-count-positive fw-bold text-dark font-monospace fs-5 align-middle">+{{ question.rating }}</span>
+          {% endif %}
+
+          {% if question.rating < 0 %}
+          <span
+            class="vote-count vote-count-negative fw-bold text-dark font-monospace fs-5 align-middle">{{ question.rating }}</span>
+          {% endif %}
+
+          {% if question.rating == 0 %}
+          <span class="vote-count fw-bold text-dark font-monospace fs-5 align-middle">{{ question.rating }}</span>
+          {% endif %}
+
+          <a href="#"><img src="{% static "img/svg/vote-up-icon.svg" %}" alt="up"
+              class="img-icon img-icon-question" /></a></span>
+
+
       </div>
     </div>
   </div>
