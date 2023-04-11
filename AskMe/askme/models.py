@@ -50,6 +50,7 @@ class QuestionQuerySet(models.query.QuerySet):
             rating=models.F('likes') - models.F('dislikes')
         )
 
+
 class QuestionManager(models.Manager):
     def get_queryset(self):
         return QuestionQuerySet(self.model, using=self._db)
@@ -109,6 +110,43 @@ class AnswerLike(models.Model):
         return f"'{self.type}' by {self.user} to {self.question}"
 
 
+class AnswerQuerySet(models.query.QuerySet):
+    def answers_by_questoin_id(self, question_id):
+        return self.filter(question__id=question_id)
+
+    def get_newest(self):
+        return self.order_by('-creation_date')
+
+    def get_hottest(self):
+        return self.order_by('-rating')
+
+    def count_rating(self):
+        return self.annotate(
+            likes=models.Count(models.Case(
+                models.When(answerlike__type='l', then=1))),
+            dislikes=models.Count(models.Case(
+                models.When(answerlike__type='d', then=1))),
+            rating=models.F('likes') - models.F('dislikes')
+        )
+
+
+class AnswerManager(models.Manager):
+    def get_queryset(self):
+        return AnswerQuerySet(self.model, using=self._db)
+
+    def answers_by_questoin_id(self, question_id):
+        return self.get_queryset().answers_by_questoin_id(question_id)
+
+    def get_newest(self):
+        return self.get_queryset().get_newest()
+
+    def count_answers(self):
+        return self.get_queryset().count_answers()
+
+    def count_rating(self):
+        return self.get_queryset().count_rating
+
+
 class Answer(models.Model):
     content = models.TextField()
     creation_date = models.DateTimeField(auto_now_add=True)
@@ -121,6 +159,8 @@ class Answer(models.Model):
         'Profile',
         on_delete=models.CASCADE
     )
+
+    objects = AnswerManager()
 
     def __str__(self) -> str:
         return f"Answer by '{self.author}' to {self.question}"

@@ -14,7 +14,7 @@
       </a>
       <!-- Username -->
       <div class="username">
-        <a href="#">{{ question.author.user.username }}</a>
+        <a href="#">{{ question.author.user }}</a>
       </div>
     </div>
     <div class="col-10">
@@ -45,31 +45,9 @@
       </div>
     </div>
 
-    <!-- Votes -->
-    <div class="col-2">
-      <div class="icon-container">
-        <span class="align-middle text-middle"><a href="#">
-            <img src="{% static "img/svg/vote-down-icon.svg" %}" alt="down" class="img-icon img-icon-question" /></a>
+    {% with vote_obj=question icon_type="question" %}
+    {% include "inc/votes-item.html" %}
+    {% endwith %}
 
-          {% if question.rating > 0 %}
-          <span
-            class="vote-count vote-count-positive fw-bold text-dark font-monospace fs-5 align-middle">+{{ question.rating }}</span>
-          {% endif %}
-
-          {% if question.rating < 0 %}
-          <span
-            class="vote-count vote-count-negative fw-bold text-dark font-monospace fs-5 align-middle">{{ question.rating }}</span>
-          {% endif %}
-
-          {% if question.rating == 0 %}
-          <span class="vote-count fw-bold text-dark font-monospace fs-5 align-middle">{{ question.rating }}</span>
-          {% endif %}
-
-          <a href="#"><img src="{% static "img/svg/vote-up-icon.svg" %}" alt="up"
-              class="img-icon img-icon-question" /></a></span>
-
-
-      </div>
-    </div>
   </div>
 </div>

@@ -1,0 +1,27 @@
+{% load static %}
+
+<!-- Votes -->
+<div class="col-2">
+    <div class="icon-container">
+        <span class="align-middle text-middle"><a href="#">
+                <img src="{% static "img/svg/vote-down-icon.svg" %}" alt="down"
+                    class="img-icon img-icon-{{ icon_type }}" /></a>
+
+            {% if vote_obj.rating > 0 %}
+            <span
+                class="vote-count vote-count-positive fw-bold text-dark font-monospace fs-5 align-middle">+{{ vote_obj.rating }}</span>
+            {% endif %}
+
+            {% if vote_obj.rating < 0 %}
+            <span
+                class="vote-count vote-count-negative fw-bold text-dark font-monospace fs-5 align-middle">{{ vote_obj.rating }}</span>
+            {% endif %}
+
+            {% if vote_obj.rating == 0 %}
+            <span class="vote-count fw-bold text-dark font-monospace fs-5 align-middle">{{ vote_obj.rating }}</span>
+            {% endif %}
+
+            <a href="#"><img src="{% static "img/svg/vote-up-icon.svg" %}" alt="up"
+                    class="img-icon img-icon-{{ icon_type }}" /></a></span>
+    </div>
+</div>

@@ -13,20 +13,20 @@
       </a>
       <!-- Username -->
       <div class="username">
-        <a href="#">User_2</a>
+        <a href="#">{{ answer.author }}</a>
       </div>
 
     </div>
     <div class="col-10">
       <!-- Question text -->
-      <div class="question-text">{{ answer.text }}</div>
+      <div class="question-text">{{ answer.content }}</div>
     </div>
     <div class="row">
       <div class="col-2">
         <div class="accept-answer-btn">
           <!-- Accept btn -->
           <input type="checkbox" class="btn-check" id="btn-accept-{{ answer.id }}" autocomplete="off"
-            {% if answer.correct %}checked{% endif %} {% comment %}fsfsf {% endcomment %}
+            {% if answer.correct_flag %}checked{% endif %} {% comment %}fsfsf {% endcomment %}
             {% if not user.status %}disabled{% endif %} />
           <label class="btn btn-outline-success btn-sm" for="btn-accept-{{ answer.id }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check"
@@ -39,15 +39,12 @@
       </div>
       <div class="col-8"></div>
       <div class="col-2">
-        <!-- Votes -->
-        <div class="icon-container">
-          <span class="align-middle text-middle"><a href="#">
-              <img src="{% static "img/svg/vote-down-icon.svg" %}" alt="down"
-                class="img-icon img-icon-answer" /></a><span
-              class="vote-count vote-count-positive fw-bold text-dark font-monospace fs-5 align-middle">+3</span><a
-              href="#"><img src="{% static "img/svg/vote-up-icon.svg" %}" alt="up"
-                class="img-icon img-icon-answer" /></a></span>
-        </div>
+
+        {% with vote_obj=answer icon_type="answer" %}
+        {% include "inc/votes-item.html" %}
+        {% endwith %}
+
+
       </div>
     </div>
   </div>

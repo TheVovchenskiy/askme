@@ -45,19 +45,22 @@ def index(request):
 
 
 def question(request, question_id):
-    question_id = min(len(models.QUESTIONS) - 1, question_id)
+    question = models.Question.objects.get(id=question_id)
+    # answers = models.Answer.objects.filter(question__id=question_id)
+    answers = question.answer_set.all()
+    answers = answers.count_rating()
+    answers = answers.get_newest()
 
     try:
-        page = paginate(models.ANSWERS, request, per_page=3)
+        page = paginate(answers, request, per_page=3)
     except ValueError:
         return HttpResponseBadRequest("Bad request")
 
     context = {
-        "question": models.QUESTIONS[question_id],
+        "question": question,
         "answers": page,
         "user": models.USER,
-        'popular_tags': models.POPULAR_TAGS,
-        'question_tags': models.QUESTION_TAGS,
+        # 'popular_tags': models.POPULAR_TAGS,
     }
     return render(request, 'question-page.html', context)
 

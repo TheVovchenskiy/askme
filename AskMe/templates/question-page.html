@@ -18,7 +18,7 @@
       </a>
       <!-- Username -->
       <div class="username">
-        <a href="#">User_1</a>
+        <a href="#">{{ question.author }}</a>
       </div>
     </div>
     <div class="col-10">
@@ -26,12 +26,12 @@
       <h2 class="question-title"> {{question.title}} </h2>
       <!-- Question text -->
       <div class="question-text">
-        {{ question.text }}
+        {{ question.content }}
       </div>
       <div class="row">
         <!-- Tags -->
         <div class="col-9 tags">
-          {% for tag in question_tags %}
+          {% for tag in question.tag.all %}
             {% include "inc/tag-item.html" %}
           {% endfor %}
         </div>
