@@ -49,6 +49,9 @@ class QuestionQuerySet(models.query.QuerySet):
                 models.When(questionlike__type='d', then=1))),
             rating=models.F('likes') - models.F('dislikes')
         )
+    
+    def get_tag_questions(self, tag_name):
+        return self.filter(tag__tag_name=tag_name)
 
 
 class QuestionManager(models.Manager):
@@ -66,6 +69,9 @@ class QuestionManager(models.Manager):
 
     def count_rating(self):
         return self.get_queryset().count_rating
+
+    def get_tag_questions(self, tag_name):
+        return self.get_queryset().get_tag_questions(tag_name)
 
 
 class Question(models.Model):
@@ -181,8 +187,15 @@ class Profile(models.Model):
         return self.user.username
 
 
+class TagManager(models.Manager):
+    def get_top_tags(self, top_count):
+        return self.annotate(total_count=models.Count('question')).order_by('-total_count')[:top_count]
+
+
 class Tag(models.Model):
     tag_name = models.CharField(max_length=30, unique=True)
+
+    objects = TagManager()
 
     def __str__(self) -> str:
         return self.tag_name

@@ -31,6 +31,8 @@ def index(request):
     questions = questions.count_answers()
     questions = questions.count_rating()
 
+    popular_tags = models.Tag.objects.get_top_tags(10)
+
     try:
         page = paginate(questions, request, per_page=5)
     except ValueError:
@@ -39,17 +41,18 @@ def index(request):
     context = {
         'questions': page,
         'user': models.USER,
-        # 'popular_tags': models.POPULAR_TAGS,
+        'popular_tags': popular_tags,
     }
     return render(request, 'index.html', context)
 
 
 def question(request, question_id):
     question = models.Question.objects.get(id=question_id)
-    # answers = models.Answer.objects.filter(question__id=question_id)
     answers = question.answer_set.all()
     answers = answers.count_rating()
     answers = answers.get_newest()
+
+    popular_tags = models.Tag.objects.get_top_tags(10)
 
     try:
         page = paginate(answers, request, per_page=3)
@@ -60,23 +63,27 @@ def question(request, question_id):
         "question": question,
         "answers": page,
         "user": models.USER,
-        # 'popular_tags': models.POPULAR_TAGS,
+        'popular_tags': popular_tags,
     }
     return render(request, 'question-page.html', context)
 
 
 def ask(request):
+    popular_tags = models.Tag.objects.get_top_tags(10)
+
     context = {
         "user": models.USER,
-        'popular_tags': models.POPULAR_TAGS,
+        'popular_tags': popular_tags,
     }
     return render(request, 'ask.html', context)
 
 
 def settings(request):
+    popular_tags = models.Tag.objects.get_top_tags(10)
+
     context = {
         "user": models.USER,
-        'popular_tags': models.POPULAR_TAGS,
+        'popular_tags': popular_tags,
     }
     return render(request, 'settings.html', context)
 
@@ -87,6 +94,8 @@ def hot(request):
     questions = questions.count_rating()
     questions = questions.get_hottest()
 
+    popular_tags = models.Tag.objects.get_top_tags(10)
+
     try:
         page = paginate(questions, request, per_page=5)
     except ValueError:
@@ -95,14 +104,19 @@ def hot(request):
     context = {
         'questions': page,
         'user': models.USER,
-        # 'popular_tags': models.POPULAR_TAGS,
+        'popular_tags': popular_tags,
     }
     return render(request, 'hot-questions.html', context)
 
 
 def tag(request, tag_name):
+    questions = models.Question.objects.get_tag_questions(tag_name)
+    questions = questions.get_newest()
+
+    popular_tags = models.Tag.objects.get_top_tags(10)
+
     try:
-        page = paginate(models.QUESTIONS, request, per_page=5)
+        page = paginate(questions, request, per_page=5)
     except ValueError:
         return HttpResponseBadRequest("Bad request")
 
@@ -110,24 +124,27 @@ def tag(request, tag_name):
         'questions': page,
         'tag_name': tag_name,
         'user': models.USER,
-        'popular_tags': models.POPULAR_TAGS,
-        'question_tags': models.QUESTION_TAGS,
+        'popular_tags': popular_tags,
     }
     return render(request, 'tag-questions.html', context)
 
 
 def login(request):
+    popular_tags = models.Tag.objects.get_top_tags(10)
+
     context = {
         'user': models.USER,
-        'popular_tags': models.POPULAR_TAGS,
+        'popular_tags': popular_tags,
     }
     return render(request, 'log-in.html', context)
 
 
 def signin(request):
+    popular_tags = models.Tag.objects.get_top_tags(10)
+
     context = {
         'user': models.USER,
-        'popular_tags': models.POPULAR_TAGS,
+        'popular_tags': popular_tags,
     }
     return render(request, 'sign-in.html', context)
 
