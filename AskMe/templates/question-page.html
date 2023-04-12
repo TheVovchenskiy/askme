@@ -32,18 +32,15 @@
         <!-- Tags -->
         <div class="col-9 tags">
           {% for tag in question.tag.all %}
-            {% include "inc/tag-item.html" %}
+          {% include "inc/tag-item.html" %}
           {% endfor %}
         </div>
 
         <!-- Votes -->
         <div class="col-3">
-          <div class="icon-container">
-            <span class="align-middle text-middle"><a href="#"><img src="{% static "img/svg/vote-down-icon.svg" %}"
-                  alt="down" class="img-icon img-icon-question" /></a><span
-                class="vote-count fw-bold text-dark font-monospace fs-5 align-middle">0</span><a href="#"><img
-                  src="{% static "img/svg/vote-up-icon.svg" %}" alt="up" class="img-icon img-icon-question" /></a></span>
-          </div>
+          {% with vote_obj=question icon_type="question" %}
+          {% include "inc/votes-item.html" %}
+          {% endwith %}
         </div>
       </div>
     </div>

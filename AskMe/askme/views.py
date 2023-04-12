@@ -29,7 +29,7 @@ def index(request):
     questions = models.Question.objects
     questions = questions.get_newest()
     questions = questions.count_answers()
-    questions = questions.count_rating()
+    # questions = questions.count_rating()
 
     popular_tags = models.Tag.objects.get_top_tags(10)
 
@@ -48,8 +48,9 @@ def index(request):
 
 def question(request, question_id):
     question = models.Question.objects.get(id=question_id)
+    # question.rating = question.count_rating()
     answers = question.answer_set.all()
-    answers = answers.count_rating()
+    # answers = answers.count_rating()
     answers = answers.get_newest()
 
     popular_tags = models.Tag.objects.get_top_tags(10)
@@ -91,7 +92,7 @@ def settings(request):
 def hot(request):
     questions = models.Question.objects
     questions = questions.count_answers()
-    questions = questions.count_rating()
+    # questions = questions.count_rating()
     questions = questions.get_hottest()
 
     popular_tags = models.Tag.objects.get_top_tags(10)

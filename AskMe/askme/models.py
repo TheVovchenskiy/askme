@@ -17,11 +17,13 @@ class QuestionLike(models.Model):
         on_delete=models.CASCADE
     )
 
+    LIKE = 'like'
+    DISLIKE = 'dislike'
     TYPE_CHOICES = [
-        ('l', 'Like'),
-        ('d', 'Dislike')
+        (LIKE, 'Like'),
+        (DISLIKE, 'Dislike')
     ]
-    type = models.CharField(max_length=1, choices=TYPE_CHOICES)
+    type = models.CharField(max_length=7, choices=TYPE_CHOICES)
     date = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -36,20 +38,24 @@ class QuestionQuerySet(models.query.QuerySet):
         return self.order_by('-creation_date')
 
     def get_hottest(self):
-        return self.order_by('-rating')
+        return self.annotate(rating_count=models.Sum(models.Case(
+            models.When(questionlike__type='like', then=1),
+            models.When(questionlike__type='dislike', then=-1),
+            default=0,
+        ))).order_by('-rating_count')
 
     def count_answers(self):
         return self.annotate(answers_count=models.Count('answer'))
 
-    def count_rating(self):
-        return self.annotate(
-            likes=models.Count(models.Case(
-                models.When(questionlike__type='l', then=1))),
-            dislikes=models.Count(models.Case(
-                models.When(questionlike__type='d', then=1))),
-            rating=models.F('likes') - models.F('dislikes')
-        )
-    
+    # def count_rating(self):
+    #     return self.annotate(
+    #         likes=models.Count(models.Case(
+    #             models.When(questionlike__type='l', then=1))),
+    #         dislikes=models.Count(models.Case(
+    #             models.When(questionlike__type='d', then=1))),
+    #         rating=models.F('likes') - models.F('dislikes')
+    #     )
+
     def get_tag_questions(self, tag_name):
         return self.filter(tag__tag_name=tag_name)
 
@@ -67,8 +73,8 @@ class QuestionManager(models.Manager):
     def count_answers(self):
         return self.get_queryset().count_answers()
 
-    def count_rating(self):
-        return self.get_queryset().count_rating
+    # def count_rating(self):
+    #     return self.get_queryset().count_rating
 
     def get_tag_questions(self, tag_name):
         return self.get_queryset().get_tag_questions(tag_name)
@@ -88,6 +94,13 @@ class Question(models.Model):
 
     objects = QuestionManager()
 
+    def rating(self):
+        likes = QuestionLike.objects.filter(question=self, type='like').count()
+        dislikes = QuestionLike.objects.filter(
+            question=self, type='dislike').count()
+        rating = likes - dislikes
+        return rating
+
     def __str__(self) -> str:
         return f"'{self.author.user.username}': {self.title}"
 
@@ -102,11 +115,13 @@ class AnswerLike(models.Model):
         on_delete=models.CASCADE
     )
 
+    LIKE = 'like'
+    DISLIKE = 'dislike'
     TYPE_CHOICES = [
-        ('l', 'Like'),
-        ('d', 'Dislike')
+        (LIKE, 'Like'),
+        (DISLIKE, 'Dislike')
     ]
-    type = models.CharField(max_length=1, choices=TYPE_CHOICES)
+    type = models.CharField(max_length=7, choices=TYPE_CHOICES)
     date = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -124,16 +139,11 @@ class AnswerQuerySet(models.query.QuerySet):
         return self.order_by('-creation_date')
 
     def get_hottest(self):
-        return self.order_by('-rating')
-
-    def count_rating(self):
-        return self.annotate(
-            likes=models.Count(models.Case(
-                models.When(answerlike__type='l', then=1))),
-            dislikes=models.Count(models.Case(
-                models.When(answerlike__type='d', then=1))),
-            rating=models.F('likes') - models.F('dislikes')
-        )
+        return self.annotate(rating_count=models.Sum(models.Case(
+            models.When(answerlike__type='like', then=1),
+            models.When(answerlike__type='dislike', then=-1),
+            default=0,
+        ))).order_by('-rating_count')
 
 
 class AnswerManager(models.Manager):
@@ -148,9 +158,6 @@ class AnswerManager(models.Manager):
 
     def count_answers(self):
         return self.get_queryset().count_answers()
-
-    def count_rating(self):
-        return self.get_queryset().count_rating
 
 
 class Answer(models.Model):
@@ -168,6 +175,13 @@ class Answer(models.Model):
 
     objects = AnswerManager()
 
+    def rating(self):
+        likes = AnswerLike.objects.filter(answer=self, type='like').count()
+        dislikes = AnswerLike.objects.filter(
+            answer=self, type='dislike').count()
+        rating = likes - dislikes
+        return rating
+
     def __str__(self) -> str:
         return f"Answer by '{self.author}' to {self.question}"
 
@@ -176,7 +190,6 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.ImageField(upload_to="avatars/%Y/%m/%d", blank=True)
     signup_date = models.DateTimeField(auto_now_add=True)
-    rating = models.IntegerField()
 
     @property
     def avatar_url(self):
