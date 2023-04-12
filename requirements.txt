@@ -1,4 +1,6 @@
 asgiref==3.6.0
 Django==4.2
+lorem==0.1.1
 Pillow==9.5.0
+random-username==1.0.2
 sqlparse==0.4.3
