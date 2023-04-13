@@ -47,15 +47,6 @@ class QuestionQuerySet(models.query.QuerySet):
     def count_answers(self):
         return self.annotate(answers_count=models.Count('answer'))
 
-    # def count_rating(self):
-    #     return self.annotate(
-    #         likes=models.Count(models.Case(
-    #             models.When(questionlike__type='l', then=1))),
-    #         dislikes=models.Count(models.Case(
-    #             models.When(questionlike__type='d', then=1))),
-    #         rating=models.F('likes') - models.F('dislikes')
-    #     )
-
     def get_tag_questions(self, tag_name):
         return self.filter(tag__tag_name=tag_name)
 
@@ -72,9 +63,6 @@ class QuestionManager(models.Manager):
 
     def count_answers(self):
         return self.get_queryset().count_answers()
-
-    # def count_rating(self):
-    #     return self.get_queryset().count_rating
 
     def get_tag_questions(self, tag_name):
         return self.get_queryset().get_tag_questions(tag_name)
