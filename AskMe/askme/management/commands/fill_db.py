@@ -17,8 +17,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         ratio = kwargs['ratio']
-        # fill_data_base(ratio)
-        print(ratio)
+        fill_data_base(ratio)
+        # print(ratio)
 
 
 def generate_password(length):
@@ -37,7 +37,7 @@ def generate_email(username):
 
 
 def generate_user(passw_len_from=8, passw_len_to=16):
-    username = generate_username()
+    username = generate_username()[0]
     email = generate_email(username)
     password = generate_password(random.randint(passw_len_from, passw_len_to))
 
@@ -52,7 +52,7 @@ def generate_profile(av_id_from=1, av_id_to=10):
     user = generate_user()
     profile = models.Profile(user=user)
     avatar_id = random.randint(av_id_from, av_id_to)
-    with open(f'avatars/avatar-{avatar_id}', 'rb') as image:
+    with open(f'../../../avatars/avatar-{avatar_id}', 'rb') as image:
         image_data = image.read()
 
     profile.avatar.save(f'avatar-{user.useraname}', ContentFile(image_data))
@@ -163,79 +163,97 @@ def generate_answer_like(like_weight=0.4, dislike_wieight=0.3):
 
 def create_profiles(prof_count, batch_size, av_count):
     prof_left = prof_count
-    print('Profiles created:')
+    print('Creating profiles.')
     while prof_left > 0:
         models.Profile.objects.bulk_create(
             [generate_profile(av_id_to=av_count - 1)
              for i in range(batch_size)]
         )
         prof_left = - batch_size
-        print(f'\r{prof_count - prof_left}/{prof_count}', end='')
+        print(f'\r\tCreated: {prof_count - prof_left}/{prof_count}', end='')
     print()
 
 
 def create_questions(quest_count, batch_size):
     quest_left = quest_count
-    print('Questions created:')
+    print('Creating questions.')
     while quest_left > 0:
         models.Question.objects.bulk_create(
             [generate_question() for i in range(batch_size)]
         )
         quest_left = - batch_size
-        print(f'\r{quest_count - quest_left}/{quest_count}', end='')
+        print(f'\r\tCreated: {quest_count - quest_left}/{quest_count}', end='')
     print()
 
 
 def create_question_likes(likes_count, batch_size):
     likes_left = likes_count
+    print('Creating question likes.')
     while likes_left > 0:
         models.QuestionLike.objects.bulk_create(
             [generate_question_like() for i in range(batch_size)]
         )
         likes_left -= batch_size
-        print(f'\r{likes_count - likes_left}/{likes_count}', end='')
-    print()
-
-
-def create_answer_likes(likes_count, batch_size):
-    likes_left = likes_count
-    while likes_left > 0:
-        models.AnswerLike.objects.bulk_create(
-            [generate_answer_like() for i in range(batch_size)]
-        )
-        likes_left -= batch_size
-        print(f'\r{likes_count - likes_left}/{likes_count}', end='')
+        print(f'\r\tCreated: {likes_count - likes_left}/{likes_count}', end='')
     print()
 
 
 def create_answers(answ_count, batch_size):
     answ_left = answ_count
+    print('Creating answers.')
     while answ_left > 0:
         models.Answer.objects.bulk_create(
             [generate_answer() for i in range(batch_size)]
         )
         answ_left = - batch_size
-        print(f'\r{answ_count - answ_left}/{answ_count}', end='')
+        print(f'\r\tCreated: {answ_count - answ_left}/{answ_count}', end='')
+    print()
+
+
+def create_answer_likes(likes_count, batch_size):
+    likes_left = likes_count
+    print('Creating answer likes/')
+    while likes_left > 0:
+        models.AnswerLike.objects.bulk_create(
+            [generate_answer_like() for i in range(batch_size)]
+        )
+        likes_left -= batch_size
+        print(f'\r\tCreated: {likes_count - likes_left}/{likes_count}', end='')
     print()
 
 
 def create_tags(tag_count, batch_size):
     tag_left = tag_count
+    print('Creating tags.')
     while tag_left > 0:
         models.Tag.objects.bulk_create(
             [generate_tag() for i in range(batch_size)]
         )
         tag_left = - batch_size
-        print(f'\r{tag_count - tag_left}/{tag_count}', end='')
+        print(f'\r\tCreated: {tag_count - tag_left}/{tag_count}', end='')
     print()
 
 
-def link_questions2tags(tags_per_question_max=6):
-    for question in models.Question.objects.all():
-        tags_per_question = random.randint(1, tags_per_question_max)
-        question.tag.add(
-            *get_random_instances(models.Tag.objects, tags_per_question)
-        )
+def link_questions2tags(tags_per_question_max, batch_size):
+    print('Linking tags to questions.')
+    quest_count = models.Question.objects.count()
+    quest_left = quest_count
+    start_pos, end_pos = 0, batch_size
+    while quest_left > 0:
+        if end_pos > quest_count:
+            end_pos = quest_count
+
+        questions = models.Question.objects.all()[start_pos:end_pos]
+        start_pos += batch_size
+        end_pos += batch_size
+        quest_left = - batch_size
+        for question in questions:
+            tags_per_question = random.randint(1, tags_per_question_max)
+            question.tag.add(
+                *get_random_instances(models.Tag.objects, tags_per_question)
+            )
+        print(f'\r\Linked: {start_pos}/{quest_count}', end='')
+    print()
 
 
 def fill_data_base(ratio):
@@ -244,8 +262,16 @@ def fill_data_base(ratio):
     ANSWERS_COUNT = ratio * 100
     TAGS_COUNT = ratio
     VOTES_COUNT = ratio * 200
-    print(ratio)
+    BATCH_SIZE = 10_000
+    AV_COUNT = 219
+    TAGS_PER_QUESTION_MAX = 6
 
+    create_profiles(ratio, BATCH_SIZE, AV_COUNT)
+    create_questions(ratio * 10, BATCH_SIZE)
+    create_question_likes(ratio * 100, BATCH_SIZE)
+    create_answers(ratio * 100, BATCH_SIZE)
+    create_answer_likes(ratio * 100, BATCH_SIZE)
+    create_tags(ratio, BATCH_SIZE)
+    link_questions2tags(TAGS_PER_QUESTION_MAX, BATCH_SIZE)
 
-if __name__ == '__main__':
-    main()
+    print('Data Base filled')
