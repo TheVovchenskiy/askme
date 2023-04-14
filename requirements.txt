@@ -1,6 +1,8 @@
 asgiref==3.6.0
 Django==4.2
-lorem==0.1.1
+Faker==18.4.0
 Pillow==9.5.0
-random-username==1.0.2
+python-dateutil==2.8.2
+six==1.16.0
 sqlparse==0.4.3
+tqdm==4.65.0
