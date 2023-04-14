@@ -28,7 +28,7 @@
   </div>
   <div class="row">
     <!-- Tags -->
-    <div class="col-9 tags">
+    <div class="col-8 tags">
 
       {% for tag in question.tag.all %}
       {% include "inc/tag-item.html" %}
@@ -36,7 +36,7 @@
 
     </div>
     <!-- Answers -->
-    <div class="col-1">
+    <div class="col-2">
       <div class="icon-container">
         <span><a href="#">
             <img src="{% static "img/svg/answer-icon.svg" %}" alt="answers"

@@ -28,7 +28,7 @@ def index(request):
 
     questions = models.Question.objects
     questions = questions.get_newest()
-    questions = questions.count_answers()
+    # questions = questions.count_answers()
     # questions = questions.count_rating()
 
     popular_tags = models.Tag.objects.get_top_tags(10)
@@ -91,7 +91,7 @@ def settings(request):
 
 def hot(request):
     questions = models.Question.objects
-    questions = questions.count_answers()
+    # questions = questions.count_answers()
     # questions = questions.count_rating()
     questions = questions.get_hottest()
 

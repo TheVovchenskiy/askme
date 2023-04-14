@@ -44,8 +44,8 @@ class QuestionQuerySet(models.query.QuerySet):
             default=0,
         ))).order_by('-rating_count')
 
-    def count_answers(self):
-        return self.annotate(answers_count=models.Count('answer'))
+    # def count_answers(self):
+    #     return self.annotate(answers_count=models.Count('answer'))
 
     def get_tag_questions(self, tag_name):
         return self.filter(tag__tag_name=tag_name)
@@ -61,8 +61,8 @@ class QuestionManager(models.Manager):
     def get_hottest(self):
         return self.get_queryset().get_hottest()
 
-    def count_answers(self):
-        return self.get_queryset().count_answers()
+    # def count_answers(self):
+    #     return self.get_queryset().count_answers()
 
     def get_tag_questions(self, tag_name):
         return self.get_queryset().get_tag_questions(tag_name)
@@ -88,6 +88,9 @@ class Question(models.Model):
             question=self, type='dislike').count()
         rating = likes - dislikes
         return rating
+
+    def answers_count(self):
+        return Answer.objects.filter(question=self).count()
 
     def __str__(self) -> str:
         return f"'{self.author.user.username}': {self.title}"
