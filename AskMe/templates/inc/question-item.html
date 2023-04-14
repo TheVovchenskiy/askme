@@ -14,7 +14,7 @@
       </a>
       <!-- Username -->
       <div class="username">
-        <a href="#">{{ question.author.user }}</a>
+        <a href="#">{{ question.author.user|truncatechars:13 }}</a>
       </div>
     </div>
     <div class="col-10">
@@ -23,7 +23,7 @@
         <a href="{% url "question" question.id %}">{{ question.title }}</a>
       </h2>
       <!-- Question text -->
-      <div class="question-text">{{ question.content }}</div>
+      <div class="question-text">{{ question.content|linebreaksbr|truncatechars:400 }}</div>
     </div>
   </div>
   <div class="row">
