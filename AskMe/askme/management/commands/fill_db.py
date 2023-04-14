@@ -6,7 +6,7 @@ from lorem.text import TextLorem
 from random_username.generate import generate_username
 import random
 import string
-import sys
+import os
 
 
 class Command(BaseCommand):
@@ -18,7 +18,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         ratio = kwargs['ratio']
         fill_data_base(ratio)
-        # print(ratio)
+        # print(__file__)
 
 
 def generate_password(length):
@@ -48,14 +48,10 @@ def generate_user(passw_len_from=8, passw_len_to=16):
     )
 
 
-def generate_profile(av_id_from=1, av_id_to=10):
+def generate_profile():
     user = generate_user()
     profile = models.Profile(user=user)
-    avatar_id = random.randint(av_id_from, av_id_to)
-    with open(f'../../../avatars/avatar-{avatar_id}', 'rb') as image:
-        image_data = image.read()
 
-    profile.avatar.save(f'avatar-{user.useraname}', ContentFile(image_data))
     return profile
 
 
@@ -82,12 +78,12 @@ def generate_question():
     return models.Question(
         title=generate_question_title(),
         content=generate_question_content(),
-        author=get_random_instances(models.Profile.objects),
+        author=get_random_instances(models.Profile.objects).get(),
     )
 
 
 def generate_answer_content(srange=(5, 10), prange=(5, 10), trange=(1, 3)):
-    return TextLorem(srange=srange, prange=prange, trange=trange)
+    return TextLorem(srange=srange, prange=prange, trange=trange).text()
 
 
 def generate_answer_correct_flag(true_weight=0.2, false_weight=0.8):
@@ -100,8 +96,8 @@ def generate_answer():
     return models.Answer(
         content=generate_answer_content(),
         correct_flag=generate_answer_correct_flag(),
-        question=get_random_instances(models.Question.objects),
-        author=get_random_instances(models.Profile.objects),
+        question=get_random_instances(models.Question.objects).get(),
+        author=get_random_instances(models.Profile.objects).get(),
     )
 
 
@@ -124,15 +120,18 @@ def get_random_vote(like_weight, dislike_wieight):
 
 
 def generate_question_like(like_weight=0.5, dislike_wieight=0.5):
-    user = get_random_instances(models.Profile.objects).get()
-    question = get_random_instances(models.Question.objects).get()
-    type = get_random_vote(like_weight, dislike_wieight)
-
     while True:
-        if not models.QuestionLike.objects.filter(
+        user = get_random_instances(models.Profile.objects).get()
+        question = get_random_instances(models.Question.objects).get()
+
+        if (question, user) not in generate_question_like.q_u_pairs and \
+        not models.QuestionLike.objects.filter(
             user=user,
             question=question,
         ).exists():
+            generate_question_like.q_u_pairs.append((question, user))
+            type = get_random_vote(like_weight, dislike_wieight)
+
             return models.QuestionLike(
                 user=user,
                 question=question,
@@ -140,12 +139,16 @@ def generate_question_like(like_weight=0.5, dislike_wieight=0.5):
             )
 
 
-def generate_answer_like(like_weight=0.4, dislike_wieight=0.3):
-    user = get_random_instances(models.Profile.objects).get()
-    answer = get_random_instances(models.Answer.objects).get()
+generate_question_like.q_u_pairs = []
 
+
+def generate_answer_like(like_weight=0.4, dislike_wieight=0.3):
     while True:
-        if not models.AnswerLike.objects.filter(
+        user = get_random_instances(models.Profile.objects).get()
+        answer = get_random_instances(models.Answer.objects).get()
+
+        if (answer, user) not in generate_answer_like.a_u_pairs and \
+        not models.AnswerLike.objects.filter(
             user=user,
             answer=answer,
         ).exists():
@@ -154,82 +157,93 @@ def generate_answer_like(like_weight=0.4, dislike_wieight=0.3):
             else:
                 type = get_random_vote(like_weight, dislike_wieight)
 
+            generate_answer_like.a_u_pairs.append((answer, user))
+
             return models.AnswerLike(
                 user=user,
                 answer=answer,
                 type=type
             )
+    
+generate_answer_like.a_u_pairs = []
 
 
-def create_profiles(prof_count, batch_size, av_count):
+def create_profiles(prof_count, batch_size):
     prof_left = prof_count
+    step = min(batch_size, prof_count)
     print('Creating profiles.')
     while prof_left > 0:
         models.Profile.objects.bulk_create(
-            [generate_profile(av_id_to=av_count - 1)
-             for i in range(batch_size)]
+            [generate_profile() for i in range(step)]
         )
-        prof_left = - batch_size
+        prof_left -= step
         print(f'\r\tCreated: {prof_count - prof_left}/{prof_count}', end='')
     print()
 
 
 def create_questions(quest_count, batch_size):
     quest_left = quest_count
+    step = min(batch_size, quest_count)
     print('Creating questions.')
     while quest_left > 0:
         models.Question.objects.bulk_create(
-            [generate_question() for i in range(batch_size)]
+            [generate_question() for i in range(step)]
         )
-        quest_left = - batch_size
+        quest_left -= step
         print(f'\r\tCreated: {quest_count - quest_left}/{quest_count}', end='')
     print()
 
 
 def create_question_likes(likes_count, batch_size):
     likes_left = likes_count
+    step = min(batch_size, likes_count)
     print('Creating question likes.')
     while likes_left > 0:
         models.QuestionLike.objects.bulk_create(
-            [generate_question_like() for i in range(batch_size)]
+            [generate_question_like() for i in range(step)]
         )
-        likes_left -= batch_size
+        generate_question_like.q_u_pairs = []
+        likes_left -= step
         print(f'\r\tCreated: {likes_count - likes_left}/{likes_count}', end='')
     print()
 
 
 def create_answers(answ_count, batch_size):
     answ_left = answ_count
+    step = min(batch_size, answ_count)
     print('Creating answers.')
     while answ_left > 0:
         models.Answer.objects.bulk_create(
-            [generate_answer() for i in range(batch_size)]
+            [generate_answer() for i in range(step)]
         )
-        answ_left = - batch_size
+        answ_left -= step
         print(f'\r\tCreated: {answ_count - answ_left}/{answ_count}', end='')
     print()
 
 
 def create_answer_likes(likes_count, batch_size):
     likes_left = likes_count
+    step = min(batch_size, likes_count)
     print('Creating answer likes/')
     while likes_left > 0:
         models.AnswerLike.objects.bulk_create(
-            [generate_answer_like() for i in range(batch_size)]
+            [generate_answer_like() for i in range(step)]
         )
-        likes_left -= batch_size
+        generate_answer_like.a_u_pairs = []
+        likes_left -= step
         print(f'\r\tCreated: {likes_count - likes_left}/{likes_count}', end='')
     print()
 
 
 def create_tags(tag_count, batch_size):
     tag_left = tag_count
+    step = min(batch_size, tag_count)
     print('Creating tags.')
     while tag_left > 0:
         models.Tag.objects.bulk_create(
-            [generate_tag() for i in range(batch_size)]
+            [generate_tag() for i in range(step)]
         )
-        tag_left = - batch_size
+        tag_left -= step
         print(f'\r\tCreated: {tag_count - tag_left}/{tag_count}', end='')
     print()
 
@@ -238,21 +252,51 @@ def link_questions2tags(tags_per_question_max, batch_size):
     print('Linking tags to questions.')
     quest_count = models.Question.objects.count()
     quest_left = quest_count
-    start_pos, end_pos = 0, batch_size
+    step = min(batch_size, quest_count)
+    start_pos, end_pos = 0, step
     while quest_left > 0:
-        if end_pos > quest_count:
-            end_pos = quest_count
+        end_pos = min(end_pos, quest_count)
 
         questions = models.Question.objects.all()[start_pos:end_pos]
-        start_pos += batch_size
-        end_pos += batch_size
-        quest_left = - batch_size
+        start_pos += step
+        end_pos += step
+        quest_left -= step
         for question in questions:
             tags_per_question = random.randint(1, tags_per_question_max)
             question.tag.add(
                 *get_random_instances(models.Tag.objects, tags_per_question)
             )
-        print(f'\r\Linked: {start_pos}/{quest_count}', end='')
+        print(f'\r\tLinked: {start_pos}/{quest_count}', end='')
+    print()
+
+
+def get_random_avatar(av_id_from=1, av_id_to=10):
+    avatar_id = random.randint(av_id_from, av_id_to)
+    with open(f'avatars/avatar-{avatar_id}.jpg', 'rb') as image:
+        image_data = image.read()
+
+    return image_data
+
+
+def link_avatars2profiles(batch_size, av_count):
+    print('Creating profle avatars.')
+    prof_count = models.Profile.objects.count()
+    step = min(batch_size, prof_count)
+    prof_left = prof_count
+    start_pos, end_pos = 0, step
+    while prof_left > 0:
+        end_pos = min(end_pos, prof_count)
+
+        profiles = models.Profile.objects.all()[start_pos:end_pos]
+        start_pos += step
+        end_pos += step
+        prof_left -= step
+        for profile in models.Profile.objects.all():
+            image_data = get_random_avatar(av_id_to=av_count - 1)
+            profile.avatar.save(
+                f'avatar-{profile.user.username}', ContentFile(image_data)
+            )
+            print(f'\r\tAvatars created: {start_pos}/{prof_count}', end='')
     print()
 
 
@@ -262,16 +306,17 @@ def fill_data_base(ratio):
     ANSWERS_COUNT = ratio * 100
     TAGS_COUNT = ratio
     VOTES_COUNT = ratio * 200
-    BATCH_SIZE = 10_000
+    BATCH_SIZE = 100
     AV_COUNT = 219
     TAGS_PER_QUESTION_MAX = 6
 
-    create_profiles(ratio, BATCH_SIZE, AV_COUNT)
+    create_profiles(ratio, BATCH_SIZE)
     create_questions(ratio * 10, BATCH_SIZE)
     create_question_likes(ratio * 100, BATCH_SIZE)
     create_answers(ratio * 100, BATCH_SIZE)
     create_answer_likes(ratio * 100, BATCH_SIZE)
     create_tags(ratio, BATCH_SIZE)
     link_questions2tags(TAGS_PER_QUESTION_MAX, BATCH_SIZE)
+    link_avatars2profiles(BATCH_SIZE, AV_COUNT)
 
     print('Data Base filled')
