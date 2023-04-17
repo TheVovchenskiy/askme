@@ -3,4 +3,4 @@ venv
 __pycache__
 *.log
 db.sqlite3
-AskMe/avatars
+AskMe/avatars*
