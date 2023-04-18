@@ -277,7 +277,10 @@ def create_likes(likes_target, likes_count,
 
 
 def generate_tag_name():
-    return fake.word()
+    characters = string.ascii_letters
+    length = random.randint(3, 7)
+    tag_name = ''.join(random.choice(characters) for i in range(length))
+    return tag_name
 
 
 def generate_tag():
@@ -347,12 +350,12 @@ def fill_data_base(ratio):
     AV_COUNT = count_files('avatars')
     TAGS_PER_QUESTION_MAX = 6
 
-    create_users(PROFILES_COUNT)
-    link_avatars2profiles(AV_COUNT)
-    create_questions(ratio * 10)
-    create_likes('questions', ratio * 100)
-    create_answers(ratio * 100)
-    create_likes('answers', ratio * 100)
+    # create_users(PROFILES_COUNT)
+    # link_avatars2profiles(AV_COUNT)
+    # create_questions(ratio * 10)
+    # create_likes('questions', ratio * 100)
+    # create_answers(ratio * 100)
+    # create_likes('answers', ratio * 100)
     create_tags(ratio)
     link_questions2tags(TAGS_PER_QUESTION_MAX)
 
