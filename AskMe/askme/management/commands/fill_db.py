@@ -136,7 +136,14 @@ def create_questions(quest_count):
                 questions.append(question)
                 pbar.update(1)
 
-    models.Question.objects.bulk_create(questions)
+                if len(questions) % BATCH_SIZE == 0:
+                    models.Question.objects.bulk_create(questions)
+                    quest_count -= len(questions)
+                    questions = []
+        
+    if questions:
+        models.Question.objects.bulk_create(questions)
+    
     print('Questions created successfully')
     print()
 
