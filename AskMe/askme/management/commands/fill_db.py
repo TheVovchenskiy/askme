@@ -15,6 +15,7 @@ import os
 Faker.seed(0)
 fake = Faker()
 
+BATCH_SIZE = 10_000
 
 class Command(BaseCommand):
     help = 'Fills the Data Base with data'
@@ -179,7 +180,13 @@ def create_answers(answ_count):
                     answers.append(answer)
                     pbar.update(1)
 
-    models.Answer.objects.bulk_create(answers)
+                    if len(answers) % BATCH_SIZE == 0:
+                        models.Answer.objects.bulk_create(answers)
+                        answ_count -= len(answers)
+                        answers = []
+
+    if answers:
+        models.Answer.objects.bulk_create(answers)
 
     print('Answers created successfully')
     print()
@@ -243,10 +250,20 @@ def create_likes(likes_target, likes_count,
                     likes.append(like)
                     pbar.update(1)
 
-    if likes_target == 'questions':
-        models.QuestionLike.objects.bulk_create(likes)
-    elif likes_target == 'answers':
-        models.AnswerLike.objects.bulk_create(likes)
+                    if len(likes) % BATCH_SIZE == 0:
+                        if likes_target == 'questions':
+                            models.QuestionLike.objects.bulk_create(likes)
+                        elif likes_target == 'answers':
+                            models.AnswerLike.objects.bulk_create(likes)
+                        
+                        likes_count -= len(likes)
+                        likes = []
+
+    if likes:
+        if likes_target == 'questions':
+            models.QuestionLike.objects.bulk_create(likes)
+        elif likes_target == 'answers':
+            models.AnswerLike.objects.bulk_create(likes)
 
     print(f'{likes_target.capitalize()} likes created successfully')
     print()
