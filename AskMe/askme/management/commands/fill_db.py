@@ -62,16 +62,17 @@ def create_users(us_count):
     usrnames = set()
 
     with tqdm(total=us_count) as pbar:
-        while len(usrs) < us_count:
-            user = generate_user()
-            if user.username not in usrnames and \
-                    user.email not in emails:
-                profile = models.Profile(user=user)
-                usrs.append(user)
-                profiles.append(profile)
-                emails.add(user.email)
-                usrnames.add(user.username)
-                pbar.update(1)
+        with transaction.atomic(), ThreadPoolExecutor() as executor:
+            while len(usrs) < us_count:
+                user = generate_user()
+                if user.username not in usrnames and \
+                        user.email not in emails:
+                    profile = models.Profile(user=user)
+                    usrs.append(user)
+                    profiles.append(profile)
+                    emails.add(user.email)
+                    usrnames.add(user.username)
+                    pbar.update(1)
 
     User.objects.bulk_create(usrs)
     models.Profile.objects.bulk_create(profiles)
@@ -275,7 +276,7 @@ def create_tags(tag_count):
                     tags.append(tag)
                     tag_names.add(tag.tag_name)
                     pbar.update(1)
-                    
+
     models.Tag.objects.bulk_create(tags)
     print('Tags created successfully')
     print()
