@@ -2,7 +2,8 @@ from askme import models
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 from django.core.management.base import BaseCommand
-from django.db.utils import IntegrityError
+from django.db import transaction
+from concurrent.futures import ThreadPoolExecutor
 from faker import Faker
 from faker.providers import internet, lorem
 import random
@@ -78,32 +79,6 @@ def create_users(us_count):
     print()
 
 
-# def generate_profile(user):
-#     profile = models.Profile(user=user)
-#     return profile
-
-
-# def create_profiles(batch_size):
-#     print('Creating profiles.')
-#     usrs_count = User.objects.count()
-#     profiles = []
-#     with tqdm(total=usrs_count):
-#         for user in User.objects:
-#             profile = generate_profile()
-#     for i in tqdm(range(usrs_count)):
-#         if i % batch_size == 0:
-#             end_pos = min(end_pos, usrs_count)
-
-#             users = User.objects.all()[start_pos:end_pos]
-#             start_pos += batch_size
-#             end_pos += batch_size
-#             profiles = [generate_profile(user) for user in users]
-#             models.Profile.objects.bulk_create(profiles)
-#             profiles = []
-
-#     print()
-
-
 def get_random_avatar(av_id_from=1, av_id_to=10):
     avatar_id = random.randint(av_id_from, av_id_to)
     with open(f'avatars/avatar-{avatar_id}.jpg', 'rb') as image:
@@ -115,7 +90,9 @@ def get_random_avatar(av_id_from=1, av_id_to=10):
 def link_avatars2profiles(av_count):
     print('Creating Profile avatars')
 
-    for profile in tqdm(models.Profile.objects.all()):
+    profiles = models.Profile.objects.all()
+
+    for profile in tqdm(profiles):
         image_data = get_random_avatar(av_id_to=av_count-1)
         profile.avatar.save(
             f'avatar-{profile.user.username}', ContentFile(image_data)
@@ -123,22 +100,6 @@ def link_avatars2profiles(av_count):
 
     print('Avatars created successfully')
     print()
-
-    # prof_count = models.Profile.objects.count()
-    # batch_size = min(batch_size, prof_count)
-    # start_pos, end_pos = 0, batch_size
-    # for i in tqdm(range(prof_count)):
-    #     if i % batch_size == 0:
-    #         end_pos = min(end_pos, prof_count)
-
-    #         profiles = models.Profile.objects.all()[start_pos:end_pos]
-    #         start_pos += batch_size
-    #         end_pos += batch_size
-    #         for profile in profiles:
-    #             image_data = get_random_avatar(av_id_to=av_count - 1)
-    #             profile.avatar.save(
-    #                 f'avatar-{profile.user.username}', ContentFile(image_data)
-    #             )
 
 
 def generate_question_title(wrds_count=6):
@@ -153,41 +114,29 @@ def generate_question_content(par_count=5, sntc_count=8):
     return content
 
 
-def get_random_instances(objects, objects_count=1):
-    return objects.order_by('?')[:objects_count]
-
-
-def generate_question():
-    return models.Question(
-        title=generate_question_title(),
-        content=generate_question_content(),
-        author=get_random_instances(models.Profile.objects).get(),
-    )
-
-
 def create_questions(quest_count):
     print('Creating Questions')
 
     questions = []
 
-    with tqdm(total=quest_count) as pbar: 
-        while len(questions) < quest_count:
-            question = generate_question()
-            questions.append(question)
-            pbar.update(1)
+    user_ids = models.Profile.objects.values_list('id', flat=True)
+
+    with tqdm(total=quest_count) as pbar:
+        with transaction.atomic(), ThreadPoolExecutor() as executor:
+            while len(questions) < quest_count:
+                author_id = random.choice(user_ids)
+
+                question = models.Question(
+                    title=generate_question_title(),
+                    content=generate_question_content(),
+                    author=models.Profile.objects.get(id=author_id),
+                )
+                questions.append(question)
+                pbar.update(1)
 
     models.Question.objects.bulk_create(questions)
     print('Questions created successfully')
     print()
-
-    # batch_size = min(batch_size, quest_count)
-    # for i in tqdm(range(quest_count)):
-    #     if i % batch_size == 0:
-    #         models.Question.objects.bulk_create(
-    #             [generate_question() for i in range(batch_size)]
-    #         )
-
-    # print()
 
 
 def generate_answer_content(par_count=3, sntc_count=6):
@@ -204,44 +153,35 @@ def generate_answer_correct_flag(true_weight=0.2, false_weight=0.8):
     return random.choices(correct_flags, correct_flags_weights)[0]
 
 
-def generate_answer():
-    content = generate_answer_content()
-    correct_flag = generate_answer_correct_flag()
-    question = get_random_instances(models.Question.objects).get()
-    author = get_random_instances(models.Profile.objects).get()
-
-    return models.Answer(
-        content=content,
-        correct_flag=correct_flag,
-        question=question,
-        author=author,
-    )
-
-
 def create_answers(answ_count):
     print('Creating Answers')
 
     answers = []
 
-    with tqdm(total=answ_count) as pbar:
-        while len(answers) < answ_count:
-            answer = generate_answer()
+    question_ids = models.Question.objects.values_list('id', flat=True)
+    user_ids = models.Profile.objects.values_list('id', flat=True)
 
-            if answer.author != answer.question.author:
-                answers.append(answer)
-                pbar.update(1)
+    with tqdm(total=answ_count) as pbar:
+        with transaction.atomic(), ThreadPoolExecutor() as executor:
+            while len(answers) < answ_count:
+                question_id = random.choice(question_ids)
+                author_id = random.choice(user_ids)
+
+                answer = models.Answer(
+                    content=generate_answer_content(),
+                    correct_flag=generate_answer_correct_flag(),
+                    question=models.Question.objects.get(id=question_id),
+                    author=models.Profile.objects.get(id=author_id)
+                )
+
+                if answer.author != answer.question.author:
+                    answers.append(answer)
+                    pbar.update(1)
 
     models.Answer.objects.bulk_create(answers)
 
     print('Answers created successfully')
     print()
-
-    # batch_size = min(batch_size, answ_count)
-    # for i in tqdm(range(answ_count)):
-    #     if i % batch_size == 0:
-    #         models.Answer.objects.bulk_create(
-    #             [generate_answer() for i in range(batch_size)]
-    #         )
 
 
 def get_random_vote(like_weight, dislike_wieight):
@@ -250,12 +190,13 @@ def get_random_vote(like_weight, dislike_wieight):
     return random.choices(vote_type_choices, vote_type_weights)[0]
 
 
-def create_likes(likes_target, likes_count, like_weight=0.5, dislike_weight=0.5,
-                 user_ids=None, target_ids=None):
+def create_likes(likes_target, likes_count,
+                 like_weight=0.5, dislike_weight=0.5):
+    print(f'Creating {likes_target.capitalize()} likes.')
 
     target_objects = {
-        'questions': models.Question.objects,
-        'answers': models.Answer.objects,
+        'questions': models.Question.objects.select_related('author__user'),
+        'answers': models.Answer.objects.select_related('author__user'),
     }[likes_target]
 
     like_model = {
@@ -263,45 +204,43 @@ def create_likes(likes_target, likes_count, like_weight=0.5, dislike_weight=0.5,
         'answers': models.AnswerLike,
     }[likes_target]
 
-    if not user_ids:
-        user_ids = models.Profile.objects.values_list('id', flat=True)
-    if not target_ids:
-        target_ids = target_objects.values_list('id', flat=True)
+    user_ids = models.Profile.objects.values_list('id', flat=True)
+    target_ids = target_objects.values_list('id', flat=True)
 
     unique_pairs = set()
     likes = []
 
-    print(f'Creating {likes_target.capitalize()} likes.')
     with tqdm(total=likes_count) as pbar:
-        while len(likes) < likes_count:
-            user_id = random.choice(user_ids)
-            target_id = random.choice(target_ids)
+        with transaction.atomic(), ThreadPoolExecutor() as executor:
+            while len(likes) < likes_count:
+                user_id = random.choice(user_ids)
+                target_id = random.choice(target_ids)
 
-            if (target_id, user_id) not in unique_pairs:
-                unique_pairs.add((target_id, user_id))
-                target = target_objects.get(id=target_id)
-                user = models.Profile.objects.get(id=user_id)
+                if (target_id, user_id) not in unique_pairs:
+                    unique_pairs.add((target_id, user_id))
+                    target = target_objects.get(id=target_id)
+                    user = models.Profile.objects.get(id=user_id)
 
-                if user.user == target.author.user:
-                    continue
+                    if user.user == target.author.user:
+                        continue
 
-                type = get_random_vote(like_weight, dislike_weight)
+                    type = get_random_vote(like_weight, dislike_weight)
 
-                if likes_target == 'questions':
-                    like = models.QuestionLike(
-                        user=user,
-                        question=target,
-                        type=type,
-                    )
-                elif likes_target == 'answers':
-                    like = models.AnswerLike(
-                        user=user,
-                        answer=target,
-                        type=type,
-                    )
+                    if likes_target == 'questions':
+                        like = models.QuestionLike(
+                            user=user,
+                            question=target,
+                            type=type,
+                        )
+                    elif likes_target == 'answers':
+                        like = models.AnswerLike(
+                            user=user,
+                            answer=target,
+                            type=type,
+                        )
 
-                likes.append(like)
-                pbar.update(1)
+                    likes.append(like)
+                    pbar.update(1)
 
     if likes_target == 'questions':
         models.QuestionLike.objects.bulk_create(likes)
@@ -323,19 +262,20 @@ def generate_tag():
 
 
 def create_tags(tag_count):
-    # batch_size = min(batch_size, tag_count)
     print('Creating Tags')
 
     tags = []
     tag_names = set()
     with tqdm(total=tag_count) as pbar:
-        while len(tags) < tag_count:
-            tag = generate_tag()
+        with transaction.atomic(), ThreadPoolExecutor() as executor:
+            while len(tags) < tag_count:
+                tag = generate_tag()
 
-            if tag.tag_name not in tag_names:
-                tags.append(tag)
-                tag_names.add(tag.tag_name)
-                pbar.update(1)
+                if tag.tag_name not in tag_names:
+                    tags.append(tag)
+                    tag_names.add(tag.tag_name)
+                    pbar.update(1)
+                    
     models.Tag.objects.bulk_create(tags)
     print('Tags created successfully')
     print()
@@ -346,29 +286,24 @@ def link_questions2tags(tags_per_question_max):
 
     quest_count = models.Question.objects.count()
 
-    for question in tqdm(models.Question.objects.all()):
-        tags_per_question = random.randint(1, tags_per_question_max)
-        question.tag.add(
-            *get_random_instances(models.Tag.objects, tags_per_question)
-        )
+    tag_ids = models.Tag.objects.values_list('id', flat=True)
+
+    questions = models.Question.objects.all()
+
+    with transaction.atomic(), ThreadPoolExecutor() as executor:
+        for question in tqdm(questions):
+            tags_per_question = random.randint(1, tags_per_question_max)
+
+            selected_tag_ids = [random.choice(tag_ids)
+                                for i in range(tags_per_question)]
+
+            selected_tags = [models.Tag.objects.get(id=tag_id)
+                            for tag_id in selected_tag_ids]
+            
+            question.tag.add(*selected_tags)
 
     print('Tags linked to Questions successfully')
     print()
-
-    # batch_size = min(batch_size, quest_count)
-    # start_pos, end_pos = 0, batch_size
-    # for i in tqdm(range(quest_count)):
-    #     if i % batch_size == 0:
-    #         end_pos = min(end_pos, quest_count)
-
-    #         questions = models.Question.objects.all()[start_pos:end_pos]
-    #         start_pos += batch_size
-    #         end_pos += batch_size
-    #         for question in questions:
-    #             tags_per_question = random.randint(1, tags_per_question_max)
-    #             question.tag.add(
-    #                 *get_random_instances(models.Tag.objects, tags_per_question)
-    #             )
 
 
 def count_files(path):
@@ -384,18 +319,15 @@ def fill_data_base(ratio):
     ANSWERS_COUNT = ratio * 100
     TAGS_COUNT = ratio
     VOTES_COUNT = ratio * 200
-    # BATCH_SIZE = 1000
     AV_COUNT = count_files('avatars')
     TAGS_PER_QUESTION_MAX = 6
 
     create_users(PROFILES_COUNT)
-    # create_profiles(BATCH_SIZE)
     link_avatars2profiles(AV_COUNT)
     create_questions(ratio * 10)
     create_likes('questions', ratio * 100)
     create_answers(ratio * 100)
     create_likes('answers', ratio * 100)
-    # create_answer_likes(ratio * 100, BATCH_SIZE)
     create_tags(ratio)
     link_questions2tags(TAGS_PER_QUESTION_MAX)
 
