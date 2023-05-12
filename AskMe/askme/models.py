@@ -38,11 +38,7 @@ class QuestionQuerySet(models.query.QuerySet):
         return self.order_by('-creation_date')
 
     def get_hottest(self):
-        return self.annotate(rating_count=models.Sum(models.Case(
-            models.When(questionlike__type='like', then=1),
-            models.When(questionlike__type='dislike', then=-1),
-            default=0,
-        ))).order_by('-rating_count')
+        return self.order_by('-rating')
 
     # def count_answers(self):
     #     return self.annotate(answers_count=models.Count('answer'))
@@ -72,6 +68,7 @@ class Question(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
     creation_date = models.DateTimeField(auto_now_add=True)
+    rating = models.IntegerField(default=0)
     human_format_rating = models.CharField(
         max_length=15, null=True, blank=True)
     author = models.ForeignKey(
@@ -82,18 +79,17 @@ class Question(models.Model):
 
     objects = QuestionManager()
 
-    def rating(self):
+    def setRating(self):
         likes = QuestionLike.objects.filter(question=self, type='like').count()
         dislikes = QuestionLike.objects.filter(
             question=self, type='dislike').count()
-        rating = likes - dislikes
-        return rating
+        self.rating = likes - dislikes
 
     def answers_count(self):
         return Answer.objects.filter(question=self).count()
 
     def __str__(self) -> str:
-        return f"'{self.author.user.username}': {self.title}"
+        return f"Question #{self.id}"
 
 
 class AnswerLike(models.Model):
@@ -130,11 +126,7 @@ class AnswerQuerySet(models.query.QuerySet):
         return self.order_by('-creation_date')
 
     def get_hottest(self):
-        return self.annotate(rating_count=models.Sum(models.Case(
-            models.When(answerlike__type='like', then=1),
-            models.When(answerlike__type='dislike', then=-1),
-            default=0,
-        ))).order_by('-rating_count')
+        return self.order_by('-rating')
 
 
 class AnswerManager(models.Manager):
@@ -155,6 +147,9 @@ class Answer(models.Model):
     content = models.TextField()
     creation_date = models.DateTimeField(auto_now_add=True)
     correct_flag = models.BooleanField()
+    rating = models.IntegerField(default=0)
+    human_format_rating = models.CharField(
+        max_length=15, null=True, blank=True)
     question = models.ForeignKey(
         'Question',
         on_delete=models.CASCADE
@@ -166,12 +161,11 @@ class Answer(models.Model):
 
     objects = AnswerManager()
 
-    def rating(self):
+    def setRating(self):
         likes = AnswerLike.objects.filter(answer=self, type='like').count()
         dislikes = AnswerLike.objects.filter(
             answer=self, type='dislike').count()
-        rating = likes - dislikes
-        return rating
+        self.rating = likes - dislikes
 
     def __str__(self) -> str:
         return f"Answer by '{self.author}' to {self.question}"

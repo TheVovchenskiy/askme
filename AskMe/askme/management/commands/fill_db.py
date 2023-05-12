@@ -276,6 +276,27 @@ def create_likes(likes_target, likes_count,
     print()
 
 
+def setRating(target, objects):
+    print(f'Setting {target} ratings')
+
+    objs = []
+    with transaction.atomic(), ThreadPoolExecutor() as executor:
+        for question in tqdm(objects.all()):
+            question.setRating()
+            objs.append(question)
+
+            if len(objs) % BATCH_SIZE == 0:
+                objects.bulk_update(objs, ["rating"])
+                objs = []
+        
+        if objs:
+            objects.bulk_update(objs, ["rating"])
+    
+    print(f'{target} ratings setted successfully')
+    print()
+            
+
+
 def generate_tag_name():
     characters = string.ascii_letters
     length = random.randint(3, 7)
@@ -354,9 +375,11 @@ def fill_data_base(ratio):
     # link_avatars2profiles(AV_COUNT)
     # create_questions(ratio * 10)
     # create_likes('questions', ratio * 100)
+    # setRating("Question", models.Question.objects)
     # create_answers(ratio * 100)
+    setRating("Answer", models.Answer.objects)
     # create_likes('answers', ratio * 100)
-    create_tags(ratio)
-    link_questions2tags(TAGS_PER_QUESTION_MAX)
+    # create_tags(ratio)
+    # link_questions2tags(TAGS_PER_QUESTION_MAX)
 
     print('Data Base filled')

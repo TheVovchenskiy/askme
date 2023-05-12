@@ -51,7 +51,7 @@ def question(request, question_id):
     # question.rating = question.count_rating()
     answers = question.answer_set.all()
     # answers = answers.count_rating()
-    answers = answers.get_newest()
+    answers = answers.get_hottest()
 
     popular_tags = models.Tag.objects.get_top_tags(10)
 
