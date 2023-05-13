@@ -1,7 +1,13 @@
+from django.contrib import auth
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import Http404, HttpResponseBadRequest
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.core.paginator import Paginator
 from django.db.models import Count, Case, When, F
+from django.urls import reverse
+from askme.forms import LoginForm
 from askme import models
 
 # Create your views here.
@@ -130,12 +136,29 @@ def tag(request, tag_name):
     return render(request, 'tag-questions.html', context)
 
 
-def login(request):
+def log_in(request):
     popular_tags = models.Tag.objects.get_top_tags(10)
+
+    if request.method == "GET":
+        login_form = LoginForm()
+    elif request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        login_form = LoginForm(request.POST)
+        if login_form.is_valid():
+            print(login_form.cleaned_data)
+            user = auth.authenticate(request=request, **login_form.cleaned_data)
+            if user:
+                login(request, user)
+                return redirect(reverse('index'))
+
+            login_form.add_error(None, "Invalid username or password")
+
 
     context = {
         'user': models.USER,
         'popular_tags': popular_tags,
+        'form': login_form,
     }
     return render(request, 'log-in.html', context)
 

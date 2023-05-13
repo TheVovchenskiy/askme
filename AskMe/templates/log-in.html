@@ -2,29 +2,34 @@
 
 {% load static %}
 
+{% load bootstrap5 %}
 {% block content %}
 
 <h2 class="section-title">Log In</h2>
-<form>
-  <!-- Alert -->
+<form novalidate method="post" action="{% url 'login' %}">
+  {% csrf_token %}
+
+  {% bootstrap_form form %}
+
+  {% comment %} <!-- Alert -->
   <div class="alert alert-danger" role="alert">
     Sorry, wrong email or password
   </div>
 
-  <!-- E-mail -->
+  <!-- Login -->
   <div class="mb-3">
-    <label for="InputEmail" class="form-label">Email address</label>
-    <input type="email" class="form-control form form-login" id="InputEmail" aria-describedby="emailHelp" />
+    <label for="InputLogin" class="form-label">Login</label>
+    <input type="text" name="username" class="form-control form form-login" id="InputLogin" />
   </div>
 
   <!-- Password -->
   <div class="mb-3">
     <label for="InputPassword" class="form-label">Password</label>
-    <input type="password" class="form-control form form-login" id="InputPassword" />
-  </div>
+    <input type="password" name="password" class="form-control form form-login" id="InputPassword" />
+  </div> {% endcomment %}
 
   <!-- Log in button -->
-  <a href="{% url 'index' %}?action=log_in" class="btn btn-primary log-in-btn">Log In</a><a href="{% url 'signin' %}"
+  <button type="submit" class="btn btn-primary log-in-btn">Log In</button><a href="{% url 'signin' %}"
     class="btn btn-outline-primary log-in-btn">Sign In</a>
 </form>
 
