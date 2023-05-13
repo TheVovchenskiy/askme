@@ -5,3 +5,6 @@ __pycache__
 db.sqlite3
 AskMe/avatars*
 AskMe/media/avatars/
+AskMe/data*
+*backups/
+*dump*
