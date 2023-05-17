@@ -6,27 +6,10 @@
 {% block content %}
 
 <h2 class="section-title">Log In</h2>
-<form novalidate method="post" action="{% url 'login' %}">
+<form novalidate method="post" action="{% url 'login' %}?continue={{ request.GET.continue }}">
   {% csrf_token %}
 
   {% bootstrap_form form %}
-
-  {% comment %} <!-- Alert -->
-  <div class="alert alert-danger" role="alert">
-    Sorry, wrong email or password
-  </div>
-
-  <!-- Login -->
-  <div class="mb-3">
-    <label for="InputLogin" class="form-label">Login</label>
-    <input type="text" name="username" class="form-control form form-login" id="InputLogin" />
-  </div>
-
-  <!-- Password -->
-  <div class="mb-3">
-    <label for="InputPassword" class="form-label">Password</label>
-    <input type="password" name="password" class="form-control form form-login" id="InputPassword" />
-  </div> {% endcomment %}
 
   <!-- Log in button -->
   <button type="submit" class="btn btn-primary log-in-btn">Log In</button><a href="{% url 'signup' %}"

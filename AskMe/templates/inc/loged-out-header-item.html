@@ -4,7 +4,7 @@
     <!-- Settings -->
     <div class="container">
       <div class="row nav-options">
-        <a href="{% url 'login' %}">log in</a>
+        <a href="{% url 'login' %}?continue={{ request.path }}">log in</a>
         <a href="{% url 'signup' %}">sign up</a>
       </div>
     </div>

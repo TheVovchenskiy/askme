@@ -78,7 +78,7 @@ def question(request, question_id):
     return render(request, 'question-page.html', context)
 
 
-@login_required(login_url='login')
+@login_required(login_url='login', redirect_field_name='continue')
 def ask(request):
     curr_user = checkUserAuth(request)
     user_avatar = getUserAvatar(curr_user)
@@ -93,7 +93,7 @@ def ask(request):
     return render(request, 'ask.html', context)
 
 
-@login_required(login_url='login')
+@login_required(login_url='login', redirect_field_name='continue')
 def settings(request):
     curr_user = checkUserAuth(request)
     user_avatar = getUserAvatar(curr_user)
@@ -161,6 +161,8 @@ def login(request):
     if curr_user:
         return redirect(reverse('index'))
 
+    # print("HTTP_REFERER: ", request.META.get('HTTP_REFERER'))
+    
     popular_tags = models.Tag.objects.get_top_tags(10)
 
     if request.method == "GET":
@@ -175,7 +177,9 @@ def login(request):
                 request=request, **login_form.cleaned_data)
             if user:
                 auth.login(request, user)
-                return redirect(reverse('index'))
+                continue_url = request.GET.get('continue', reverse('index'))
+                print(continue_url)
+                return redirect(continue_url)
 
             login_form.add_error(None, "Invalid username or password")
 
@@ -185,6 +189,12 @@ def login(request):
         'form': login_form,
     }
     return render(request, 'log-in.html', context)
+
+
+def logout(request):
+    auth.logout(request)
+    continue_url = request.GET.get('continue', reverse('index'))
+    return redirect(continue_url)
 
 
 def signup(request):
