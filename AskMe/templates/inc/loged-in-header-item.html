@@ -9,23 +9,27 @@
 
   <!-- Avatar -->
   <div class="container">
-    <a href="#"
-      ><div class="nav-avatar">
+    <a href="#">
+      {% with avatar_url=user_avatar.url avatar_type="nav-avatar"  %}
+      {% include "inc/avatar-item.html" %}
+      {% endwith %}
+
+      {% comment %} <div class="nav-avatar">
         <div>
           <img src="{% static "img/avatars/my-avatar.jpg" %}" alt="Avatar" />
         </div>
-      </div></a
-    >
+      </div> {% endcomment %}
+    </a>
   </div>
 
   <!-- Settings -->
   <div class="container">
     <div class="row">
-      <a href="#" class="nav-username">MyUsername</a>
+      <a href="#" class="nav-username">{{ user.username }}</a>
     </div>
     <div class="row nav-options">
       <a href="{% url 'settings' %}">settings</a>
-      <a href="{% url 'index' %}?action=log_out">log out</a>
+      <a href="{% url 'logout' %}">log out</a>
     </div>
   </div>
 </div>

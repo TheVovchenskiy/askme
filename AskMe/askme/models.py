@@ -2,9 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-USER = {
-    "status": True
-}
+# USER = {
+#     "status": False
+# }
 
 
 class QuestionLike(models.Model):
@@ -173,7 +173,10 @@ class Answer(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    avatar = models.ImageField(upload_to="avatars/%Y/%m/%d", blank=True)
+    avatar = models.ImageField(
+        upload_to="avatars/%Y/%m/%d",
+        default='avatars/default_avatar.jpg'
+    )
     signup_date = models.DateTimeField(auto_now_add=True)
 
     @property

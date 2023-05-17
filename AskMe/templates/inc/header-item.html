@@ -44,10 +44,10 @@
           </li>
         </ul>
 
-        {% if user.status %}
-          {% include "inc/loged-in-header-item.html" %}
-        {% else %}
+        {% if user is None %}
           {% include "inc/loged-out-header-item.html" %}
+        {% else %}
+          {% include "inc/loged-in-header-item.html" %}
         {% endif %}
       </div>
     </div>

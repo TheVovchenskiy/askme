@@ -17,16 +17,37 @@ fake = Faker()
 
 BATCH_SIZE = 10_000
 
+
 class Command(BaseCommand):
     help = 'Fills the Data Base with data'
 
     def add_arguments(self, parser):
-        parser.add_argument('ratio', type=int, help='Number of profiles')
+        parser.add_argument('--ratio', type=int, help='Number of profiles')
+        parser.add_argument(
+            '--update_passwords',
+            action='store_true',
+            help="Updates all users' passwords"
+        )
+        parser.add_argument(
+            '--update_avatars',
+            action='store_true',
+            help="Updates all users' avatars"
+        )
 
-    def handle(self, *args, **kwargs):
-        ratio = kwargs['ratio']
-        fill_data_base(ratio)
-        # print(__file__)
+    def handle(self, *args, **options):
+        ratio = options['ratio']
+        update_passwords_flag = options['update_passwords']
+        update_avatars_flag = options['update_avatars']
+
+        if update_passwords_flag:
+            updatePasswords()
+
+        if update_avatars_flag:
+            AV_COUNT = count_files('avatars')
+            link_avatars2profiles(AV_COUNT)
+
+        if ratio:
+            fill_data_base(ratio)
 
 
 def generate_password(length):
@@ -46,11 +67,9 @@ def generate_user(passw_len_from=8, passw_len_to=16):
     email = generate_email()
     password = generate_password(random.randint(passw_len_from, passw_len_to))
 
-    return User(
-        username=username,
-        email=email,
-        password=password
-    )
+    user = User(username=username, email=email)
+    user.set_password(password)
+    return user
 
 
 def create_users(us_count):
@@ -78,6 +97,30 @@ def create_users(us_count):
     User.objects.bulk_create(usrs)
     models.Profile.objects.bulk_create(profiles)
     print('Users created successfully')
+    print()
+
+
+def updatePasswords():
+    print('Updating passwords')
+
+    usrs = []
+    with transaction.atomic(), ThreadPoolExecutor() as executor:
+        for user in tqdm(User.objects.all()):
+            if user.is_staff:
+                continue
+
+            password = generate_password(random.randint(8, 16))
+            user.set_password(password)
+            usrs.append(user)
+
+            if len(usrs) % BATCH_SIZE == 0:
+                User.objects.bulk_update(usrs, ['password'])
+                usrs = []
+
+        if usrs:
+            User.objects.bulk_update(usrs, ['password'])
+
+    print('Passwords updated successfully')
     print()
 
 
@@ -140,10 +183,10 @@ def create_questions(quest_count):
                     models.Question.objects.bulk_create(questions)
                     quest_count -= len(questions)
                     questions = []
-        
+
     if questions:
         models.Question.objects.bulk_create(questions)
-    
+
     print('Questions created successfully')
     print()
 
@@ -262,7 +305,7 @@ def create_likes(likes_target, likes_count,
                             models.QuestionLike.objects.bulk_create(likes)
                         elif likes_target == 'answers':
                             models.AnswerLike.objects.bulk_create(likes)
-                        
+
                         likes_count -= len(likes)
                         likes = []
 
@@ -288,13 +331,12 @@ def setRating(target, objects):
             if len(objs) % BATCH_SIZE == 0:
                 objects.bulk_update(objs, ["rating"])
                 objs = []
-        
+
         if objs:
             objects.bulk_update(objs, ["rating"])
-    
+
     print(f'{target} ratings setted successfully')
     print()
-            
 
 
 def generate_tag_name():
@@ -347,8 +389,8 @@ def link_questions2tags(tags_per_question_max):
                                 for i in range(tags_per_question)]
 
             selected_tags = [models.Tag.objects.get(id=tag_id)
-                            for tag_id in selected_tag_ids]
-            
+                             for tag_id in selected_tag_ids]
+
             question.tag.add(*selected_tags)
 
     print('Tags linked to Questions successfully')
@@ -371,15 +413,15 @@ def fill_data_base(ratio):
     AV_COUNT = count_files('avatars')
     TAGS_PER_QUESTION_MAX = 6
 
-    # create_users(PROFILES_COUNT)
+    create_users(PROFILES_COUNT)
     link_avatars2profiles(AV_COUNT)
-    # create_questions(ratio * 10)
-    # create_likes('questions', ratio * 100)
-    # setRating("Question", models.Question.objects)
-    # create_answers(ratio * 100)
-    # setRating("Answer", models.Answer.objects)
-    # create_likes('answers', ratio * 100)
-    # create_tags(ratio)
-    # link_questions2tags(TAGS_PER_QUESTION_MAX)
+    create_questions(ratio * 10)
+    create_likes('questions', ratio * 100)
+    setRating("Question", models.Question.objects)
+    create_answers(ratio * 100)
+    setRating("Answer", models.Answer.objects)
+    create_likes('answers', ratio * 100)
+    create_tags(ratio)
+    link_questions2tags(TAGS_PER_QUESTION_MAX)
 
     print('Data Base filled')

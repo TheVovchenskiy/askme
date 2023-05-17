@@ -1,5 +1,5 @@
 from django.contrib import auth
-from django.contrib.auth import login
+# from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import Http404, HttpResponseBadRequest
@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render
 from django.core.paginator import Paginator
 from django.db.models import Count, Case, When, F
 from django.urls import reverse
-from askme.forms import LoginForm
+from askme.forms import LoginForm, RegistrationForm
 from askme import models
 
 # Create your views here.
@@ -15,7 +15,7 @@ from askme import models
 # Converts num into human readable format (1000 -> 1K)
 
 
-def human_format(num):
+def humanFormat(num):
     num = float('{:.3g}'.format(num))
     magnitude = 0
     while abs(num) >= 1000:
@@ -26,12 +26,10 @@ def human_format(num):
 
 
 def index(request):
-    action = request.GET.get("action", None)
-    if action == "log_out":
-        models.USER["status"] = False
-    elif action == "log_in":
-        models.USER["status"] = True
+    curr_user = checkUserAuth(request)
+    user_avatar = getUserAvatar(curr_user)
 
+    # print(curr_user)
     questions = models.Question.objects
     questions = questions.get_newest()
     # questions = questions.count_answers()
@@ -46,13 +44,17 @@ def index(request):
 
     context = {
         'questions': page,
-        'user': models.USER,
+        'user': curr_user,
+        'user_avatar': user_avatar,
         'popular_tags': popular_tags,
     }
     return render(request, 'index.html', context)
 
 
 def question(request, question_id):
+    curr_user = checkUserAuth(request)
+    user_avatar = getUserAvatar(curr_user)
+
     question = models.Question.objects.get(id=question_id)
     # question.rating = question.count_rating()
     answers = question.answer_set.all()
@@ -67,35 +69,48 @@ def question(request, question_id):
         return HttpResponseBadRequest("Bad request")
 
     context = {
-        "question": question,
-        "answers": page,
-        "user": models.USER,
+        'question': question,
+        'answers': page,
+        'user': curr_user,
+        'user_avatar': user_avatar,
         'popular_tags': popular_tags,
     }
     return render(request, 'question-page.html', context)
 
 
+@login_required(login_url='login')
 def ask(request):
+    curr_user = checkUserAuth(request)
+    user_avatar = getUserAvatar(curr_user)
+
     popular_tags = models.Tag.objects.get_top_tags(10)
 
     context = {
-        "user": models.USER,
+        'user': curr_user,
+        'user_avatar': user_avatar,
         'popular_tags': popular_tags,
     }
     return render(request, 'ask.html', context)
 
 
+@login_required(login_url='login')
 def settings(request):
+    curr_user = checkUserAuth(request)
+    user_avatar = getUserAvatar(curr_user)
     popular_tags = models.Tag.objects.get_top_tags(10)
 
     context = {
-        "user": models.USER,
+        'user': curr_user,
+        'user_avatar': user_avatar,
         'popular_tags': popular_tags,
     }
     return render(request, 'settings.html', context)
 
 
 def hot(request):
+    curr_user = checkUserAuth(request)
+    user_avatar = getUserAvatar(curr_user)
+
     questions = models.Question.objects
     # questions = questions.count_answers()
     # questions = questions.count_rating()
@@ -110,13 +125,17 @@ def hot(request):
 
     context = {
         'questions': page,
-        'user': models.USER,
+        'user': curr_user,
+        'user_avatar': user_avatar,
         'popular_tags': popular_tags,
     }
     return render(request, 'hot-questions.html', context)
 
 
 def tag(request, tag_name):
+    curr_user = checkUserAuth(request)
+    user_avatar = getUserAvatar(curr_user)
+
     questions = models.Question.objects.get_tag_questions(tag_name)
     questions = questions.get_newest()
 
@@ -130,13 +149,18 @@ def tag(request, tag_name):
     context = {
         'questions': page,
         'tag_name': tag_name,
-        'user': models.USER,
+        'user': curr_user,
+        'user_avatar': user_avatar,
         'popular_tags': popular_tags,
     }
     return render(request, 'tag-questions.html', context)
 
 
-def log_in(request):
+def login(request):
+    curr_user = checkUserAuth(request)
+    if curr_user:
+        return redirect(reverse('index'))
+
     popular_tags = models.Tag.objects.get_top_tags(10)
 
     if request.method == "GET":
@@ -146,31 +170,50 @@ def log_in(request):
         password = request.POST['password']
         login_form = LoginForm(request.POST)
         if login_form.is_valid():
-            print(login_form.cleaned_data)
-            user = auth.authenticate(request=request, **login_form.cleaned_data)
+            # print(login_form.cleaned_data)
+            user = auth.authenticate(
+                request=request, **login_form.cleaned_data)
             if user:
-                login(request, user)
+                auth.login(request, user)
                 return redirect(reverse('index'))
 
             login_form.add_error(None, "Invalid username or password")
 
-
     context = {
-        'user': models.USER,
+        'user': curr_user,
         'popular_tags': popular_tags,
         'form': login_form,
     }
     return render(request, 'log-in.html', context)
 
 
-def signin(request):
+def signup(request):
+    curr_user = checkUserAuth(request)
+    if curr_user:
+        return redirect(reverse('index'))
+
     popular_tags = models.Tag.objects.get_top_tags(10)
 
+    if request.method == "GET":
+        user_form = RegistrationForm()
+    elif request.method == "POST":
+        user_form = RegistrationForm(request.POST)
+        if user_form.is_valid():
+            new_user = user_form.save()
+            if new_user:
+                auth.login(request, new_user)
+                new_profile = models.Profile(user=new_user)
+                new_profile.save()
+                return redirect(reverse('index'))
+            else:
+                user_form.add_error(field=None, error='User saving error')
+
     context = {
-        'user': models.USER,
+        'user': curr_user,
         'popular_tags': popular_tags,
+        'form': user_form,
     }
-    return render(request, 'sign-in.html', context)
+    return render(request, 'sign-up.html', context)
 
 
 def paginate(objects_list, request, per_page=10):
@@ -195,3 +238,20 @@ def paginate(objects_list, request, per_page=10):
         page_num, on_each_side=1, on_ends=1)
 
     return page
+
+
+def checkUserAuth(request):
+    curr_user = request.user
+    if curr_user.is_anonymous:
+        curr_user = None
+
+    return curr_user
+
+
+def getUserAvatar(user):
+    if user:
+        profile = models.Profile.objects.get(user=user)
+        avatar = profile.avatar
+    else:
+        avatar = None
+    return avatar

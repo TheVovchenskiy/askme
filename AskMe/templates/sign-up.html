@@ -1,12 +1,18 @@
 {% extends "inc/base.html" %}
 
 {% load static %}
+{% load bootstrap5 %}
 
 {% block content %}
 
-<h2 class="section-title">Sign In</h2>
-<form>
-  <!-- Alert -->
+<h2 class="section-title">Sign Up</h2>
+<form novalidate method="post" action="{% url 'signup' %}">
+  {% csrf_token %}
+
+  {% bootstrap_form form %}
+
+  <button type="submit" class="btn btn-primary log-in-btn">Sign Up</button>
+  {% comment %} <!-- Alert -->
   <div class="alert alert-danger" role="alert">
     Sorry, this email already exists
   </div>
@@ -71,7 +77,7 @@
     href="{% url 'index' %}?action=log_in"
     class="btn btn-primary log-in-btn"
     >Sign In</a
-  >
+  > {% endcomment %}
 </form>
 
 {% endblock content %}

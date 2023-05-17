@@ -6,11 +6,17 @@
     <div class="col-2 border-end border-4">
       <!-- Avatar -->
       <a href="#">
-        <div class="question-avatar">
+
+        {% with avatar_url=question.author.avatar.url avatar_type="question-avatar" %}
+        {% include "inc/avatar-item.html" %}
+        {% endwith %}
+
+        {% comment %} <div class="question-avatar">
           <div>
             <img src="{{ question.author.avatar.url }}" alt="Avatar" />
           </div>
-        </div>
+        </div> {% endcomment %}
+
       </a>
       <!-- Username -->
       <div class="username">
