@@ -1,12 +1,21 @@
 {% extends "inc/base.html" %}
 
+{% load bootstrap5 %}
 {% load static %}
 
 {% block content %}
 
 <h2 class="section-title">Settings</h2>
-<form>
-  <!-- Email -->
+<form novalidate method="post" action="{% url 'settings' %}">
+  {% csrf_token %}
+
+  {% bootstrap_form form %}
+  
+
+  {% with avatar_url=user_avatar.url avatar_type="settings-avatar" %}
+  {% include "inc/avatar-item.html" %}
+  {% endwith %}
+  {% comment %} <!-- Email -->
   <div class="mb-3">
     <label for="InputEmail" class="form-label">Email address</label>
     <input
@@ -38,22 +47,19 @@
       type="file"
       id="formAvatar"
     />
-  </div>
-  <div class="settings-avatar">
+  </div> {% endcomment %}
+    
+  {% comment %} <div class="settings-avatar">
     <div>
       <img
         src="../../static/img/avatars/my-avatar.jpg"
         alt="Avatar"
       />
     </div>
-  </div>
+  </div> {% endcomment %}
 
   <!-- Accept button -->
-  <a
-    href="../loged-in/index.html"
-    class="btn btn-primary log-in-btn"
-    >Accept</a
-  >
+  <button type="submit" class="btn btn-primary log-in-btn">Accept</button>
 </form>
 
 {% endblock content %}

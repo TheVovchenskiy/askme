@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserChangeForm
 from askme.models import Profile
 
 
@@ -25,4 +26,15 @@ class RegistrationForm(forms.ModelForm):
         password_check = self.cleaned_data['password_check']
         if password != password_check:
             raise forms.ValidationError("Passwords do not match")
-        
+
+
+class SettingsForm(UserChangeForm):
+    avatar = forms.ImageField(required=False)
+    class Meta:
+        model = User
+        fields = ['email', 'username']
+
+    def __init__(self, *args, **kwargs):
+        super(SettingsForm, self).__init__(*args, **kwargs)
+        self.fields.pop('password')
+        # self.fields['avatar'].initial = self.instance.profile.avatar

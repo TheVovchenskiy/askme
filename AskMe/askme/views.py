@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render
 from django.core.paginator import Paginator
 from django.db.models import Count, Case, When, F
 from django.urls import reverse
-from askme.forms import LoginForm, RegistrationForm
+from askme.forms import LoginForm, RegistrationForm, SettingsForm
 from askme import models
 
 # Create your views here.
@@ -99,10 +99,33 @@ def settings(request):
     user_avatar = getUserAvatar(curr_user)
     popular_tags = models.Tag.objects.get_top_tags(10)
 
+    if request.method == "GET":
+        settings_form = SettingsForm(initial={
+            'username': curr_user.username,
+            'email': curr_user.email,
+            'avatar': None
+        })
+    elif request.method == "POST":
+        settings_form = SettingsForm(
+            request.POST,
+            request.FILES,
+            instance=curr_user
+        )
+        if settings_form.is_valid():
+            print(request.POST)
+            curr_user = settings_form.save(commit=False)
+            curr_user.profile.avatar = settings_form.cleaned_data['avatar']
+            curr_user.save()
+            if curr_user:
+                return redirect('settings')
+            else:
+                settings_form.add_error(field=None, error='User saving error')
+
     context = {
         'user': curr_user,
         'user_avatar': user_avatar,
         'popular_tags': popular_tags,
+        'form': settings_form,
     }
     return render(request, 'settings.html', context)
 
@@ -112,8 +135,6 @@ def hot(request):
     user_avatar = getUserAvatar(curr_user)
 
     questions = models.Question.objects
-    # questions = questions.count_answers()
-    # questions = questions.count_rating()
     questions = questions.get_hottest()
 
     popular_tags = models.Tag.objects.get_top_tags(10)
@@ -161,8 +182,6 @@ def login(request):
     if curr_user:
         return redirect(reverse('index'))
 
-    # print("HTTP_REFERER: ", request.META.get('HTTP_REFERER'))
-    
     popular_tags = models.Tag.objects.get_top_tags(10)
 
     if request.method == "GET":
