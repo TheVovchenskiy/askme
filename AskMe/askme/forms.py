@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserChangeForm
-from askme.models import Profile
+from askme import models
 
 
 class LoginForm(forms.Form):
@@ -30,6 +30,7 @@ class RegistrationForm(forms.ModelForm):
 
 class SettingsForm(UserChangeForm):
     avatar = forms.ImageField(required=False)
+
     class Meta:
         model = User
         fields = ['email', 'username']
@@ -38,3 +39,13 @@ class SettingsForm(UserChangeForm):
         super(SettingsForm, self).__init__(*args, **kwargs)
         self.fields.pop('password')
         # self.fields['avatar'].initial = self.instance.profile.avatar
+
+
+class AddQuestionForm(forms.ModelForm):
+    tags = forms.CharField(
+        help_text='Add tags for your question, separated by space'
+    )
+
+    class Meta:
+        model = models.Question
+        fields = ['title', 'content']

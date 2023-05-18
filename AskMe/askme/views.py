@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render
 from django.core.paginator import Paginator
 from django.db.models import Count, Case, When, F
 from django.urls import reverse
-from askme.forms import LoginForm, RegistrationForm, SettingsForm
+from askme.forms import AddQuestionForm, LoginForm, RegistrationForm, SettingsForm
 from askme import models
 
 # Create your views here.
@@ -82,15 +82,58 @@ def question(request, question_id):
 def ask(request):
     curr_user = checkUserAuth(request)
     user_avatar = getUserAvatar(curr_user)
-
     popular_tags = models.Tag.objects.get_top_tags(10)
+
+    print(request.GET)
+    print(request.POST)
+
+    if request.method == "GET":
+        add_question_form = AddQuestionForm()
+    elif request.method == "POST":
+        add_question_form = AddQuestionForm(request.POST)
+        if add_question_form.is_valid():
+            title = add_question_form.cleaned_data['title']
+            content = add_question_form.cleaned_data['content']
+            tags = add_question_form.cleaned_data['tags']
+            tags = getTagsList(tags)
+            addAbsentTags(tags)
+            
+            question = models.Question(
+                title=title,
+                content=content,
+                author=models.Profile.objects.get(user=curr_user)
+            )
+
+            selected_tags = [models.Tag.objects.get(tag_name=tag_name)
+                             for tag_name in tags]
+            print(selected_tags)
+
+            question.save()
+            question.tag.add(*selected_tags)
+
+            if models.Question.objects.filter(id=question.id):
+                return redirect('question', question_id=question.id)
+            else:
+                add_question_form.add_error(
+                    field=None, error='Question adding error')
 
     context = {
         'user': curr_user,
         'user_avatar': user_avatar,
         'popular_tags': popular_tags,
+        'form': add_question_form,
     }
     return render(request, 'ask.html', context)
+
+
+def getTagsList(tags):
+    return tags.split()
+
+
+def addAbsentTags(tags):
+    for tag in tags:
+        if not models.Tag.objects.filter(tag_name=tag):
+            models.Tag(tag_name=tag).save()
 
 
 @login_required(login_url='login', redirect_field_name='continue')

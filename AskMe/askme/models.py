@@ -2,11 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-# USER = {
-#     "status": False
-# }
-
-
 class QuestionLike(models.Model):
     user = models.ForeignKey(
         'Profile',
