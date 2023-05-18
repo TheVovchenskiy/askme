@@ -1,5 +1,6 @@
 {% extends "inc/base.html" %}
 
+{% load bootstrap5 %}
 {% load static %}
 
 {% block content %}
@@ -14,7 +15,7 @@
         {% with avatar_url=question.author.avatar.url avatar_type="question-avatar" %}
         {% include "inc/avatar-item.html" %}
         {% endwith %}
-        
+
         {% comment %} <div class="question-avatar">
           <div>
             <img src="{{ question.author.avatar.url }}" alt="Avatar" />
@@ -60,16 +61,26 @@
 {% include "inc/pagination-item.html" %}
 {% endwith %}
 
+
 <!-- Answer form -->
 <div class="answer-form">
-  <div class="form-floating">
+  <form novalidate method="post" action="{% url 'question' question.id %}">
+    {% csrf_token %}
+  
+    {% bootstrap_form form %}
+  
+    <button type="submit" class="btn btn-outline-primary answer-btn" style="margin-bottom: 5px">Answer!</button>
+  
+  </form>
+
+  {% comment %} <div class="form-floating">
     <textarea class="form-control form" placeholder="Enter your answer here" id="your-answer"
       style="height: 100px"></textarea>
     <label for="your-answer">Enter your answer here</label>
     <button type="button" class="btn btn-outline-primary answer-btn">
       Answer
     </button>
-  </div>
+  </div> {% endcomment %}
 </div>
 
 {% endblock content %}

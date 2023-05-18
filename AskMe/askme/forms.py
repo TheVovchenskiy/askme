@@ -49,3 +49,17 @@ class AddQuestionForm(forms.ModelForm):
     class Meta:
         model = models.Question
         fields = ['title', 'content']
+
+
+class AddAnswerForm(forms.ModelForm):
+
+    class Meta:
+        model = models.Answer
+        fields = ['content']
+        labels = {
+            'content': "Your answer"
+        }
+        help_texts = {
+            'content': 'Answer to this question'
+        }
+    

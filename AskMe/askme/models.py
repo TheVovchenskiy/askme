@@ -141,10 +141,10 @@ class AnswerManager(models.Manager):
 class Answer(models.Model):
     content = models.TextField()
     creation_date = models.DateTimeField(auto_now_add=True)
-    correct_flag = models.BooleanField()
+    correct_flag = models.BooleanField(default=False)
     rating = models.IntegerField(default=0)
-    human_format_rating = models.CharField(
-        max_length=15, null=True, blank=True)
+    # human_format_rating = models.CharField(
+    #     max_length=15, null=True, blank=True)
     question = models.ForeignKey(
         'Question',
         on_delete=models.CASCADE

@@ -1,6 +1,6 @@
 {% load static %}
 <!-- Answer -->
-<div class="answer {% if answer.correct_flag %}answer-accept{% endif %}">
+<div id="{{ answer.id }}" class="answer {% if answer.correct_flag %}answer-accept{% endif %}">
   <div class="row">
     <div class="col-2 border-end border-4">
       <!-- Avatar -->
@@ -32,7 +32,7 @@
           <!-- Accept btn -->
           <input type="checkbox" class="btn-check" id="btn-accept-{{ answer.id }}" autocomplete="off"
             {% if answer.correct_flag %}checked{% endif %} {% comment %}fsfsf {% endcomment %}
-            {% if not user.status %}disabled{% endif %} />
+            {% if not user.id == question.author.user.id %}disabled{% endif %} />
           <label class="btn btn-outline-success btn-sm" for="btn-accept-{{ answer.id }}">
             <svg width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
               <path

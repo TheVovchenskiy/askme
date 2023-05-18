@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render
 from django.core.paginator import Paginator
 from django.db.models import Count, Case, When, F
 from django.urls import reverse
-from askme.forms import AddQuestionForm, LoginForm, RegistrationForm, SettingsForm
+from askme.forms import AddAnswerForm, AddQuestionForm, LoginForm, RegistrationForm, SettingsForm
 from askme import models
 
 # Create your views here.
@@ -56,9 +56,7 @@ def question(request, question_id):
     user_avatar = getUserAvatar(curr_user)
 
     question = models.Question.objects.get(id=question_id)
-    # question.rating = question.count_rating()
     answers = question.answer_set.all()
-    # answers = answers.count_rating()
     answers = answers.get_hottest()
 
     popular_tags = models.Tag.objects.get_top_tags(10)
@@ -68,12 +66,36 @@ def question(request, question_id):
     except ValueError:
         return HttpResponseBadRequest("Bad request")
 
+    if request.method == "GET":
+        add_answer_form = AddAnswerForm()
+    elif request.method == "POST":
+        add_answer_form = AddAnswerForm(request.POST)
+        if add_answer_form.is_valid():
+            content = add_answer_form.cleaned_data['content']
+
+            answer = models.Answer(
+                content=content,
+                question=question,
+                author=models.Profile.objects.get(user=curr_user)
+            )
+            answer.save()
+
+            if models.Answer.objects.filter(id=answer.id):
+                return redirect(
+                    'question',
+                    question_id=question.id,
+                )
+            else:
+                add_answer_form.add_error(
+                    field=None, error='Answer adding error')
+
     context = {
         'question': question,
         'answers': page,
         'user': curr_user,
         'user_avatar': user_avatar,
         'popular_tags': popular_tags,
+        'form': add_answer_form,
     }
     return render(request, 'question-page.html', context)
 
@@ -97,7 +119,7 @@ def ask(request):
             tags = add_question_form.cleaned_data['tags']
             tags = getTagsList(tags)
             addAbsentTags(tags)
-            
+
             question = models.Question(
                 title=title,
                 content=content,
