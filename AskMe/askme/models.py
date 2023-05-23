@@ -2,6 +2,10 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+LIKE = 'like'
+DISLIKE = 'dislike'
+
+
 class QuestionLike(models.Model):
     user = models.ForeignKey(
         'Profile',
@@ -12,8 +16,6 @@ class QuestionLike(models.Model):
         on_delete=models.CASCADE
     )
 
-    LIKE = 'like'
-    DISLIKE = 'dislike'
     TYPE_CHOICES = [
         (LIKE, 'Like'),
         (DISLIKE, 'Dislike')
@@ -97,8 +99,6 @@ class AnswerLike(models.Model):
         on_delete=models.CASCADE
     )
 
-    LIKE = 'like'
-    DISLIKE = 'dislike'
     TYPE_CHOICES = [
         (LIKE, 'Like'),
         (DISLIKE, 'Dislike')

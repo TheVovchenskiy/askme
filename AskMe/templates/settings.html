@@ -12,9 +12,9 @@
   {% bootstrap_form form %}
 
 
-  {% comment %} {% with avatar_url=user_avatar.url avatar_type="settings-avatar" %}
+  {% with avatar_url=user_avatar.url avatar_type="settings-avatar" %}
   {% include "inc/avatar-item.html" %}
-  {% endwith %} {% endcomment %}
+  {% endwith %}
 
   <!-- Accept button -->
   <button type="submit" class="btn btn-primary log-in-btn">Accept</button>

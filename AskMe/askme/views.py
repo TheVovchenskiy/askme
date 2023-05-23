@@ -1,8 +1,9 @@
 from django.contrib import auth
 # from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_http_methods, require_POST
 from django.contrib.auth.models import User
-from django.http import Http404, HttpResponseBadRequest
+from django.http import Http404, HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import redirect, render
 from django.core.paginator import Paginator
 from django.db.models import Count, Case, When, F
@@ -101,6 +102,7 @@ def question(request, question_id):
 
 
 @login_required(login_url='login', redirect_field_name='continue')
+@require_http_methods(['GET', 'POST'])
 def ask(request):
     curr_user = checkUserAuth(request)
     user_avatar = getUserAvatar(curr_user)
@@ -159,6 +161,7 @@ def addAbsentTags(tags):
 
 
 @login_required(login_url='login', redirect_field_name='continue')
+@require_http_methods(['GET', 'POST'])
 def settings(request):
     curr_user = checkUserAuth(request)
     user_avatar = getUserAvatar(curr_user)
@@ -349,3 +352,75 @@ def getUserAvatar(user):
     else:
         avatar = None
     return avatar
+
+
+@login_required
+@require_POST
+def vote_up(request):
+    question_id = request.POST['question_id']
+    question = models.Question.objects.get(id=question_id)
+
+    votes = question.questionlike_set.filter(user=request.user.profile)
+
+    if not votes:
+        like = models.QuestionLike(
+            user=request.user.profile,
+            question=question,
+            type=models.LIKE,
+        )
+        like.save()
+        question.rating += 1
+        question.save()
+
+    elif votes[0].type == models.DISLIKE:
+        votes[0].type = models.LIKE
+        votes[0].save()
+
+        question.rating += 2
+        question.save()
+
+    else:
+        votes[0].delete()
+
+        question.rating -= 1
+        question.save()
+
+    return JsonResponse({
+        'new_rating': question.rating,
+    })
+
+
+@login_required
+@require_POST
+def vote_down(request):
+    question_id = request.POST['question_id']
+    question = models.Question.objects.get(id=question_id)
+
+    votes = question.questionlike_set.filter(user=request.user.profile)
+
+    if not votes:
+        dislike = models.QuestionLike(
+            user=request.user.profile,
+            question=question,
+            type=models.DISLIKE,
+        )
+        dislike.save()
+        question.rating -= 1
+        question.save()
+
+    elif votes[0].type == models.LIKE:
+        votes[0].type = models.DISLIKE
+        votes[0].save()
+
+        question.rating -= 2
+        question.save()
+
+    else:
+        votes[0].delete()
+
+        question.rating += 1
+        question.save()
+
+    return JsonResponse({
+        'new_rating': question.rating,
+    })
