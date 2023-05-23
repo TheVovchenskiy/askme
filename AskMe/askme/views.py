@@ -173,14 +173,11 @@ def settings(request):
     elif request.method == "POST":
         settings_form = SettingsForm(
             request.POST,
-            request.FILES,
+            files=request.FILES,
             instance=curr_user
         )
         if settings_form.is_valid():
-            print(request.POST)
-            curr_user = settings_form.save(commit=False)
-            curr_user.profile.avatar = settings_form.cleaned_data['avatar']
-            curr_user.save()
+            settings_form.save()
             if curr_user:
                 return redirect('settings')
             else:
@@ -291,13 +288,16 @@ def signup(request):
     if request.method == "GET":
         user_form = RegistrationForm()
     elif request.method == "POST":
-        user_form = RegistrationForm(request.POST)
+        user_form = RegistrationForm(
+            request.POST,
+            files=request.FILES,
+        )
         if user_form.is_valid():
             new_user = user_form.save()
             if new_user:
                 auth.login(request, new_user)
-                new_profile = models.Profile(user=new_user)
-                new_profile.save()
+                # new_profile = models.Profile(user=new_user)
+                # new_profile.save()
                 return redirect(reverse('index'))
             else:
                 user_form.add_error(field=None, error='User saving error')

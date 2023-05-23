@@ -6,78 +6,13 @@
 {% block content %}
 
 <h2 class="section-title">Sign Up</h2>
-<form novalidate method="post" action="{% url 'signup' %}">
+<form novalidate method="post" enctype="multipart/form-data" action="{% url 'signup' %}">
   {% csrf_token %}
 
   {% bootstrap_form form %}
 
   <button type="submit" class="btn btn-primary log-in-btn">Sign Up</button>
-  {% comment %} <!-- Alert -->
-  <div class="alert alert-danger" role="alert">
-    Sorry, this email already exists
-  </div>
 
-  <!-- Email -->
-  <div class="mb-3">
-    <label for="InputEmail" class="form-label">Email address</label>
-    <input
-      type="email"
-      class="form-control form form-login"
-      id="InputEmail"
-    />
-    <div id="emailHelp" class="form-text">
-      We'll never share your email with anyone else.
-    </div>
-  </div>
-
-  <!-- Username -->
-  <div class="mb-3">
-    <label for="InputUsername" class="form-label">Username</label>
-    <input
-      type="email"
-      class="form-control form form-login"
-      id="InputUsername"
-    />
-  </div>
-
-  <!-- Password -->
-  <div class="mb-3">
-    <label for="InputPassword" class="form-label">Password</label>
-    <input
-      type="password"
-      class="form-control form form-login"
-      id="InputPassword"
-    />
-  </div>
-
-  <!-- Repeat password -->
-  <div class="mb-3">
-    <label for="InputRepeatPassword" class="form-label"
-      >Repeat password</label
-    >
-    <input
-      type="password"
-      class="form-control form form-login"
-      id="InputRepeatPassword"
-    />
-  </div>
-
-  <!-- Upload avatar -->
-  <div class="mb-3">
-    <label for="formAvatar" class="form-label">Choose avatar</label>
-    <input
-      class="form-control form form-login"
-      type="file"
-      id="formAvatar"
-    />
-  </div>
-
-  <!-- Sign in button -->
-  <a
-    href="{% url 'index' %}?action=log_in"
-    class="btn btn-primary log-in-btn"
-    >Sign In</a
-  > {% endcomment %}
 </form>
 
 {% endblock content %}
