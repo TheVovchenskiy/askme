@@ -96,3 +96,29 @@ $(".vote-down").on("click", function (ev) {
     })
   );
 });
+
+$(".correct-answer").on("click", function (ev) {
+  const answerId = $(this).data("answer-id");
+  const questionId = $(this).data("question-id");
+  console.log(answerId);
+  const bodyData = `answer_id=${answerId}&question_id=${questionId}`;
+  console.log(bodyData);
+
+  const request = new Request("http://127.0.0.1:8000/accept_answer", {
+    headers: {
+      "X-CSRFToken": csrftoken,
+      "Content-type": "application/x-www-form-urlencoded;charset=UTF-8",
+    },
+    method: "POST",
+    body: bodyData,
+  });
+
+  fetch(request)
+    .then((response_raw) => response_raw.json())
+    .then((response_json) => {
+      console.log(response_json.correct_flag);
+    })
+    .catch((error) => {
+      // Обработка ошибок, если необходимо
+    });
+});

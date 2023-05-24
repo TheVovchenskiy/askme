@@ -10,11 +10,6 @@
         {% include "inc/avatar-item.html" %}
         {% endwith %}
 
-        {% comment %} <div class="question-avatar">
-          <div>
-            <img src="{{ answer.author.avatar.url }}" alt="Avatar" />
-          </div>
-        </div> {% endcomment %}
       </a>
       <!-- Username -->
       <div class="username">
@@ -30,9 +25,9 @@
       <div class="col-2">
         <div class="accept-answer-btn">
           <!-- Accept btn -->
-          <input type="checkbox" class="btn-check" id="btn-accept-{{ answer.id }}" autocomplete="off"
-            {% if answer.correct_flag %}checked{% endif %} {% comment %}fsfsf {% endcomment %}
-            {% if not user.id == question.author.user.id %}disabled{% endif %} />
+          <input type="checkbox" class="btn-check correct-answer" id="btn-accept-{{ answer.id }}"
+            data-answer-id="{{ answer.id }}" data-question-id="{{ question.id }}" autocomplete="off" {% if answer.correct_flag %}checked{% endif %}
+            {% comment %}fsfsf {% endcomment %} {% if not user.id == question.author.user.id %}disabled{% endif %} />
           <label class="btn btn-outline-success btn-sm" for="btn-accept-{{ answer.id }}">
             <svg width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
               <path

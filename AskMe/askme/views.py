@@ -456,3 +456,21 @@ def vote_down(request):
     return JsonResponse({
         'new_rating': vote_obj.rating,
     })
+
+
+@login_required
+@require_POST
+def accept_answer(request):
+    answer_id = int(request.POST['answer_id'])
+    question_id = int(request.POST['question_id'])
+
+    question = models.Question.objects.get(id=question_id)
+    answer = models.Answer.objects.get(id=answer_id)
+
+    if question.author == request.user.profile:
+        answer.correct_flag = not answer.correct_flag
+        answer.save()
+
+    return JsonResponse({
+        'correct_flag': answer.correct_flag,
+    })

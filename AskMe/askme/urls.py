@@ -14,4 +14,5 @@ urlpatterns = [
     path('signup', views.signup, name='signup'),
     path('vote_up', views.vote_up, name='vote_up'),
     path('vote_down', views.vote_down, name='vote_down'),
+    path('accept_answer', views.accept_answer, name='accept_answer'),
 ]
