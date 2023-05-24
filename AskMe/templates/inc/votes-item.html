@@ -5,7 +5,7 @@
 <div class="icon-container">
     <span class="align-middle text-middle"><a>
             <img src="{% static "img/svg/vote-down-icon.svg" %}" alt="down"
-                class="img-icon img-icon-{{ icon_type }} vote-down" data-id="{{ vote_obj.id }}" /></a>
+                class="img-icon img-icon-{{ icon_type }} vote-down" data-{{ icon_type }}-id="{{ vote_obj.id }}" /></a>
 
         {% if vote_obj.rating > 0 %}
         <span id="vote-count-{{ vote_obj.id }}"
@@ -23,5 +23,5 @@
         {% endif %}
 
         <a><img src="{% static "img/svg/vote-up-icon.svg" %}" alt="up" class="img-icon img-icon-{{ icon_type }} vote-up"
-                data-id="{{ vote_obj.id }}" /></a></span>
+                data-{{ icon_type }}-id="{{ vote_obj.id }}" /></a></span>
 </div>

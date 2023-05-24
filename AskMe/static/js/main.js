@@ -16,18 +16,27 @@ function getCookie(name) {
 const csrftoken = getCookie("csrftoken");
 
 $(".vote-up").on("click", function (ev) {
+  const questionId = $(this).data("question-id");
+  const answerId = $(this).data("answer-id");
+
+  const voteId = questionId ? questionId : answerId;
+
+  const bodyData = questionId
+    ? "question_id=" + questionId
+    : "answer_id=" + answerId;
+
   const request = new Request("http://127.0.0.1:8000/vote_up", {
     headers: {
       "X-CSRFToken": csrftoken,
       "Content-type": "application/x-www-form-urlencoded;charset=UTF-8",
     },
     method: "POST",
-    body: "question_id=" + $(this).data("id"),
+    body: bodyData,
   });
 
   fetch(request).then((response_raw) =>
     response_raw.json().then((response_json) => {
-      const voteCount = $(`#vote-count-${$(this).data("id")}`);
+      const voteCount = $(`#vote-count-${voteId}`);
       const newRating = response_json.new_rating;
 
       if (newRating > 0) {
@@ -48,18 +57,27 @@ $(".vote-up").on("click", function (ev) {
 });
 
 $(".vote-down").on("click", function (ev) {
+  const questionId = $(this).data("question-id");
+  const answerId = $(this).data("answer-id");
+
+  const voteId = questionId ? questionId : answerId;
+
+  const bodyData = questionId
+    ? "question_id=" + questionId
+    : "answer_id=" + answerId;
+
   const request = new Request("http://127.0.0.1:8000/vote_down", {
     headers: {
       "X-CSRFToken": csrftoken,
       "Content-type": "application/x-www-form-urlencoded;charset=UTF-8",
     },
     method: "POST",
-    body: "question_id=" + $(this).data("id"),
+    body: bodyData,
   });
 
   fetch(request).then((response_raw) =>
     response_raw.json().then((response_json) => {
-      const voteCount = $(`#vote-count-${$(this).data("id")}`);
+      const voteCount = $(`#vote-count-${voteId}`);
       const newRating = response_json.new_rating;
 
       if (newRating > 0) {

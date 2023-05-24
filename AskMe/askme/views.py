@@ -357,70 +357,102 @@ def getUserAvatar(user):
 @login_required
 @require_POST
 def vote_up(request):
-    question_id = request.POST['question_id']
-    question = models.Question.objects.get(id=question_id)
+    question_id = request.POST.get('question_id', None)
+    answer_id = request.POST.get('answer_id', None)
+    print(question_id)
+    print(answer_id)
 
-    votes = question.questionlike_set.filter(user=request.user.profile)
+    if question_id:
+        vote_obj = models.Question.objects.get(id=question_id)
+        votes = vote_obj.questionlike_set.filter(user=request.user.profile)
+    elif answer_id:
+        vote_obj = models.Answer.objects.get(id=answer_id)
+        votes = vote_obj.answerlike_set.filter(user=request.user.profile)
 
     if not votes:
-        like = models.QuestionLike(
-            user=request.user.profile,
-            question=question,
-            type=models.LIKE,
-        )
+        if question_id:
+            like = models.QuestionLike(
+                user=request.user.profile,
+                question=vote_obj,
+                type=models.LIKE,
+            )
+        elif answer_id:
+            like = models.AnswerLike(
+                user=request.user.profile,
+                answer=vote_obj,
+                type=models.LIKE,
+            )
+
+        # TODO transactions
         like.save()
-        question.rating += 1
-        question.save()
+
+        vote_obj.setRating()
+        vote_obj.save()
 
     elif votes[0].type == models.DISLIKE:
         votes[0].type = models.LIKE
         votes[0].save()
 
-        question.rating += 2
-        question.save()
+        vote_obj.setRating()
+        vote_obj.save()
 
     else:
         votes[0].delete()
 
-        question.rating -= 1
-        question.save()
+        vote_obj.setRating()
+        vote_obj.save()
 
     return JsonResponse({
-        'new_rating': question.rating,
+        'new_rating': vote_obj.rating,
     })
 
 
 @login_required
 @require_POST
 def vote_down(request):
-    question_id = request.POST['question_id']
-    question = models.Question.objects.get(id=question_id)
+    question_id = request.POST.get('question_id', None)
+    answer_id = request.POST.get('answer_id', None)
+    print(question_id)
+    print(answer_id)
 
-    votes = question.questionlike_set.filter(user=request.user.profile)
+    if question_id:
+        vote_obj = models.Question.objects.get(id=question_id)
+        votes = vote_obj.questionlike_set.filter(user=request.user.profile)
+    elif answer_id:
+        vote_obj = models.Answer.objects.get(id=answer_id)
+        votes = vote_obj.answerlike_set.filter(user=request.user.profile)
 
     if not votes:
-        dislike = models.QuestionLike(
-            user=request.user.profile,
-            question=question,
-            type=models.DISLIKE,
-        )
+        if question_id:
+            dislike = models.QuestionLike(
+                user=request.user.profile,
+                question=vote_obj,
+                type=models.DISLIKE,
+            )
+        elif answer_id:
+            dislike = models.AnswerLike(
+                user=request.user.profile,
+                answer=vote_obj,
+                type=models.DISLIKE,
+            )
+
         dislike.save()
-        question.rating -= 1
-        question.save()
+        vote_obj.setRating()
+        vote_obj.save()
 
     elif votes[0].type == models.LIKE:
         votes[0].type = models.DISLIKE
         votes[0].save()
 
-        question.rating -= 2
-        question.save()
+        vote_obj.setRating()
+        vote_obj.save()
 
     else:
         votes[0].delete()
 
-        question.rating += 1
-        question.save()
+        vote_obj.setRating()
+        vote_obj.save()
 
     return JsonResponse({
-        'new_rating': question.rating,
+        'new_rating': vote_obj.rating,
     })

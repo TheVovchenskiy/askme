@@ -66,11 +66,11 @@
 <div class="answer-form">
   <form novalidate method="post" action="{% url 'question' question.id %}">
     {% csrf_token %}
-  
+
     {% bootstrap_form form %}
-  
+
     <button type="submit" class="btn btn-outline-primary answer-btn" style="margin-bottom: 5px">Answer!</button>
-  
+
   </form>
 
   {% comment %} <div class="form-floating">
@@ -82,5 +82,8 @@
     </button>
   </div> {% endcomment %}
 </div>
+
+<script src="{% static "js/jquery-3.7.0.min.js" %}"></script>
+<script src="{% static "js/main.js" %}"></script>
 
 {% endblock content %}

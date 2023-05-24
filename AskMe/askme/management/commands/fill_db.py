@@ -33,11 +33,17 @@ class Command(BaseCommand):
             action='store_true',
             help="Updates all users' avatars"
         )
+        parser.add_argument(
+            '--update_ratings',
+            action='store_true',
+            help='Udates all Question and Answer ratings'
+        )
 
     def handle(self, *args, **options):
         ratio = options['ratio']
         update_passwords_flag = options['update_passwords']
         update_avatars_flag = options['update_avatars']
+        update_ratings_flag = options['update_ratings']
 
         if update_passwords_flag:
             updatePasswords()
@@ -45,6 +51,10 @@ class Command(BaseCommand):
         if update_avatars_flag:
             AV_COUNT = count_files('avatars')
             link_avatars2profiles(AV_COUNT)
+
+        if update_ratings_flag:
+            setRating("Question", models.Question.objects)
+            setRating("Answer", models.Answer.objects)
 
         if ratio:
             fill_data_base(ratio)
