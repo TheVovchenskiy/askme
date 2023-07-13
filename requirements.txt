@@ -4,6 +4,7 @@ Django==4.2
 django-appconf==1.0.5
 django-bootstrap-v5==1.0.11
 Faker==18.4.0
+gunicorn==20.1.0
 mysqlclient==2.1.1
 Pillow==9.5.0
 python-dateutil==2.8.2
@@ -11,3 +12,4 @@ six==1.16.0
 soupsieve==2.4.1
 sqlparse==0.4.3
 tqdm==4.65.0
+uWSGI==2.0.21

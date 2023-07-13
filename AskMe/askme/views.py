@@ -299,8 +299,6 @@ def signup(request):
             new_user = user_form.save()
             if new_user:
                 auth.login(request, new_user)
-                # new_profile = models.Profile(user=new_user)
-                # new_profile.save()
                 return redirect(reverse('index'))
             else:
                 user_form.add_error(field=None, error='User saving error')
@@ -359,8 +357,6 @@ def getUserAvatar(user):
 def vote_up(request):
     question_id = request.POST.get('question_id', None)
     answer_id = request.POST.get('answer_id', None)
-    print(question_id)
-    print(answer_id)
 
     if question_id:
         vote_obj = models.Question.objects.get(id=question_id)
@@ -412,8 +408,6 @@ def vote_up(request):
 def vote_down(request):
     question_id = request.POST.get('question_id', None)
     answer_id = request.POST.get('answer_id', None)
-    print(question_id)
-    print(answer_id)
 
     if question_id:
         vote_obj = models.Question.objects.get(id=question_id)
