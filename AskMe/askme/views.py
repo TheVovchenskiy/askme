@@ -1,6 +1,9 @@
+import time
+from uuid import uuid4
 from django.contrib import auth
 # from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.forms import model_to_dict
 from django.views.decorators.http import require_http_methods, require_POST
 from django.contrib.auth.models import User
 from django.http import Http404, HttpResponse, HttpResponseBadRequest, JsonResponse
@@ -8,8 +11,11 @@ from django.shortcuts import redirect, render
 from django.core.paginator import Paginator
 from django.db.models import Count, Case, When, F
 from django.urls import reverse
+import jwt
+from AskMe.settings import TOKEN_HMAC_SECRET_KEY
 from askme.forms import AddAnswerForm, AddQuestionForm, LoginForm, RegistrationForm, SettingsForm
 from askme import models
+from cent import Client
 
 # Create your views here.
 
@@ -52,9 +58,14 @@ def index(request):
     return render(request, 'index.html', context)
 
 
+client = Client("http://localhost:8001/api", api_key="api_key", timeout=1)
+
+
 def question(request, question_id):
     curr_user = checkUserAuth(request)
     user_avatar = getUserAvatar(curr_user)
+
+    channel_id = f'question_{question_id}'
 
     question = models.Question.objects.get(id=question_id)
     answers = question.answer_set.all()
@@ -82,6 +93,9 @@ def question(request, question_id):
             answer.save()
 
             if models.Answer.objects.filter(id=answer.id):
+                # send new message via centrifugo
+                client.publish(channel_id, model_to_dict(answer))
+
                 return redirect(
                     'question',
                     question_id=question.id,
@@ -98,6 +112,19 @@ def question(request, question_id):
         'popular_tags': popular_tags,
         'form': add_answer_form,
     }
+
+    # add to context info for centrifugo
+    if request.method == "GET":
+        # TODO fix when user is not authenticated
+        if curr_user.is_authenticated:
+            context.update({
+                'server_adress': 'ws://127.0.0.1:8001/connection/websocket',
+                'cent_chan': channel_id,
+                'secret_token': jwt.encode(
+                    {"sub": str(curr_user.pk), "exp": int(time.time()) + 10*60},
+                    TOKEN_HMAC_SECRET_KEY)
+            })
+
     return render(request, 'question-page.html', context)
 
 

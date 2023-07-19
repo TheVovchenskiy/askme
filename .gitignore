@@ -11,3 +11,4 @@ AskMe/data*
 test_app.py
 */nginx_cache
 g.conf.py
+*config*

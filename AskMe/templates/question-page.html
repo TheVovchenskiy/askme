@@ -86,4 +86,18 @@
 <script src="{% static "js/jquery-3.7.0.min.js" %}"></script>
 <script src="{% static "js/main.js" %}"></script>
 
+<script src="https://unpkg.com/centrifuge@2.8.5/dist/centrifuge.js"></script>
+<script>
+  var centrifuge = new Centrifuge("{{ server_adress }}");
+
+  centrifuge.setToken("{{ secret_token }}")
+
+  console.log("{{ cent_chan }}")
+
+  centrifuge.subscribe("{{ cent_chan }}", function (message) {
+    console.log(message)
+  })
+  centrifuge.connect();
+</script>
+
 {% endblock content %}
