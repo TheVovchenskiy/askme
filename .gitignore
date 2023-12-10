@@ -8,3 +8,7 @@ db.sqlite3
 AskMe/data*
 *backups/
 *dump*
+test_app.py
+*/nginx_cache
+g.conf.py
+*config*
