@@ -1,0 +1,14 @@
+venv
+*.pyc
+__pycache__
+*.log
+db.sqlite3
+*/media/avatars/*
+!*/media/avatars/default_avatar.jpg
+AskMe/data*
+*backups/
+*dump*
+test_app.py
+*/nginx_cache
+g.conf.py
+*config*
