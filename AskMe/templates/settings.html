@@ -1,0 +1,23 @@
+{% extends "inc/base.html" %}
+
+{% load bootstrap5 %}
+{% load static %}
+
+{% block content %}
+
+<h2 class="section-title">Settings</h2>
+<form novalidate method="post" enctype="multipart/form-data" action="{% url 'settings' %}">
+  {% csrf_token %}
+
+  {% bootstrap_form form %}
+
+
+  {% with avatar_url=user_avatar.url avatar_type="settings-avatar" %}
+  {% include "inc/avatar-item.html" %}
+  {% endwith %}
+
+  <!-- Accept button -->
+  <button type="submit" class="btn btn-primary log-in-btn">Accept</button>
+</form>
+
+{% endblock content %}

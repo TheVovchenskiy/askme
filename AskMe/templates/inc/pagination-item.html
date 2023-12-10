@@ -1,0 +1,32 @@
+<!-- Pagination -->
+<ul class="pagination">
+  
+    <!-- Next -->
+    <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+      <a class="page-link page-link-border page-link-border-previous"
+        href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}">Previous</a>
+    </li>
+  
+    {% for page_number in page_obj.adjusted_elided_pages  %}
+  
+    {% if page_number == page_obj.paginator.ELLIPSIS %}
+  
+    <li class="page-item disable">
+      <a class="page-link page-link-border" href="#">{{ page_number }}</a>
+    </li>
+  
+    {% else %}
+    <li class="page-item {% if page_number == page_obj.number %}active{% endif %}">
+      <a class="page-link page-link-border" href="?page={{ page_number }}">{{ page_number }}</a>
+    </li>
+    {% endif %}
+  
+    {% endfor %}
+  
+    <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+      <a class="page-link page-link-border page-link-border-next"
+        href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}">Next</a>
+    </li>
+  
+  </ul>
+  

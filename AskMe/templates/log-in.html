@@ -1,0 +1,19 @@
+{% extends "inc/base.html" %}
+
+{% load static %}
+
+{% load bootstrap5 %}
+{% block content %}
+
+<h2 class="section-title">Log In</h2>
+<form novalidate method="post" action="{% url 'login' %}?continue={{ request.GET.continue }}">
+  {% csrf_token %}
+
+  {% bootstrap_form form %}
+
+  <!-- Log in button -->
+  <button type="submit" class="btn btn-primary log-in-btn">Log In</button><a href="{% url 'signup' %}"
+    class="btn btn-outline-primary log-in-btn">Sign Up</a>
+</form>
+
+{% endblock content %}

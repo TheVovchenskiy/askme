@@ -1,0 +1,61 @@
+{% load static %}
+
+<!-- Question -->
+<div class="question">
+  <div class="row">
+    <div class="col-2 border-end border-4">
+      <!-- Avatar -->
+      <a href="#">
+
+        {% with avatar_url=question.author.avatar.url avatar_type="question-avatar" %}
+        {% include "inc/avatar-item.html" %}
+        {% endwith %}
+
+        {% comment %} <div class="question-avatar">
+          <div>
+            <img src="{{ question.author.avatar.url }}" alt="Avatar" />
+          </div>
+        </div> {% endcomment %}
+
+      </a>
+      <!-- Username -->
+      <div class="username">
+        <a href="#">{{ question.author.user|truncatechars:13 }}</a>
+      </div>
+    </div>
+    <div class="col-10">
+      <!-- Title -->
+      <h2 class="question-title">
+        <a href="{% url "question" question.id %}">{{ question.title }}</a>
+      </h2>
+      <!-- Question text -->
+      <div class="question-text">{{ question.content|linebreaksbr|truncatechars:400 }}</div>
+    </div>
+  </div>
+  <div class="row">
+    <!-- Tags -->
+    <div class="col-8 tags">
+
+      {% for tag in question.tag.all %}
+      {% include "inc/tag-item.html" %}
+      {% endfor %}
+
+    </div>
+    <!-- Answers -->
+    <div class="col-2">
+      <div class="icon-container">
+        <span><a href="#">
+            <img src="{% static "img/svg/answer-icon.svg" %}" alt="answers"
+              class="img-icon img-icon-question" /></a><span
+            class="answers-count fw-bold text-dark font-monospace fs-5 align-middle">{{ question.answers_count }}</span></span>
+      </div>
+    </div>
+    <!-- Votes -->
+    <div class="col-2">
+
+      {% with vote_obj=question icon_type="question" %}
+      {% include "inc/votes-item.html" %}
+      {% endwith %}
+    </div>
+  </div>
+</div>

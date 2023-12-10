@@ -1,0 +1,21 @@
+{% extends "inc/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<h2 class="section-title">New Questions</h2>
+
+{% for question in questions.object_list %}
+{% include "inc/question-item.html" %}
+{% endfor %}
+
+{% with questions as page_obj %}
+{% include "inc/pagination-item.html" %}
+{% endwith %}
+
+<script src="{% static "js/jquery-3.7.0.min.js" %}"></script>
+<script src="{% static "js/main.js" %}"></script>
+
+
+{% endblock content %}

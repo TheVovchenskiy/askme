@@ -1,0 +1,16 @@
+{% extends "inc/base.html" %}
+
+{% block content %}
+
+<h2 class="section-title">Tag: <tag>{{ tag_name }}</tag>
+</h2>
+
+{% for question in questions.object_list %}
+  {% include "inc/question-item.html" %}
+{% endfor %}
+
+{% with questions as page_obj %}
+{% include "inc/pagination-item.html" %}
+{% endwith %}
+
+{% endblock content %}

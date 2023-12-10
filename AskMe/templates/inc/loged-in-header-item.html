@@ -1,0 +1,35 @@
+{% load static %}
+
+<!-- Account -->
+<div class="account">
+  <!-- ASK butn -->
+  <div class="container">
+    <a class="btn btn-success ask-btn" href="{% url 'ask' %}">Ask!</a>
+  </div>
+
+  <!-- Avatar -->
+  <div class="container">
+    <a href="#">
+      {% with avatar_url=user_avatar.url avatar_type="nav-avatar"  %}
+      {% include "inc/avatar-item.html" %}
+      {% endwith %}
+
+      {% comment %} <div class="nav-avatar">
+        <div>
+          <img src="{% static "img/avatars/my-avatar.jpg" %}" alt="Avatar" />
+        </div>
+      </div> {% endcomment %}
+    </a>
+  </div>
+
+  <!-- Settings -->
+  <div class="container">
+    <div class="row">
+      <a href="#" class="nav-username">{{ user.username }}</a>
+    </div>
+    <div class="row nav-options">
+      <a href="{% url 'settings' %}">settings</a>
+      <a href="{% url 'logout' %}?continue={{ request.path }}">log out</a>
+    </div>
+  </div>
+</div>

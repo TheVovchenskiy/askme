@@ -1,0 +1,126 @@
+{% extends "inc/base.html" %} {% block content %}
+
+{% load bootstrap5 %}
+
+<h2 class="section-title">New Question</h2>
+
+<form novalidate method="post" action="{% url "ask" %}">
+  {% csrf_token %}
+
+  {% bootstrap_form form %}
+  
+  <button type="submit" class="btn btn-primary log-in-btn">ASK!</button>
+  
+  {% comment %} <!-- Email -->
+  <div class="mb-3">
+    <label for="InputEmail" class="form-label">Email address</label>
+    <input
+      type="email"
+      class="form-control form form-login"
+      id="InputEmail"
+    />
+    <div id="emailHelp" class="form-text">
+      We'll never share your email with anyone else.
+    </div>
+  </div>
+
+  <!-- Username -->
+  <div class="mb-3">
+    <label for="InputUsername" class="form-label">Username</label>
+    <input
+      type="email"
+      class="form-control form form-login"
+      id="InputUsername"
+    />
+  </div>
+
+  <!-- Upload avatar -->
+
+  <div class="mb-3">
+    <label for="formAvatar" class="form-label">Choose avatar</label>
+    <input
+      class="form-control form form-login"
+      type="file"
+      id="formAvatar"
+    />
+  </div> {% endcomment %}
+    
+  {% comment %} <div class="settings-avatar">
+    <div>
+      <img
+        src="../../static/img/avatars/my-avatar.jpg"
+        alt="Avatar"
+      />
+    </div>
+  </div> {% endcomment %}
+
+  <!-- Accept button -->
+</form>
+
+{% comment %} <!-- Alert -->
+<div class="alert alert-danger" role="alert">
+  Please, enter title of the question
+</div>
+
+<!-- Question Title -->
+<div class="mb-3">
+  <label for="exampleFormControlInput1" class="form-label">Title</label>
+  <input
+    type="text"
+    class="form-control form"
+    id="exampleFormControlInput1"
+    placeholder="Title"
+  />
+</div>
+
+<!-- Alert -->
+<div class="alert alert-danger" role="alert">
+  Please, enter text of the question
+</div>
+
+<!-- Question text -->
+<div class="mb-3">
+  <label for="exampleFormControlTextarea1" class="form-label">Text</label>
+  <textarea
+    class="form-control form"
+    id="exampleFormControlTextarea1"
+    rows="3"
+    placeholder="Text"
+    style="height: 300px"
+  ></textarea>
+</div>
+
+<!-- Alert -->
+<div class="alert alert-danger" role="alert">
+  Please, select at least one tag
+</div>
+
+<!-- Tags -->
+<label for="exampleDataList" class="form-label">Tags</label>
+<input
+  class="form-control form"
+  list="datalistOptions"
+  id="exampleDataList"
+  placeholder="Type to search..."
+  style="margin-bottom: 16px"
+/>
+<datalist id="datalistOptions">
+  <option value="python"></option>
+  <option value="perl"></option>
+  <option value="Technopark"></option>
+  <option value="MySQL"></option>
+  <option value="django"></option>
+  <option value="VK"></option>
+  <option value="C++"></option>
+</datalist>
+
+<div class="tags">
+  <p class="lh-lg">
+    <a href="#" class="no-underline"><tag>python</tag></a>
+    <a href="#" class="no-underline"><tag>dajango</tag></a>
+  </p>
+</div> 
+
+<button type="button" class="btn btn-success btn-lg ask-btn">Ask!</button>
+{% endcomment %}
+{% endblock content %}
